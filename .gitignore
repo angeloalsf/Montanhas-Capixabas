@@ -1,0 +1,10 @@
+# dados/brutos tem CPF/CNPJ e nome dos proprietários;
+# dados/tratados tem informação de gestão (acesso restrito)
+dados/
+
+powerbi/
+site-visitante/
+analise/
+
+node_modules/
+.tmp/

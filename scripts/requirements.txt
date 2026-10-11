@@ -1,0 +1,19 @@
+# Dependências dos scripts Python deste projeto (scripts/preparar_dados.py e
+# scripts/validar_pdf.py). Versões fixadas nas que foram efetivamente testadas,
+# para que uma atualização futura de biblioteca não mude o resultado sem aviso.
+#
+# Instalação (com o ambiente virtual ativado, a partir da raiz do projeto):
+#     pip install -r requirements.txt
+#
+# Passo a passo completo: scripts/README.md
+
+pandas==2.3.3
+openpyxl==3.1.5
+
+# site-visitante/gerar_site.py usa só a biblioteca padrão do Python — não precisa de nada aqui.
+#
+# Ambiente em que estes pins foram testados (13/09/2026):
+#     Python 3.10.12 (Ubuntu / WSL)
+#     pandas 2.3.3, openpyxl 3.1.5
+#     instalados por dependência: numpy 2.2.6, python-dateutil 2.9.0.post0,
+#     pytz 2026.3.post1, tzdata, six, et-xmlfile 2.0.0

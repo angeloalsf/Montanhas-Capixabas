@@ -1,0 +1,2439 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>O que fazer em Alfredo Chaves</title>
+<meta name="description" content="Onde comer, dormir, passear e comprar em Alfredo Chaves (ES) — 93 lugares do diagnóstico turístico Montanhas Capixabas.">
+<style>
+/* ==================================================================
+   Site público da oferta turística de Alfredo Chaves.
+
+   O card é o visual CardEmpreendimento (powerbi/visuais/) reescrito
+   para a web: mesmos nomes de classe (ce-*), mesma paleta, mesmos
+   ícones SVG e a mesma ordem de montagem. Em volta dele, a moldura
+   do site: cabeçalho com busca, abas de segmento, painel lateral de
+   filtros e a ficha completa num modal.
+
+   Nenhum recurso externo: sem CDN, sem web font, sem imagem remota.
+   ================================================================== */
+:root{
+  /* paleta do card — a mesma de style/visual.less */
+  --ink-1:#252423;
+  --ink-2:#605E5C;
+  --ink-3:#8A8886;
+  --line:#E1E1E1;
+  --line-forte:#D2D0CE;
+  --fundo:#F2F4F3;     /* --cor-fundo-geral da Prefeitura */
+  --chip:#F2F4F3;
+  --azul:#0F6CBD;
+  --azul-claro:#EFF6FC;
+  --azul-borda:#CFE4FA;
+  --verde:#157F3E;
+  --verde-fundo:#116835;
+  --ambar:#FFF4CE;
+  --ambar-ink:#6B5900;
+
+  /* moldura do site: o verde do site da Prefeitura de Alfredo Chaves, só no
+     cabeçalho e nas ações principais */
+  --mata:#005946;      /* --cor-primaria do site da Prefeitura */
+  --mata-2:#014C3F;    /* faixa inferior do cabeçalho da Prefeitura */
+  --mata-3:#1D6B59;
+  --mata-txt:#DDE8E2;  /* --cor-texto-footer da Prefeitura */
+
+  /* Tamanho base do card. 12px é o visual do Power BI pixel a pixel;
+     13px lê melhor num site. Todo o card deriva deste valor. */
+  --base:13px;
+  --raio:6px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--fundo);
+  color:var(--ink-1);
+  font-family:"Segoe UI","Segoe UI Web (West European)",-apple-system,system-ui,sans-serif;
+  font-size:var(--base);
+  line-height:1.4;
+  -webkit-font-smoothing:antialiased;
+}
+body:has(dialog[open]){overflow:hidden}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--azul);outline-offset:2px}
+.ce-oculto{display:none !important}
+.env{max-width:1240px;margin:0 auto;padding:0 20px}
+.ce-icone{width:12px;height:12px;flex:0 0 auto;margin-top:1px}
+
+/* ------------------------------------------------------- cabeçalho */
+.cab{position:relative;background:var(--mata);color:#FFFFFF;overflow:hidden}
+.cab .env{position:relative;z-index:1;padding-top:30px;padding-bottom:72px}
+.cab-sup{margin:0 0 8px;color:var(--mata-txt);font-size:13px}
+.cab h1{margin:0;font-size:clamp(26px,3.6vw,36px);font-weight:600;letter-spacing:-.02em;line-height:1.15}
+.cab-desc{margin:8px 0 0;max-width:60ch;color:var(--mata-txt);font-size:15px;line-height:1.5}
+
+.busca-linha{display:flex;gap:10px;margin-top:22px;max-width:680px}
+.busca{position:relative;flex:1 1 auto;min-width:0}
+.busca .ce-icone{position:absolute;left:14px;top:50%;width:16px;height:16px;margin:-8px 0 0;color:var(--ink-3);pointer-events:none}
+.busca input{
+  width:100%;height:46px;padding:0 14px 0 40px;
+  border:1px solid transparent;border-radius:var(--raio);
+  background:#FFFFFF;color:var(--ink-1);font:inherit;font-size:15px;
+}
+.busca input::placeholder{color:var(--ink-3)}
+.busca input:focus-visible{outline:3px solid #FFC400;outline-offset:0}
+
+.btn-filtros{
+  display:inline-flex;align-items:center;gap:8px;flex:0 0 auto;
+  height:46px;padding:0 16px;border-radius:var(--raio);
+  border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.08);
+  color:#FFFFFF;font-size:14px;font-weight:600;cursor:pointer;
+}
+.btn-filtros:hover{background:rgba(255,255,255,.16)}
+.btn-filtros .ce-icone{width:16px;height:16px;margin:0}
+.btn-filtros .qtd{
+  min-width:20px;height:20px;padding:0 6px;border-radius:10px;
+  background:#FFFFFF;color:var(--mata);font-size:12px;line-height:20px;text-align:center;
+}
+
+/* a serra: duas linhas de cumeada, a da frente da cor da faixa de abas */
+.serra{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:64px;display:block}
+
+/* ------------------------------------------------------- abas de segmento */
+.abas{background:#FFFFFF;border-bottom:1px solid var(--line)}
+.abas .env{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.abas .env::-webkit-scrollbar{display:none}
+.aba{
+  flex:0 0 auto;display:inline-flex;align-items:baseline;gap:6px;
+  padding:12px 12px 11px;border:0;border-bottom:2px solid transparent;
+  background:none;color:var(--ink-2);font-size:14px;cursor:pointer;white-space:nowrap;
+}
+.aba:hover{color:var(--ink-1)}
+.aba .n{color:var(--ink-3);font-size:12px}
+.aba[aria-selected="true"]{color:var(--ink-1);font-weight:600;border-bottom-color:var(--mata)}
+.aba[aria-selected="true"] .n{color:var(--ink-2)}
+.aba.vazia{opacity:.45}
+.aba:focus-visible{outline-offset:-2px}
+
+/* ------------------------------------------------------- barra de resultado */
+.barra{display:flex;align-items:center;flex-wrap:wrap;gap:8px 10px;padding:20px 0 14px}
+.total{margin:0 6px 0 0;font-size:15px;font-weight:600}
+.total span{font-weight:400;color:var(--ink-2)}
+.pilula{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:3px 4px 3px 10px;border:1px solid var(--azul-borda);border-radius:999px;
+  background:var(--azul-claro);color:#0B4E8A;font-size:12.5px;
+}
+.pilula button{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:20px;height:20px;padding:0;border:0;border-radius:50%;background:none;color:inherit;cursor:pointer;
+}
+.pilula button:hover{background:var(--azul-borda)}
+.pilula .ce-icone{width:10px;height:10px;margin:0}
+.link{padding:4px 2px;border:0;background:none;color:var(--azul);font-size:13px;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+
+/* ------------------------------------------------------- grade e cards */
+main{padding-bottom:40px}
+.ce-grade{
+  display:grid;gap:14px;align-items:stretch;
+  grid-template-columns:repeat(auto-fill,minmax(min(340px,100%),1fr));
+}
+.ce-estado{
+  margin:8px 0;padding:36px 20px;border:1px dashed var(--line-forte);border-radius:var(--raio);
+  background:#FFFFFF;color:var(--ink-2);text-align:center;font-size:14px;
+}
+.ce-estado p{margin:0 0 12px}
+
+.ce-card{
+  display:flex;flex-direction:column;overflow:hidden;
+  border:1px solid var(--line);border-radius:var(--raio);background:#FFFFFF;
+  min-width:0;cursor:pointer;
+}
+.ce-card:hover{border-color:#B9C2BE}
+.ce-corpo{padding:13px 14px 12px;min-width:0}
+.ce-cabecalho{display:flex;align-items:flex-start;gap:8px}
+.ce-titulo{
+  flex:1 1 auto;min-width:0;margin:0;font-size:calc(var(--base) * 14 / 12);font-weight:600;line-height:1.25;
+  display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;
+}
+.ce-titulo button{
+  padding:0;border:0;background:none;text-align:left;cursor:pointer;
+  font:inherit;color:var(--ink-1);
+}
+.ce-card:hover .ce-titulo button{text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--ink-3)}
+.ce-abrir{
+  flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;
+  width:24px;height:24px;margin:-3px -5px 0 0;padding:0;
+  border:0;border-radius:4px;background:none;color:var(--ink-3);cursor:pointer;
+}
+.ce-abrir:hover{background:var(--fundo);color:var(--ink-1)}
+.ce-abrir .ce-icone{margin:0}
+
+/* toda linha do resumo tem uma linha só: o texto inteiro está na ficha */
+.ce-linha{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ce-sub{margin:2px 0 0;font-size:calc(var(--base) * 11.5 / 12)}
+.ce-segmentos{color:var(--azul)}
+.ce-local{color:var(--ink-2)}
+.ce-meta{margin-top:9px;display:flex;flex-direction:column;gap:4px;color:var(--ink-2);font-size:calc(var(--base) * 11.5 / 12)}
+.ce-meta-item{display:flex;align-items:flex-start;gap:6px;min-width:0}
+.ce-meta-txt{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ce-meta-item.vazio{color:var(--ink-3)}
+
+/* selos: no máximo duas linhas; o que não cabe vira "+N" (ajustarSelos) */
+.ce-selos{margin-top:10px;display:flex;flex-wrap:wrap;gap:4px;max-height:48px;overflow:hidden}
+.ce-selo,.ce-via{
+  height:22px;line-height:20px;padding:0 8px;max-width:100%;
+  border:1px solid var(--line);border-radius:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  background:var(--chip);color:var(--ink-1);font-size:calc(var(--base) * 11 / 12);
+}
+.ce-via{display:inline-flex;align-items:center;gap:5px;border-color:#F1DE9A;background:var(--ambar);color:var(--ambar-ink);padding-left:6px}
+.ce-via .ce-icone{margin:0}
+.ce-mais{background:#FFFFFF;color:var(--ink-2);border-style:dashed}
+
+/* ------------------------------------------------------- botões de contato */
+.ce-acoes{display:flex;flex-wrap:wrap;gap:6px}
+.ce-card .ce-acoes{
+  margin-top:auto;padding:10px 14px;border-top:1px solid #ECEEED;background:#FAFBFA;
+}
+.ce-botao{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 10px;border:1px solid var(--line-forte);border-radius:4px;
+  background:#FFFFFF;color:var(--ink-1);font:inherit;font-size:calc(var(--base) * 11.5 / 12);
+  text-decoration:none;cursor:pointer;white-space:nowrap;
+}
+.ce-botao:hover{background:var(--fundo)}
+.ce-botao:active{background:var(--line)}
+.ce-botao .ce-icone{margin-top:0}
+.ce-botao--icone{padding:5px 8px}
+.ce-botao--icone .ce-icone{width:13px;height:13px}
+.ce-botao--wpp{border-color:var(--verde);background:var(--verde);color:#FFFFFF}
+.ce-botao--wpp:hover,.ce-botao--wpp:active{background:var(--verde-fundo);border-color:var(--verde-fundo)}
+
+/* ------------------------------------------------------- diálogos (ficha e filtros) */
+dialog{padding:0;border:0;color:var(--ink-1);background:#FFFFFF}
+dialog::backdrop{background:rgba(18,32,25,.55)}
+.fechar{
+  display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;
+  width:34px;height:34px;padding:0;border:0;border-radius:50%;
+  background:none;color:var(--ink-2);cursor:pointer;
+}
+.fechar:hover{background:var(--fundo);color:var(--ink-1)}
+.fechar .ce-icone{width:16px;height:16px;margin:0}
+
+/* a ficha */
+.ficha{
+  width:min(720px,calc(100vw - 32px));max-height:min(860px,calc(100vh - 48px));
+  border-radius:10px;box-shadow:0 24px 70px rgba(0,0,0,.28);
+  flex-direction:column;overflow:hidden;
+}
+.ficha[open]{display:flex}
+.ficha-cab{display:flex;align-items:flex-start;gap:12px;padding:22px 20px 16px 26px;border-bottom:1px solid var(--line)}
+.ficha-cab>div{flex:1 1 auto;min-width:0}
+.ficha-seg{margin:0 0 4px;color:var(--azul);font-size:13px}
+.ficha h2{margin:0;font-size:22px;font-weight:600;letter-spacing:-.01em;line-height:1.2}
+.ficha-local{margin:4px 0 0;color:var(--ink-2);font-size:14px}
+.ficha-corpo{flex:1 1 auto;overflow-y:auto;padding:6px 26px 20px}
+.ficha-corpo .ce-via{margin-top:14px;font-size:13px;height:auto;line-height:1.4;padding:3px 9px 3px 7px;white-space:normal}
+.ficha-corpo .ce-selos{margin-top:12px;max-height:none}
+.ficha-corpo .ce-selo{font-size:12.5px;height:auto;line-height:1.4;padding:3px 9px;white-space:normal}
+.ficha-sec{margin-top:20px}
+.ficha-sec h3{margin:0 0 8px;font-size:14px;font-weight:600}
+.ficha-sec dl{margin:0;display:grid;grid-template-columns:150px 1fr;gap:7px 16px;font-size:14px}
+.ficha-sec dt{color:var(--ink-3)}
+.ficha-sec dd{margin:0;color:var(--ink-1);word-break:break-word}
+.ficha-pe{padding:14px 26px 18px;border-top:1px solid var(--line);background:#FAFAF9}
+.ficha-pe .ce-acoes{margin:0;padding:0}
+.ficha-pe .ce-botao{font-size:14px;padding:7px 14px}
+.ficha-pe .ce-botao .ce-icone{width:14px;height:14px}
+.ficha-aviso{margin:12px 0 0;color:var(--ink-3);font-size:12.5px}
+
+/* o painel de filtros, preso à direita */
+.painel{
+  margin:0 0 0 auto;width:min(380px,100vw);height:100vh;max-height:100vh;
+  box-shadow:-12px 0 40px rgba(0,0,0,.18);flex-direction:column;
+}
+.painel[open]{display:flex}
+.painel-cab{display:flex;align-items:center;justify-content:space-between;padding:16px 16px 14px 24px;border-bottom:1px solid var(--line)}
+.painel-cab h2{margin:0;font-size:18px;font-weight:600}
+.painel-corpo{flex:1 1 auto;overflow-y:auto;padding:8px 24px 24px}
+.campo{margin:20px 0 0;border:0;padding:0;min-width:0}
+.campo>label,.campo legend{display:block;margin:0 0 8px;padding:0;font-size:14px;font-weight:600}
+.campo select{
+  width:100%;height:40px;padding:0 34px 0 12px;appearance:none;cursor:pointer;
+  border:1px solid var(--line-forte);border-radius:var(--raio);background:#FFFFFF;font:inherit;font-size:14px;color:var(--ink-1);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%23605E5C' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;
+}
+.segmentado{display:flex;border:1px solid var(--line-forte);border-radius:var(--raio);overflow:hidden}
+.segmentado label{flex:1 1 0;position:relative;text-align:center;cursor:pointer}
+.segmentado label+label{border-left:1px solid var(--line-forte)}
+.segmentado input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.segmentado span{display:block;padding:9px 6px;font-size:13.5px;color:var(--ink-2)}
+.segmentado input:checked+span{background:var(--mata);color:#FFFFFF;font-weight:600}
+.segmentado input:focus-visible+span{outline:2px solid var(--azul);outline-offset:-3px}
+.opcoes{display:flex;flex-direction:column}
+.opcao{display:flex;align-items:center;gap:10px;padding:8px 0;font-size:14px;cursor:pointer;border-bottom:1px solid #F0EFEE}
+.opcao:last-child{border-bottom:0}
+.opcao input{width:17px;height:17px;margin:0;accent-color:var(--mata);cursor:pointer}
+.opcao .n{margin-left:auto;color:var(--ink-3);font-size:12.5px}
+.painel-pe{display:flex;gap:10px;padding:14px 24px;border-top:1px solid var(--line)}
+.painel-pe .ce-botao{justify-content:center;height:42px;font-size:14px}
+.painel-pe .primario{flex:1 1 auto;border-color:var(--mata);background:var(--mata);color:#FFFFFF;font-weight:600}
+.painel-pe .primario:hover{background:var(--mata-2)}
+
+@media (prefers-reduced-motion:no-preference){
+  .ficha[open]{animation:surgir .18s ease-out}
+  .painel[open]{animation:deslizar .2s ease-out}
+  @keyframes surgir{from{opacity:0;transform:translateY(8px) scale(.99)}to{opacity:1;transform:none}}
+  @keyframes deslizar{from{transform:translateX(24px);opacity:.6}to{transform:none;opacity:1}}
+}
+
+/* ------------------------------------------------------- rodapé */
+.rodape{background:#FFFFFF;border-top:1px solid var(--line);color:var(--ink-2);font-size:13px}
+.rodape .env{padding-top:22px;padding-bottom:28px;display:flex;flex-wrap:wrap;gap:8px 40px;justify-content:space-between}
+.rodape p{margin:0;max-width:70ch;line-height:1.5}
+.rodape strong{color:var(--ink-1);font-weight:600}
+
+/* ------------------------------------------------------- telas estreitas */
+@media (max-width:640px){
+  .env{padding:0 16px}
+  .cab .env{padding-top:22px;padding-bottom:56px}
+  .cab-desc{font-size:14px}
+  .serra{height:44px}
+  .btn-filtros span.rot{display:none}
+  .btn-filtros{padding:0 13px}
+  .ficha{width:100vw;max-width:100vw;height:100%;max-height:100%;border-radius:0}
+  .ficha-cab{padding:16px 12px 14px 18px}
+  .ficha-corpo{padding:4px 18px 18px}
+  .ficha-pe{padding:12px 18px 16px}
+  .ficha-sec dl{grid-template-columns:1fr;gap:1px}
+  .ficha-sec dd{margin-bottom:8px}
+}
+@media print{
+  .cab,.abas,.barra,.ce-abrir{display:none}
+  .ce-card{break-inside:avoid;border-color:#BBB}
+}
+</style>
+</head>
+<body>
+
+<header class="cab">
+  <div class="env">
+    <p class="cab-sup">Projeto Montanhas Capixabas &ndash; Alfredo Chaves, ES</p>
+    <h1>O que fazer em Alfredo Chaves</h1>
+    <p class="cab-desc" id="cab-desc">Onde comer, dormir, passear e comprar no município, com contato direto de cada lugar.</p>
+    <div class="busca-linha">
+      <label class="busca">
+        <span class="ce-oculto">Buscar</span>
+        <input type="search" id="f-busca" placeholder="Buscar por nome ou endereço" autocomplete="off">
+      </label>
+      <button type="button" class="btn-filtros" id="btn-filtros" aria-haspopup="dialog">
+        <span class="rot">Filtros</span><span class="qtd ce-oculto" id="qtd-filtros"></span>
+      </button>
+    </div>
+  </div>
+  <svg class="serra" viewBox="0 0 1440 64" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+    <path fill="#1D6B59" d="M0 40 L90 22 L160 34 L260 8 L340 28 L420 18 L520 36 L610 12 L700 30 L790 16 L880 34 L980 6 L1070 26 L1160 20 L1250 36 L1340 14 L1440 28 V64 H0 Z"/>
+    <path fill="#FFFFFF" d="M0 54 L120 40 L220 50 L330 32 L440 48 L560 38 L660 52 L780 34 L900 50 L1010 40 L1120 54 L1230 36 L1340 48 L1440 40 V64 H0 Z"/>
+  </svg>
+</header>
+
+<nav class="abas" aria-label="Tipo de lugar">
+  <div class="env" id="abas" role="tablist"></div>
+</nav>
+
+<main class="env">
+  <div class="barra" id="barra">
+    <p class="total" id="total" aria-live="polite"></p>
+  </div>
+  <div class="ce-grade" id="grade"></div>
+  <div class="ce-estado ce-oculto" id="estado">
+    <p id="estado-txt"></p>
+    <button type="button" class="ce-botao" id="estado-limpar">Limpar filtros</button>
+  </div>
+</main>
+
+<footer class="rodape">
+  <div class="env">
+    <p id="rodape-txt"></p>
+    <p><strong>Montanhas Capixabas</strong><br>Diagnóstico turístico de Alfredo Chaves</p>
+  </div>
+</footer>
+
+<!-- ficha completa de um lugar -->
+<dialog class="ficha" id="ficha" aria-labelledby="ficha-nome">
+  <div class="ficha-cab">
+    <div>
+      <p class="ficha-seg" id="ficha-seg"></p>
+      <h2 id="ficha-nome"></h2>
+      <p class="ficha-local" id="ficha-local"></p>
+    </div>
+    <button type="button" class="fechar" id="ficha-fechar" aria-label="Fechar"></button>
+  </div>
+  <div class="ficha-corpo" id="ficha-corpo"></div>
+  <div class="ficha-pe">
+    <div class="ce-acoes" id="ficha-acoes"></div>
+    <p class="ficha-aviso">Informações declaradas pelo próprio estabelecimento. Confirme horário e condições por telefone antes de ir.</p>
+  </div>
+</dialog>
+
+<!-- painel de filtros -->
+<dialog class="painel" id="painel" aria-labelledby="painel-titulo">
+  <div class="painel-cab">
+    <h2 id="painel-titulo">Filtros</h2>
+    <button type="button" class="fechar" id="painel-fechar" aria-label="Fechar filtros"></button>
+  </div>
+  <div class="painel-corpo">
+    <div class="campo">
+      <label for="f-distrito">Distrito</label>
+      <select id="f-distrito"></select>
+    </div>
+    <fieldset class="campo">
+      <legend>Localização</legend>
+      <div class="segmentado" id="f-local">
+        <label><input type="radio" name="local" value="" checked><span>Todas</span></label>
+        <label><input type="radio" name="local" value="zona urbana"><span>Zona urbana</span></label>
+        <label><input type="radio" name="local" value="zona rural"><span>Zona rural</span></label>
+      </div>
+    </fieldset>
+    <div class="campo">
+      <label for="f-dia">Aberto em</label>
+      <select id="f-dia"></select>
+    </div>
+    <fieldset class="campo">
+      <legend>O lugar oferece</legend>
+      <div class="opcoes" id="f-convs"></div>
+    </fieldset>
+  </div>
+  <div class="painel-pe">
+    <button type="button" class="ce-botao" id="painel-limpar">Limpar</button>
+    <button type="button" class="ce-botao primario" id="painel-ver"></button>
+  </div>
+</dialog>
+
+<!-- ================================================================
+     Dados. O navegador bloqueia fetch de arquivo local (file://), por
+     isso os CSVs de dados/tratados/ ficam embutidos aqui e são lidos
+     por um parser de CSV em JavaScript na abertura da página.
+     Para atualizar:  python site-publico/gerar_site.py
+     ================================================================ -->
+<script type="text/plain" id="csv-dim_empreendimento">
+id_empreendimento;nome_empreendimento;distrito;localizacao_rotulo;endereco_completo;ponto_referencia;segmentos_rotulo;condicao_via;via_acesso;dias_resumo;dias_funcionamento;abre_feriados;horario_atendimento;atende_24h;telefones;whatsapp;instagram;site;aceita_cartao;tem_estacionamento_proprio;estacionamento;vagas_automoveis;vagas_onibus;espaco_infantil;pet_texto;grupos_capacidade;badge_acessibilidade;badge_idiomas;sanitario_adaptado;idiomas;busca
+E001;Açaí express;Sede;zona urbana;Rua Pedro Bianchi 39;Antes da premosul;Onde comer;Pavimentada;Calçada/calçamento;Seg · Ter · Qua · Qui · Sex · Dom;Domingo a Sexta-feira;True;13h00 às 22h00;False;(27) 99625-4868;5527996254868;;;False;False;Estacionamento na rua;;;False;;Não recebe grupos;Rampa de acesso;;False;;acai express rua pedro bianchi 39 antes da premosul sede alimentacao
+E002;Adega Família Pin;Matilde;zona rural;Comunidade de São Roque de maravilha, S/N, São Roque de maravilha/ Alfredo Chaves-ES;Um pouco mais à frente da pousada da Iza;Onde comer · Onde dormir;Mista;Mista;Todos os dias;Todos os dias da semana (Domingo a Domingo);True;07h00 às 20h00;False;(27) 99618-8313;5527996188313;Recantopin;;False;True;Gratuito, descoberto;50;4;True;Depende do porte do animal;De 50 a 75 visitantes;;;False;;adega familia pin comunidade de sao roque de maravilha, s/n, sao roque de maravilha/ alfredo chaves-es um pouco mais a frente da pousada da iza matilde alimentacao hospedagem
+E003;Afrochaves;Sede;zona rural;Rua Dona Macrina, 245. Macrina. Alfredo Chaves - ES;Bar do Neguinho;Cultura;Pavimentada;Calçada/calçamento;Todos os dias;Todos os dias da semana (Domingo a Domingo);False;Consultar;False;(27) 99892-4352;5527998924352;afrochaves18;;False;False;Não possui estacionamento;;;False;;De 25 a 50 visitantes;;;False;;afrochaves rua dona macrina, 245. macrina. alfredo chaves - es bar do neguinho sede cultural
+E004;Arte e Cultura;Matilde;zona rural;Comunidade São Roque de Maravilha, S/N, São Roque de Maravilha/ Alfredo Chaves-ES;Seguir as placas próximo ao campo de futebol;Produtos locais;Mista;Mista;Sex · Sáb · Dom;Sexta-feira a Domingo;True;07h00 às 18h00;False;"(27) 99878-1898; (28) 99943-2927";5527998781898;arteeculturamaravilha;;False;True;Gratuito, descoberto;10;1;False;;De 10 a 25 visitantes;;;False;;arte e cultura comunidade sao roque de maravilha, s/n, sao roque de maravilha/ alfredo chaves-es seguir as placas proximo ao campo de futebol matilde agroindustria
+E005;Ateliê Ana bonecas de pano;Sede;zona urbana;Rua Artur Orlandi número 236 Ipanema Alfredo Chaves;Ao lado da empresa Premosul;Compras e artesanato;Pavimentada;Calçada/calçamento;Qua · Qui · Sex · Sáb · Dom;Quarta-feira a Domingo;True;De quarta a sábado das 9 as 17 HS Domingo o atendimento e com hora marcada;False;(27) 99794-0394;5527997940394;ana.bonecasdepano;;True;False;Estacionamento na rua;;;False;;Até 10 visitantes;Rampa de acesso;;False;;atelie ana bonecas de pano rua artur orlandi numero 236 ipanema alfredo chaves ao lado da empresa premosul sede compras
+E006;Atelie Ipê;Sede;zona rural;Sitio São Januário, Barra do Batatal, Alfredo Chaves - ES;Casarão Rosalém;Compras e artesanato · Cultura;Não pavimentada;Revsol/Brita;Seg · Ter · Qua · Qui · Sex;Segunda-feira a Sexta-feira;True;10h00 às 19h00;False;(27) 99989-5118;5527999895118;atelieipe70;;True;False;Não possui estacionamento;;;False;;Não recebe grupos;;;False;;atelie ipe sitio sao januario, barra do batatal, alfredo chaves - es casarao rosalem sede compras cultural
+E007;Banana Passas Sabor do Campo;Sagrada Família;zona rural;Caco de pote, zona Rural;;Produtos locais · Compras e artesanato;Pavimentada;Asfaltada;Seg · Ter · Qua · Qui · Sex · Sáb;Segunda-feira a Sábado;False;07h00 às 18h00;False;(27) 99876-1701;5527998761701;;;False;False;Não possui estacionamento;;;False;;Não recebe grupos;;;False;;banana passas sabor do campo caco de pote, zona rural sagrada familia agroindustria compras
+E008;Bar e lanchonete Parada Obrigatória;Crubixá;zona rural;São João de Crubixa;Próximo a Igreja;Onde comer;Não pavimentada;Revsol/Brita;Sex · Sáb · Dom;Sexta-feira a Domingo;False;Sexta das 16:00 as 22:00 sábado e domingo das 8:00 as 22:00;False;(27) 99618-8337;5527996188337;paradabar.obrigatoria;;True;True;Gratuito, descoberto;50;2;True;;De 10 a 25 visitantes;;;False;;bar e lanchonete parada obrigatoria sao joao de crubixa proximo a igreja crubixa alimentacao
+E009;Bar Mercearia Fornazier;Sede;zona rural;Estrada Principal de Matilde, São Marcos;;Onde comer;Pavimentada;Calçada/calçamento;Todos os dias;Todos os dias da semana (Domingo a Domingo);True;07h30 às 20h00;False;(27) 99689-0145;5527996890145;;;True;True;Gratuito, descoberto;12;3;False;;Até 10 visitantes;;;False;;bar mercearia fornazier estrada principal de matilde, sao marcos sede alimentacao
+E010;Barzinho Casa Velha;Matilde;zona rural;Área Especial Carolina, sn, Zona Rural;;Onde comer · Produtos locais;Pavimentada;Calçada/calçamento;Seg · Ter · Qua · Qui · Sex;Segunda-feira a Sexta-feira;True;A partir de 15h;False;(28) 99981-6815;5528999816815;casavelhabarzinho;;True;True;Gratuito, descoberto;30;5;True;;De 25 a 50 visitantes;Rampa de acesso;;False;;barzinho casa velha area especial carolina, sn, zona rural matilde alimentacao agroindustria
+E011;BISCOITOS TIA VIRGINIA;Matilde;zona rural;SÃO SEBASTIÃO ALFREDO CHAVES;;Produtos locais · Compras e artesanato;Não pavimentada;Revsol/Brita;Seg · Ter · Qua · Qui · Sex;Segunda-feira a Sexta-feira;False;07h00 às 18h00;False;(27) 99932-1372;5527999321372;biscoitostiavirginia;;False;True;Gratuito, descoberto;20;2;False;;De 10 a 25 visitantes;;;False;;biscoitos tia virginia sao sebastiao alfredo chaves matilde agroindustria compras
+E012;Buono Di Urania;São Bento de Urânia;zona rural;Rua João Cebin, 000, distrito de Urania;Ao lado da mercearia São Bento;Onde comer;Pavimentada;Calçada/calçamento;Todos os dias;Todos os dias da semana (Domingo a Domingo);True;06h00 às 22h00;False;(27) 99911-3403;5527999113403;buono_di_urania;;True;True;Gratuito, descoberto;25;3;False;;De 75 a 100 visitantes;Rampa de acesso;Atende em italiano;False;Italiano;buono di urania rua joao cebin, 000, distrito de urania ao lado da mercearia sao bento sao bento de urania alimentacao
+E013;Cachaça Cavalinho;Sede;zona rural;Rod. ES 146, São Marcos, Alfredo Chaves;Em frente a Mercearia Fornazier;Produtos locais;Pavimentada;Asfaltada;Todos os dias;Todos os dias da semana (Domingo a Domingo);True;Seg a sábado: 08 as 17 / domingo: 08 as 11h;False;(27) 99511-0921;5527995110921;cachacacavalinho;;True;True;Gratuito, descoberto;10;0;False;;De 10 a 25 visitantes;;;False;;cachaca cavalinho rod. es 146, sao marcos, alfredo chaves em frente a mercearia fornazier sede agroindustria
+E014;Cachaça JJ;Sagrada Família;zona rural;Sagrada família rua Agostinho vaneli;Perto da estação de água do Saae;Onde comer;Pavimentada;Calçada/calçamento;Seg · Ter · Qua · Qui · Sex · Sáb;Segunda-feira a Sábado;True;7:00 as 16:30 e sábado 6:00 a 12:00;False;(27) 99624-1008;5527996241008;cachaca_jj;;False;True;Gratuito, descoberto;10;3;False;;De 10 a 25 visitantes;Rampa de acesso;;False;;cachaca jj sagrada familia rua agostinho vaneli perto da estacao de agua do saae sagrada familia alimentacao
+E015;Cachoeira Paganini;Crubixá;zona rural;São João de Crubixá, zona rural;;Onde comer · Cachoeiras e natureza;Não pavimentada;Terra;Seg · Sex · Sáb · Dom;Sexta-feira a Segunda-Feira;True;Segunda e Sexta 15h - Sab/dom 07h;False;(27) 99999-3316;5527999993316;cachoeira.paganini;;True;True;Gratuito, descoberto;25;3;False;;Acima de 100 visitantes;;;False;;cachoeira paganini sao joao de crubixa, zona rural crubixa alimentacao recursos naturais
+E016;Cachoeira Piripitinga restaurante e lazer;Sede;zona rural;Barra de Batatal;;Onde comer · Aventura;Não pavimentada;Revsol/Brita;Sáb · Dom;Sábado e Domingo;True;08h00 às 18h00;False;(27) 99832-7086;5527998327086;cachoeira.poripitinga;;True;True;Pago, coberto;30;4;True;;De 25 a 50 visitantes;Sanitário adaptado;;True;;cachoeira piripitinga restaurante e lazer barra de batatal sede alimentacao entretenimento/aventura
+E017;Cachoeira Vovó Lúcia;Ibitiruí;zona rural;Ibitirui, zona rural, sem número;;Onde comer · Onde dormir · Cachoeiras e natureza · Aventura;Não pavimentada;Terra;Sáb · Dom;Sábado e Domingo;True;10h00 às 17h00;False;(27) 99791-8453;5527997918453;cachoeiravovolucia;;True;False;Estacionamento na rua;;;False;Sim;Acima de 100 visitantes;;;False;;cachoeira vovo lucia ibitirui, zona rural, sem numero ibitirui alimentacao hospedagem entretenimento/aventura recursos naturais
+E018;CAFÉ DO MONTE;Crubixá;zona rural;SÃO VICENTE DE CRUBIXÁ ZONA RURAL;Antes da igreja;Onde comer;Não pavimentada;Revsol/Brita;Sáb · Dom;Sábado e Domingo;True;09h00 às 17h00;False;(27) 99837-8330;5527998378330;cafedomonte_;;True;True;Gratuito, descoberto;10;1;False;;De 10 a 25 visitantes;;;False;;cafe do monte sao vicente de crubixa zona rural antes da igreja crubixa alimentacao
+E019;Café Mocelin;Crubixá;zona rural;São João de Crubixá;Depois da igreja católica 1 direita;Onde comer;Não pavimentada;Revsol/Brita;Todos os dias;Todos os dias da semana (Domingo a Domingo);False;07h00 às 19h00;False;(27) 99937-0977;5527999370977;;;False;False;Estacionamento na rua;;;False;;De 25 a 50 visitantes;;Atende em inglês;False;Inglês;cafe mocelin sao joao de crubixa depois da igreja catolica 1 direita crubixa alimentacao
+E020;Cantinho que Delicia;Matilde;zona rural;São Brás de Maravilha;Em frente aos copos de leite;Onde comer;Não pavimentada;Terra;Todos os dias;Todos os dias da semana (Domingo a Domingo);True;08h00 às 22h00;False;(28) 99940-3664;5528999403664;;;False;True;Gratuito, descoberto;6;1;False;;Não recebe grupos;Rampa de acesso;;False;;cantinho que delicia sao bras de maravilha em frente aos copos de leite matilde alimentacao
+E021;Casa do Artesão;Sede;zona urbana;Praça Colombo guardia, n52, centro, Alfredo Chaves;No centro da pracinha;Compras e artesanato;Pavimentada;Asfaltada;Seg · Ter · Qua · Qui · Sex;Segunda-feira a Sexta-feira;False;08h as12h 13h as 17h;False;(27) 99950-2143;5527999502143;;;False;False;Não possui estacionamento;;;False;;Até 10 visitantes;;;False;;casa do artesao praca colombo guardia, n52, centro, alfredo chaves no centro da pracinha sede compras
+E022;Casa Recanto dos Pássaros;Matilde;zona rural;Rua Luiz Darós, S/N, Matilde, Alfredo Chaves;Próximo à Pousada Darós;Onde dormir;Não pavimentada;Revsol/Brita;Todos os dias;Todos os dias da semana (Domingo a Domingo);True;Consultar;False;(27) 99917-5853;5527999175853;;https://airbnb.com/h/casa-recanto-dos-passaros;True;True;Gratuito, descoberto;4;0;False;Sim;De 10 a 25 visitantes;;Atende em inglês;False;Inglês;casa recanto dos passaros rua luiz daros, s/n, matilde, alfredo chaves proximo a pousada daros matilde hospedagem
+E023;Caseiros do Rancho;Matilde;zona rural;Av José Maria Camiletti;Ao lado da lanchonete Rancho Sertanejo;Compras e artesanato;Pavimentada;Asfaltada;Ter · Qua · Qui · Sex · Sáb · Dom;Terça-feira a Domingo;True;08h00 às 17h00;False;(27) 99729-8885;5527997298885;ranchosertanejolanchonete;;True;False;Estacionamento na rua;;;False;;Até 10 visitantes;Rampa de acesso;;False;;caseiros do rancho av jose maria camiletti ao lado da lanchonete rancho sertanejo matilde compras
+E024;Cervejaria Alfredense;Sede;zona rural;ROD LAURO FERREIRA PINTO,KM 01-SITIO SANTO ANTONIO;Trevo p cachoeira alta;Produtos locais;Pavimentada;Asfaltada;Seg · Ter · Qua · Qui · Sex · Sáb;Segunda-feira a Sábado;False;Segunda a sexta-feira: 08h às 17h Sábado: 08h às 11h;False;(27) 98129-0014;5527981290014;cervejariaalfredense;;False;False;Estacionamento na rua;;;False;;De 10 a 25 visitantes;Rampa de acesso;;False;;cervejaria alfredense rod lauro ferreira pinto,km 01-sitio santo antonio trevo p cachoeira alta sede agroindustria
+E025;Chale da Cris;Matilde;zona rural;Comunidade de São Roque de Maravilha, S/N, São Roque de Maravilha/ Alfredo Chaves;Em frente a igreja católica;Onde dormir · Aventura;Mista;Mista;Sex · Sáb · Dom;Sexta-feira a Domingo;True;07h00 às 22h00;False;(27) 99913-6096;5527999136096;pousadamaravilha_saoroque;;True;True;Gratuito, descoberto;50;4;True;Não;De 25 a 50 visitantes;;;False;;chale da cris comunidade de sao roque de maravilha, s/n, sao roque de maravilha/ alfredo chaves em frente a igreja catolica matilde hospedagem entretenimento/aventura
+E026;Chalés Barco encalhado;Matilde;zona rural;Estrada São Brás de Maravilha;O barco encalhado;Onde dormir;Não pavimentada;Terra;Qui · Sex · Sáb · Dom;Quinta-feira a Domingo;True;08h00 às 18h00;False;(28) 99995-7098;5528999957098;clalesbc;;False;True;Gratuito, descoberto;55;3;False;Não;Acima de 100 visitantes;Sanitário adaptado;;True;;chales barco encalhado estrada sao bras de maravilha o barco encalhado matilde hospedagem
+E027;Chalés Maravilha;Matilde;zona rural;Área especial São Roque de maravilha, S/N, São Roque de maravilha/ Alfredo Chaves-ES;Próximo a adega pin;Onde comer · Onde dormir;Mista;Mista;Todos os dias;Todos os dias da semana (Domingo a Domingo);True;09h00 às 18h00;True;(27) 99756-7042;5527997567042;chalesmaravilha_;;True;True;Gratuito, descoberto;8;0;True;Sim;De 10 a 25 visitantes;;Atende em inglês;False;Inglês;chales maravilha area especial sao roque de maravilha, s/n, sao roque de maravilha/ alfredo chaves-es proximo a adega pin matilde alimentacao hospedagem
+E028;Charcutaria Só Suínos;Matilde;zona rural;Estrada Rio Novo de Matilde S/N- Carolina;Em frente a Pousada Daroz;Onde comer;Não pavimentada;Terra;Todos os dias;Todos os dias da semana (Domingo a Domingo);True;07h30 às 17h00;False;(27) 99982-7240;5527999827240;sosuinos.es;;True;True;Gratuito, descoberto;20;0;False;;Não recebe grupos;;;False;;charcutaria so suinos estrada rio novo de matilde s/n- carolina em frente a pousada daroz matilde alimentacao
+E029;Churrasquinho cantinho do céu Ltda;Sede;zona urbana;Rua expedicionário Osvaldo saudino 585;Praça Carlos Tobias Jamaia;Onde comer;Pavimentada;Calçada/calçamento;Seg · Ter · Qua · Qui · Sex · Sáb;Segunda-feira a Sábado;False;16h00 às 23h00;False;(27) 99802-9057;5527998029057;churrasquinho_cantinho_do_ceu;;True;False;Estacionamento na rua;;;False;;De 25 a 50 visitantes;;;False;;churrasquinho cantinho do ceu ltda rua expedicionario osvaldo saudino 585 praca carlos tobias jamaia sede alimentacao
+E030;Conservas da branca;Matilde;zona rural;Comunidade de São Roque de maravilha, S/N, São Roque de Maravilha/ Alfredo Chaves-ES;Em frente ao campo de futebol;Onde comer;Mista;Mista;Sex · Sáb · Dom;Sexta-feira a Domingo;True;07h00 às 18h00;False;(27) 99811-4519;5527998114519;Sartoribranc;;False;False;Não possui estacionamento;;;False;;De 10 a 25 visitantes;;;False;;conservas da branca comunidade de sao roque de maravilha, s/n, sao roque de maravilha/ alfredo chaves-es em frente ao campo de futebol matilde alimentacao
+E031;Del mio cuore;Sede;zona rural;São Francisco de Batatal zona rural;Próximo a quadra de esportes;Onde comer;Não pavimentada;Revsol/Brita;Seg · Ter · Qua · Qui · Sex · Sáb;Segunda-feira a Sábado;True;07h00 às 17h00;False;(27) 99846-2711;5527998462711;;;False;False;Não possui estacionamento;;;False;;Até 10 visitantes;;;False;;del mio cuore sao francisco de batatal zona rural proximo a quadra de esportes sede alimentacao
+E032;Doces Matilde;Matilde;zona rural;Zona Rural, s/nº, São Marcos;Estrada para Ibiriruí;Produtos locais;Não pavimentada;Revsol/Brita;Seg · Ter · Qua · Qui · Sex;Segunda-feira a Sexta-feira;True;06h00 às 16h00;False;(27) 99603-5545;5527996035545;docesmatilde;;False;True;Gratuito, descoberto;4;1;False;;De 10 a 25 visitantes;;;False;;doces matilde zona rural, s/nº, sao marcos estrada para ibirirui matilde agroindustria
+E033;Encontro das Águas Guest House;Matilde;zona rural;São Roque de Maravilha, Zona rural;;Onde dormir · Aventura;Não pavimentada;Terra;Sáb · Dom;Sábado e Domingo;True;07h00 às 18h00;False;(27) 99875-6507;5527998756507;encontrodasaguasguesthouse;;False;True;Gratuito, descoberto;30;2;False;Não;De 25 a 50 visitantes;Sanitário adaptado;Atende em inglês, francês;True;"Inglês; Francês";encontro das aguas guest house sao roque de maravilha, zona rural matilde hospedagem entretenimento/aventura
+E034;Frescor das Montanhas;São Bento de Urânia;zona rural;Redentor, São Bento de Urania, Alfredo Chaves-ES;;Onde comer · Cachoeiras e natureza · Produtos locais · Compras e artesanato;Não pavimentada;Terra;Seg · Ter · Qua · Qui · Sex · Dom;Domingo a Sexta-feira;True;07h00 às 17h00;False;(27) 99914-7191;5527999147191;Frescor.das.montanhas;;False;True;Gratuito, descoberto;20;0;True;;De 25 a 50 visitantes;Sanitário adaptado;;True;;frescor das montanhas redentor, sao bento de urania, alfredo chaves-es sao bento de urania alimentacao agroindustria compras recursos naturais
+E035;Gostinho caseiro;Matilde;zona urbana;José Maria camiletti. Sem número. Matilde;Ao lado do posto de gasolina;Onde comer;Pavimentada;Calçada/calçamento;Todos os dias;Todos os dias da semana (Domingo a Domingo);True;Segunda a Sábado 6h as 18h. Domingo 6h as 16h;False;(27) 99864-8060;5527998648060;gostinho_caseiro_matilde;;True;False;Estacionamento na rua;;;False;;De 25 a 50 visitantes;Rampa de acesso;;False;;gostinho caseiro jose maria camiletti. sem numero. matilde ao lado do posto de gasolina matilde alimentacao
+E036;Hesio Artesanato;Sede;zona urbana;Rua Nelson José Simões 280 , bairro parque residencial Alfredo Chaves (cajá);ESF do cajá (posto de saúde);Compras e artesanato;Pavimentada;Calçada/calçamento;Seg · Ter · Qua · Qui · Sex · Sáb;Segunda-feira a Sábado;True;07h30 às 18h00;False;(27) 99832-3691;5527998323691;;;True;True;Gratuito, descoberto;;;False;;Não recebe grupos;;;False;;hesio artesanato rua nelson jose simoes 280 , bairro parque residencial alfredo chaves (caja) esf do caja (posto de saude) sede compras
+E037;Hospedagem Cachoeiras de Matilde;Matilde;zona rural;Matilde, SN;;Onde dormir;Pavimentada;Asfaltada;Todos os dias;Todos os dias da semana (Domingo a Domingo);True;24 horas;True;(27) 99896-3989;5527998963989;Hospedagemcachoeirasdematilde;;False;True;Gratuito, descoberto;5;0;False;Sim;De 10 a 25 visitantes;;;False;;hospedagem cachoeiras de matilde matilde, sn matilde hospedagem
+E038;Hotel Volponi;Sede;zona urbana;Avenida Getúlio Vargas, número 231, bairro Ouro Branco;Supermercado Clack e Posto Shell;Onde dormir;Pavimentada;Asfaltada;Todos os dias;Todos os dias da semana (Domingo a Domingo);False;06h00 às 18h00;False;(27) 99979-9899;5527999799899;hotelvolponi;;True;True;Gratuito, descoberto;20;3;False;Sim;De 10 a 25 visitantes;;;False;;hotel volponi avenida getulio vargas, numero 231, bairro ouro branco supermercado clack e posto shell sede hospedagem
+E039;Indique Um Vinho (venda de vinhos e eventos);Sede;zona urbana;Rua Luiz Villar, 241 - ap 203 - Centro;Ed Grillo prox à praça;Onde comer · Compras e artesanato;Pavimentada;Asfaltada;Todos os dias;Todos os dias da semana (Domingo a Domingo);True;09h00 às 23h00;False;(28) 99923-0266;5528999230266;indiqueumvinho;;True;False;Estacionamento na rua;;;False;;De 10 a 25 visitantes;Rampa de acesso;Atende em espanhol;False;Espanhol;indique um vinho (venda de vinhos e eventos) rua luiz villar, 241 - ap 203 - centro ed grillo prox a praca sede alimentacao compras
+E040;Lanchonete Rancho Sertanejo;Matilde;zona rural;Av José Maria Camiletti;Em frente à escola;Onde comer;Pavimentada;Asfaltada;Ter · Qua · Qui · Sex · Sáb · Dom;Terça-feira a Domingo;True;Terça a quinta 17h às 20h e de sexta a domingo 17 às 22h;False;"(27) 99955-0667; (27) 99729-8885";5527999550667;ranchosertanejo17;;True;False;Estacionamento na rua;;;False;;De 50 a 75 visitantes;Rampa de acesso;;False;;lanchonete rancho sertanejo av jose maria camiletti em frente a escola matilde alimentacao
+E041;Mariola quintovelhense;Sagrada Família;zona rural;Quinto Território, zona rural;;Produtos locais · Compras e artesanato;Não pavimentada;Revsol/Brita;Seg · Ter · Qua · Qui · Sex;Segunda-feira a Sexta-feira;True;07h00 às 17h00;False;(27) 99870-2922;5527998702922;;;True;True;Gratuito, descoberto;7;0;False;;Não recebe grupos;;;False;;mariola quintovelhense quinto territorio, zona rural sagrada familia agroindustria compras
+E042;O rei do inhame;São Bento de Urânia;zona rural;Sítio cantina italiana Gratieri, zona rural;Ponto no Google, o rei do inhame;Onde comer · Produtos locais · Compras e artesanato;Não pavimentada;Terra;Sex · Sáb · Dom;Sexta-feira a Domingo;True;09h00 às 20h00;True;(27) 99886-0641;5527998860641;jandirgratieri;;True;True;Gratuito, descoberto;50;5;True;;De 10 a 25 visitantes;Rampa de acesso;Atende em italiano;False;Italiano;o rei do inhame sitio cantina italiana gratieri, zona rural ponto no google, o rei do inhame sao bento de urania alimentacao agroindustria compras
+E043;Padaria Central du Pão;Sede;zona urbana;Rua Expedicionário Osvaldo Saudino, nº 115, bairro Ouro Branco, Alfredo Chaves, ES, CEP: 29240-000;Próximo à Igreja Maranata;Onde comer;Pavimentada;Calçada/calçamento;Todos os dias;Todos os dias da semana (Domingo a Domingo);True;Segunda a sexta: 05h às 19h / Sáb. 05h às 18h / Dom. 05:30 às 11h;False;(27) 99821-1899;5527998211899;padariacentraldupao;;True;False;Estacionamento na rua;;;False;;De 10 a 25 visitantes;Sanitário adaptado;;True;;padaria central du pao rua expedicionario osvaldo saudino, nº 115, bairro ouro branco, alfredo chaves, es, cep: 29240-000 proximo a igreja maranata sede alimentacao
+E044;Padaria e Confeitaria Ki Pão;Sede;zona urbana;Avenida. Getúlio Vargas 892 loja 3 Centro;Ao lado da Prefeitura;Onde comer;Pavimentada;Asfaltada;Seg · Ter · Qua · Qui · Sex · Sáb;Segunda-feira a Sábado;False;04h30 às 19h30;False;(27) 99959-1650;5527999591650;padariaeconfeitariakipao;;True;True;Gratuito, descoberto;8;3;False;;De 10 a 25 visitantes;;;False;;padaria e confeitaria ki pao avenida. getulio vargas 892 loja 3 centro ao lado da prefeitura sede alimentacao
+E045;Pastelaria da Dith;São Bento de Urânia;zona rural;Localidade rural São Bento de Urania;Perto da igreja catolica;Onde comer;Não pavimentada;Terra;Sáb · Dom;Sábado e Domingo;False;06h00 às 18h00;False;(27) 99920-1201;5527999201201;judithgava;;False;True;Gratuito, descoberto;30;2;False;;De 25 a 50 visitantes;Rampa de acesso;;False;;pastelaria da dith localidade rural sao bento de urania perto da igreja catolica sao bento de urania alimentacao
+E046;Pedacinho do Céu;Matilde;zona rural;Estrada de São Brás de Maravilha S/N;Ao lado do Barco encalhado;Onde dormir;Não pavimentada;Terra;Todos os dias;Todos os dias da semana (Domingo a Domingo);True;08h00 às 18h00;True;(28) 99945-9665;5528999459665;pedacinhodoceusaobras;;True;True;Gratuito, descoberto;7;1;False;Sim;Até 10 visitantes;Rampa de acesso;Atende em inglês;False;Inglês;pedacinho do ceu estrada de sao bras de maravilha s/n ao lado do barco encalhado matilde hospedagem
+E047;Peruzzos lanchonete e Pizzaria;Sede;zona urbana;Rua Arlindo Costa, 283, bairro portal dos imigrantes, Alfredo Chaves;Sentido parque de exposições;Onde comer;Pavimentada;Calçada/calçamento;Todos os dias;Todos os dias da semana (Domingo a Domingo);True;18h00 às 22h30;True;(27) 99991-6468;5527999916468;Peruzzos_lanchonete_e_pizzaria;;True;True;Gratuito, coberto;1;1;True;;De 75 a 100 visitantes;Sanitário adaptado;;True;;peruzzos lanchonete e pizzaria rua arlindo costa, 283, bairro portal dos imigrantes, alfredo chaves sentido parque de exposicoes sede alimentacao
+E048;POUSADA ÁGUAS DE PINON LTDA - ME;Matilde;zona rural;FAZ ÁGUAS DE PINON, CAROLINA, ZONA RURAL S/Nº;A PRÓPRIA POUSADA;Onde comer · Onde dormir · Cachoeiras e natureza · Compras e artesanato;Não pavimentada;Revsol/Brita;Sex · Sáb · Dom;Sexta-feira a Domingo;True;SEXTA A PARTIR DAS 13:00 A DOMINGO AS 15:00H;False;(27) 99983-7311;5527999837311;;https://www.aguasdepinon.com.br;True;True;Gratuito, descoberto;41;8;True;Não;De 10 a 25 visitantes;Rampa de acesso;;False;;pousada aguas de pinon ltda - me faz aguas de pinon, carolina, zona rural s/nº a propria pousada matilde alimentacao hospedagem compras recursos naturais
+E049;Pousada Beira do Rio;Matilde;zona rural;AE Sao Roque de Maravilha, SN, Sao Roque de Maravilha/ Alfredo Chaves-ES;Em frente a igreja católica;Onde dormir · Aventura;Mista;Mista;Sex · Sáb · Dom;Sexta-feira a Domingo;True;07h00 às 22h00;False;(28) 99913-6096;5528999136096;;;True;True;Gratuito, descoberto;50;4;True;Sim;De 50 a 75 visitantes;;;False;;pousada beira do rio ae sao roque de maravilha, sn, sao roque de maravilha/ alfredo chaves-es em frente a igreja catolica matilde hospedagem entretenimento/aventura
+E050;Pousada Camping Prainha;Matilde;zona rural;Av José Maria Camiletti;Perto do posto de gasolina;Onde comer · Onde dormir;Pavimentada;Asfaltada;Sáb · Dom;Sábado e Domingo;True;08h00 às 17h00;False;(27) 99741-2559;5527997412559;pousadacapingprainha;;True;True;Gratuito, descoberto;40;0;True;Não;Acima de 100 visitantes;Rampa de acesso;Atende em inglês;False;Inglês;pousada camping prainha av jose maria camiletti perto do posto de gasolina matilde alimentacao hospedagem
+E051;Pousada da giovana;Matilde;zona rural;Sítio Boa Esperança S/N;Ao lado do Hotel Benevente;Onde dormir;Não pavimentada;Terra;Todos os dias;Todos os dias da semana (Domingo a Domingo);True;08h00 às 18h00;False;(27) 99958-8111;5527999588111;;;False;True;Gratuito, descoberto;6;0;False;Depende do porte do animal;Até 10 visitantes;;;False;;pousada da giovana sitio boa esperanca s/n ao lado do hotel benevente matilde hospedagem
+E052;Pousada Drika;Sede;zona urbana;Av Getúlio vargas, 656 ,Centro;Ao lado da Farmácia Preço Baixo;Onde dormir;Pavimentada;Asfaltada;Todos os dias;Todos os dias da semana (Domingo a Domingo);True;Consultar;False;(27) 99983-5704;5527999835704;;;True;False;Não possui estacionamento;;;False;Não;Até 10 visitantes;;;False;;pousada drika av getulio vargas, 656 ,centro ao lado da farmacia preco baixo sede hospedagem
+E053;Pousada e Restaurante Quintino;Crubixá;zona rural;Zona Rural, São Joaquim;;Onde comer · Onde dormir · Cachoeiras e natureza;Não pavimentada;Revsol/Brita;Sex · Sáb · Dom;Sexta-feira a Domingo;True;Sexta e sábado Das 13h as 20h / Domingo fecha às 15h;False;(27) 99903-1059;5527999031059;pousadaquintinoluizevera;;False;True;Gratuito, descoberto;25;1;True;Depende do porte do animal;Acima de 100 visitantes;;;False;;pousada e restaurante quintino zona rural, sao joaquim crubixa alimentacao hospedagem recursos naturais
+E054;Pousada e Restaurante Recanto das Aguas LTDA;Sede;zona urbana;Rua principal de Matilde, sn, São Marcos;;Onde comer · Onde dormir;Pavimentada;Calçada/calçamento;Sáb · Dom;Sábado e Domingo;True;07h00 às 20h00;False;(27) 99955-9583;5527999559583;somdasaguases;;True;True;Gratuito, descoberto;130;10;True;Não;Acima de 100 visitantes;Sanitário adaptado;;True;;pousada e restaurante recanto das aguas ltda rua principal de matilde, sn, sao marcos sede alimentacao hospedagem
+E055;Pousada Lorenzon;São Bento de Urânia;zona rural;São Bento de Urania S/N;Perto da mercearia São Bento de Urania;Onde dormir · Cachoeiras e natureza · Aventura;Não pavimentada;Terra;Todos os dias;Todos os dias da semana (Domingo a Domingo);True;07h00 às 21h00;True;"(27) 99944-2244; (27) 99611-7705";5527999442244;pousadalorenzon;;True;True;Gratuito, descoberto;100;20;True;Sim;Acima de 100 visitantes;Sanitário adaptado;Atende em italiano;True;Italiano;pousada lorenzon sao bento de urania s/n perto da mercearia sao bento de urania sao bento de urania hospedagem entretenimento/aventura recursos naturais
+E056;Pousada Maravilha;Matilde;zona rural;São Roque de Maravilha - Alfredo Chaves 29240-000;Igreja;Onde comer · Onde dormir;Não pavimentada;Terra;Sex · Sáb · Dom;Sexta-feira a Domingo;True;09h00 às 22h00;False;(28) 99913-6096;5528999136096;pousadamaravilha_saoroque;;True;True;Gratuito, descoberto;30;0;True;Depende do porte do animal;De 10 a 25 visitantes;Sanitário adaptado;;True;;pousada maravilha sao roque de maravilha - alfredo chaves 29240-000 igreja matilde alimentacao hospedagem
+E057;Pousada Recanto da Ilha;Sede;zona urbana;Avenida Augusto Togneri, s/n, Cachoeirinha;Casarão Togneri;Onde dormir;Pavimentada;Asfaltada;Seg · Ter · Qua · Qui · Sex · Dom;Domingo a Sexta-feira;True;08h00 às 20h00;False;(27) 99700-5331;5527997005331;pousada.recantoilha;;False;True;Gratuito, descoberto;13;2;False;Sim;De 10 a 25 visitantes;;;False;;pousada recanto da ilha avenida augusto togneri, s/n, cachoeirinha casarao togneri sede hospedagem
+E058;Pousada Recanto Iza;Matilde;zona rural;São Roque de Maravilha, Zona Rural;;Onde comer · Onde dormir;Não pavimentada;Terra;Todos os dias;Todos os dias da semana (Domingo a Domingo);True;07h00 às 22h00;False;(27) 99508-9118;5527995089118;pousadarecantoiza;;True;True;Gratuito, descoberto;15;0;False;Sim;De 25 a 50 visitantes;;;False;;pousada recanto iza sao roque de maravilha, zona rural matilde alimentacao hospedagem
+E059;Pousada Recanto Tia Martha;Ibitiruí;zona rural;Sítio São Sebastião, Zona Rural, Ibitiruí;;Onde dormir;Não pavimentada;Revsol/Brita;Todos os dias;Todos os dias da semana (Domingo a Domingo);True;24 horas;True;(28) 99944-4829;5528999444829;recantotiamarta;;False;True;Gratuito, coberto e descoberto;20;3;False;Sim;De 10 a 25 visitantes;Sanitário adaptado;;True;;pousada recanto tia martha sitio sao sebastiao, zona rural, ibitirui ibitirui hospedagem
+E060;Pousada São Roque;Matilde;zona rural;São Roque de maravilha, Alfredo Chaves, zona rural;Estrada principal;Onde comer · Onde dormir;Não pavimentada;Revsol/Brita;Sex · Sáb · Dom;Sexta-feira a Domingo;True;07h00 às 23h00;False;(28) 99920-8867;5528999208867;pousadasaoroque;;True;True;Gratuito, descoberto;15;5;True;Sim;De 10 a 25 visitantes;Sanitário adaptado;;True;;pousada sao roque sao roque de maravilha, alfredo chaves, zona rural estrada principal matilde alimentacao hospedagem
+E061;Pousada Thomas;Ribeirão do Cristo;zona rural;Rod. João Ribeiro Schorling, ES-376, Km 70 - Aparecida, Alfredo Chaves - ES, 29240-000;;Onde comer · Onde dormir · Aventura;Pavimentada;Asfaltada;Sex · Sáb · Dom;Sexta-feira a Domingo;True;Sexta a partir das 14 horas, até domingo até as 14 horas;False;(27) 99724-8313;5527997248313;pousadathomas;;True;True;Gratuito, descoberto;40;10;True;Sim;De 75 a 100 visitantes;Rampa de acesso;;False;;pousada thomas rod. joao ribeiro schorling, es-376, km 70 - aparecida, alfredo chaves - es, 29240-000 ribeirao do cristo alimentacao hospedagem entretenimento/aventura
+E062;Pousada Vale das Cachoeiras;Matilde;zona rural;Localidade de Carolina;3Km da Igreja de Carolina;Onde comer · Onde dormir;Não pavimentada;Terra;Sex · Sáb · Dom;Sexta-feira a Domingo;True;08h00 às 16h00;False;(27) 99983-5225;5527999835225;;https://www.valedascachoeiras.com.br;True;True;Gratuito, descoberto;50;3;True;Depende do porte do animal;De 25 a 50 visitantes;Sanitário adaptado;;True;;pousada vale das cachoeiras localidade de carolina 3km da igreja de carolina matilde alimentacao hospedagem
+E063;Pousada Vila Mathilde;Matilde;zona rural;rua principal s/n Matilde - Alfredo Chaves;em frente a Prainha;Onde dormir;Pavimentada;Asfaltada;Qui · Sex · Sáb · Dom;Quinta-feira a Domingo;True;quinta a domingo;False;(27) 99661-6776;5527996616776;pousadavilamathilde_oficial;;False;True;Gratuito, descoberto;7;0;False;Depende do porte do animal;Até 10 visitantes;Rampa de acesso;Atende em espanhol;False;Espanhol;pousada vila mathilde rua principal s/n matilde - alfredo chaves em frente a prainha matilde hospedagem
+E064;Pousada Villa Laura Balbi;Matilde;zona urbana;Rua José Maria Camilete, s/n, Matilde;Em cima da farmácia Pacheco;Onde dormir;Pavimentada;Calçada/calçamento;Todos os dias;Todos os dias da semana (Domingo a Domingo);True;07h00 às 18h00;False;(27) 99692-0516;5527996920516;villalaurabalbi;;True;True;Gratuito, descoberto;4;0;False;Sim;Até 10 visitantes;;Atende em inglês;False;Inglês;pousada villa laura balbi rua jose maria camilete, s/n, matilde em cima da farmacia pacheco matilde hospedagem
+E065;POUSADA YRACEMA;Matilde;zona rural;Rod. ES 383, s/n, 29.240-000, Carolina, Distrito de Matilde, Alfredo Chaves, Espírito Santo.;3km após o Cemitério de Carolina, na estrada que vai para São Bento de Urânia.;Onde comer · Onde dormir;Não pavimentada;Terra;Sex · Sáb · Dom;Sexta-feira a Domingo;True;Sexta a Domingo - Check-in: a partir de 15h - Check-out: até 15h;False;(27) 99898-9800;5527998989800;pousadayracema;;True;True;Gratuito, descoberto;20;1;True;Depende do porte do animal;De 25 a 50 visitantes;Sanitário adaptado;;True;;pousada yracema rod. es 383, s/n, 29.240-000, carolina, distrito de matilde, alfredo chaves, espirito santo. 3km apos o cemiterio de carolina, na estrada que vai para sao bento de urania. matilde alimentacao hospedagem
+E066;Produtos Caseitos Collodetti;Sede;zona rural;Iritimirim;;Compras e artesanato;Pavimentada;Asfaltada;Qui · Sex;"Quinta-feira;Sexta-feira";False;07h00 às 16h00;False;(27) 99999-1768;5527999991768;;;False;False;Não possui estacionamento;;;False;;Não se aplica;;;False;;produtos caseitos collodetti iritimirim sede compras
+E067;Produtos Pietralonga palmito pupunha in natura;Crubixá;zona rural;Sítio Monte Azul, Nova Estrela, Crubixá;;Produtos locais;Não pavimentada;Revsol/Brita;Todos os dias;Todos os dias da semana (Domingo a Domingo);True;07h00 às 16h00;False;(27) 99804-0038;5527998040038;;;False;True;Gratuito, descoberto;100;10;False;;Não recebe grupos;;;False;;produtos pietralonga palmito pupunha in natura sitio monte azul, nova estrela, crubixa crubixa agroindustria
+E068;Q'passa;Sede;zona urbana;Rua Lauro Ferreira pinto 116 trailer 7;Praça gastronomica;Onde comer;Pavimentada;Asfaltada;Qua · Qui · Sex · Sáb · Dom;Quarta-feira a Domingo;True;18h00 às 23h00;False;(27) 99841-0920;5527998410920;qpas_sa;;True;True;Gratuito, descoberto;8;0;True;;Até 10 visitantes;Rampa de acesso;Atende em espanhol;False;Espanhol;q'passa rua lauro ferreira pinto 116 trailer 7 praca gastronomica sede alimentacao
+E069;Queijaria Busato;São Bento de Urânia;zona rural;Carrego Furtuna, São Bento de Urânia, Alfredo Chaves - ES;;Produtos locais · Compras e artesanato;Não pavimentada;Terra;Todos os dias;Todos os dias da semana (Domingo a Domingo);True;07h00 às 19h00;False;(27) 99836-0786;5527998360786;;;False;True;Gratuito, descoberto;8;1;False;;De 25 a 50 visitantes;Rampa de acesso;;False;;queijaria busato carrego furtuna, sao bento de urania, alfredo chaves - es sao bento de urania agroindustria compras
+E070;Recanto da Videira;Matilde;zona rural;Zona Rural, Rio Novo de Matilde;;Produtos locais · Compras e artesanato;Não pavimentada;Revsol/Brita;Qui · Sex · Sáb · Dom;Quinta-feira a Domingo;True;08h00 às 18h00;False;(27) 99718-6337;5527997186337;;;False;True;Gratuito, descoberto;15;2;False;;De 75 a 100 visitantes;;;False;;recanto da videira zona rural, rio novo de matilde matilde agroindustria compras
+E071;Recanto Recreio;Crubixá;zona rural;Recreio;Igreja nossa senhora de lourdes;Onde dormir;Não pavimentada;Terra;Todos os dias;Todos os dias da semana (Domingo a Domingo);True;Consultar;True;(27) 99603-9320;5527996039320;Recanto_recreio;;False;True;Gratuito, descoberto;4;0;True;Sim;De 10 a 25 visitantes;;;False;;recanto recreio recreio igreja nossa senhora de lourdes crubixa hospedagem
+E072;Recanto Rio Maravilha;Matilde;zona rural;São Roque de Maravilha - Alfredo Chaves;;Onde dormir · Aventura;Não pavimentada;Revsol/Brita;Todos os dias;Todos os dias da semana (Domingo a Domingo);True;07h00 às 18h00;False;(27) 99709-2881;5527997092881;orecantoriomaravilha;;True;True;Gratuito, descoberto;5;0;False;Sim;Até 10 visitantes;;;False;;recanto rio maravilha sao roque de maravilha - alfredo chaves matilde hospedagem entretenimento/aventura
+E073;Restaurante Adega;Matilde;zona rural;Avenida José Maria Camiletti;Em frente a padaria Gostinho Caseiro;Onde comer;Pavimentada;Asfaltada;Todos os dias;Todos os dias da semana (Domingo a Domingo);True;11h as 14h almoço sexta e sábado e dom 18 às 21h;False;(27) 99575-6308;5527995756308;adegamatilde;;True;False;Estacionamento na rua;;;False;;De 75 a 100 visitantes;;;False;;restaurante adega avenida jose maria camiletti em frente a padaria gostinho caseiro matilde alimentacao
+E074;Restaurante Boldrini;Sede;zona urbana;Rua Luiz Villar, 265, Centro, Alfredo Chaves - ES, CEP 29240-000;Em frente a pracinha;Onde comer;Pavimentada;Asfaltada;Seg · Ter · Qua · Qui · Sex · Sáb;Segunda-feira a Sábado;False;10h30 às 14h00;False;(27) 99245-0924;5527992450924;restauranteboldrini_;;True;True;Gratuito, descoberto;2;0;False;;De 10 a 25 visitantes;;;False;;restaurante boldrini rua luiz villar, 265, centro, alfredo chaves - es, cep 29240-000 em frente a pracinha sede alimentacao
+E075;Restaurante Carla e Fofão;Sede;zona urbana;Rua eEspedicionario Osvaldo Saldino, 320, Santa Terezinha, Alfredo Chaves;;Onde comer;Pavimentada;Calçada/calçamento;Seg · Ter · Qua · Qui · Sex · Sáb;Segunda-feira a Sábado;False;10h00 às 14h00;False;(27) 99955-2596;5527999552596;;;True;False;Estacionamento na rua;;;False;;De 75 a 100 visitantes;;;False;;restaurante carla e fofao rua eespedicionario osvaldo saldino, 320, santa terezinha, alfredo chaves sede alimentacao
+E076;RESTAURANTE TIA VIRGINIA;Matilde;zona rural;São Sebastião Alfredo Chaves;;Onde comer · Onde dormir;Não pavimentada;Revsol/Brita;Sáb · Dom;Sábado e Domingo;True;11h00 às 15h00;False;(27) 99949-1411;5527999491411;tiavirginiaoficial;;True;True;Gratuito, descoberto;100;10;True;Sim;Acima de 100 visitantes;Sanitário adaptado;;True;;restaurante tia virginia sao sebastiao alfredo chaves matilde alimentacao hospedagem
+E077;Rock Capixaba;Sede;zona urbana;Rua Maria Belmok Bonella, s/n, Loja 0, Parque Residencial;Proximo ao posto benica;Onde comer;Pavimentada;Calçada/calçamento;Ter · Qua · Qui · Sex · Sáb · Dom;Terça-feira a Domingo;True;18h00 às 23h30;False;(27) 99820-9598;5527998209598;orockcapixaba;;True;False;Estacionamento na rua;;;True;;Capacidade não definida;Rampa de acesso;Atende em inglês;False;Inglês;rock capixaba rua maria belmok bonella, s/n, loja 0, parque residencial proximo ao posto benica sede alimentacao
+E078;Sagrada Família Café;Sagrada Família;zona urbana;Sagrada Família;Em frente a igreja de sagrada família;Produtos locais;Pavimentada;Asfaltada;Seg · Ter · Qua · Qui · Sex · Dom;Domingo a Sexta-feira;True;07h00 às 22h00;False;(21) 99688-0083;5521996880083;sagrada.familiacafe;;False;False;Estacionamento na rua;;;False;;Não recebe grupos;;;False;;sagrada familia cafe sagrada familia em frente a igreja de sagrada familia sagrada familia agroindustria
+E079;Sítio Aldeia das Águas;Sede;zona rural;Batatal, Zona Rural;Ao lado da Cachoeira Piripitinga;Onde dormir;Não pavimentada;Revsol/Brita;Todos os dias;Todos os dias da semana (Domingo a Domingo);True;08h00 às 20h00;False;(27) 99603-5545;5527996035545;;;False;True;Gratuito, descoberto;20;5;True;Sim;De 25 a 50 visitantes;Sanitário adaptado;Atende em inglês;True;Inglês;sitio aldeia das aguas batatal, zona rural ao lado da cachoeira piripitinga sede hospedagem
+E080;Sitio Canaã;Ribeirão do Cristo;zona rural;Ribeirao do Cristo;Condominio dos lagos;Onde dormir;Pavimentada;Asfaltada;Todos os dias;Todos os dias da semana (Domingo a Domingo);True;Consultar;False;(27) 99993-5268;5527999935268;canaasitioes;;False;True;Gratuito, descoberto;15;2;True;Sim;De 50 a 75 visitantes;Rampa de acesso;;False;;sitio canaa ribeirao do cristo condominio dos lagos ribeirao do cristo hospedagem
+E081;Sitio Canta Galo;São Bento de Urânia;zona rural;Sítio, Canta Galo, São Bento de Urânia, Alfredo Chaves - ES;;Produtos locais · Compras e artesanato;Não pavimentada;Terra;Todos os dias;Todos os dias da semana (Domingo a Domingo);True;08h00 às 18h00;False;(27) 99848-8367;5527998488367;;;True;True;Gratuito, coberto e descoberto;30;5;False;;Não recebe grupos;Rampa de acesso;;False;;sitio canta galo sitio, canta galo, sao bento de urania, alfredo chaves - es sao bento de urania agroindustria compras
+E082;Sítio das Águas;Matilde;zona rural;Rua Luiz Daroz S/N;Cachoeira Daroz;Onde dormir;Não pavimentada;Terra;Qui · Sex · Sáb · Dom;Quinta-feira a Domingo;True;10h00 às 16h00;True;(27) 99257-8489;5527992578489;sitiodasaguas;;False;True;Gratuito, descoberto;15;0;True;Sim;De 10 a 25 visitantes;Sanitário adaptado;;True;;sitio das aguas rua luiz daroz s/n cachoeira daroz matilde hospedagem
+E083;Sítio De Nadai;Sede;zona rural;Barra do batatal, zona rura l- Alfredo Chaves-ES;Perto da Cachoeira piripitinga;Onde dormir;Não pavimentada;Revsol/Brita;Sex · Sáb · Dom;Sexta-feira a Domingo;True;08h00 às 18h00;False;(27) 99722-7205;5527997227205;sitiodenadai;;False;True;Gratuito, descoberto;;;False;Sim;De 10 a 25 visitantes;;;False;;sitio de nadai barra do batatal, zona rura l- alfredo chaves-es perto da cachoeira piripitinga sede hospedagem
+E084;Sítio do Vovô;Sede;zona rural;Rodovia ES 146, km 24, São Marcos, Alfredo Chaves;;Onde dormir;Pavimentada;Asfaltada;Todos os dias;Todos os dias da semana (Domingo a Domingo);True;06h00 às 19h00;False;(27) 98131-2900;5527981312900;_sitiodovovo;;True;True;Gratuito, descoberto;10;1;False;Sim;De 10 a 25 visitantes;Rampa de acesso;;False;;sitio do vovo rodovia es 146, km 24, sao marcos, alfredo chaves sede hospedagem
+E085;Sítio Ouro Verde;São Bento de Urânia;zona rural;Zona Rural;Ponto de GPS pelo Google;Produtos locais · Compras e artesanato;Não pavimentada;Terra;Todos os dias;Todos os dias da semana (Domingo a Domingo);True;06h00 às 19h00;False;(27) 99962-5052;5527999625052;vinho_montanhacapixaba;;True;True;Gratuito, descoberto;30;4;False;;De 10 a 25 visitantes;;Atende em italiano;False;Italiano;sitio ouro verde zona rural ponto de gps pelo google sao bento de urania agroindustria compras
+E086;SÍTIO PÔR DO SOL;Crubixá;zona rural;São João de Crubixa, área rural Alfredo Chaves;;Onde dormir;Não pavimentada;Revsol/Brita;Sex · Sáb · Dom;Sexta-feira a Domingo;True;08h00 às 16h00;True;(27) 99717-1425;5527997171425;PORDOSOL_ALUGUELTEMPORADA;;True;True;Gratuito, descoberto;20;0;True;Sim;De 25 a 50 visitantes;;;False;;sitio por do sol sao joao de crubixa, area rural alfredo chaves crubixa hospedagem
+E087;Sítio Terras Claras;São Bento de Urânia;zona rural;Rua dos Pinheiros, São Bento de Urânia, Alfredo Chaves - ES;;Onde comer · Onde dormir · Cachoeiras e natureza · Aventura;Mista;Mista;Todos os dias;Todos os dias da semana (Domingo a Domingo);True;07h00 às 17h00;True;(27) 99503-3639;5527995033639;terrasclaras;;True;True;Gratuito, descoberto;50;5;True;Sim;De 10 a 25 visitantes;Sanitário adaptado;Atende em inglês;True;Inglês;sitio terras claras rua dos pinheiros, sao bento de urania, alfredo chaves - es sao bento de urania alimentacao hospedagem entretenimento/aventura recursos naturais
+E088;Sítio Três Lagoas ( não possui empresa cadastrada);Matilde;zona rural;Zona rural, Iriritimirim;Primeira entrada depois do Rustic Bar;Produtos locais · Compras e artesanato;Não pavimentada;Terra;Sáb · Dom;Sábado e Domingo;False;Nos finais de semana em época de safra de 7 às 17:00;False;(27) 99800-1439;5527998001439;sitiotreslagoas_ac;;False;True;Gratuito, descoberto;;1;False;;De 10 a 25 visitantes;;;False;;sitio tres lagoas ( nao possui empresa cadastrada) zona rural, iriritimirim primeira entrada depois do rustic bar matilde agroindustria compras
+E089;Sítio Vista da Mata;Ribeirão do Cristo;zona rural;Sitio Vista da Mata ,Ribeirão do Cristo ,Alfredo Chaves ,Espírito santo;Entrar próximo condômino Campestre,depois da horta do Grande;Onde dormir · Aventura;Não pavimentada;Terra;Todos os dias;Todos os dias da semana (Domingo a Domingo);True;08h00 às 20h00;False;(27) 99958-2424;5527999582424;sitio.vistadamata;;True;True;Gratuito, descoberto;40;5;True;Sim;Acima de 100 visitantes;Sanitário adaptado;;True;;sitio vista da mata sitio vista da mata ,ribeirao do cristo ,alfredo chaves ,espirito santo entrar proximo condomino campestre,depois da horta do grande ribeirao do cristo hospedagem entretenimento/aventura
+E090;SORVETERIA & AÇAÍTERIA FRUTÍSSIMO ALFREDO CHAVES;Sede;zona urbana;RUA MOACYR SAUDINO, N 51, BAIRRO: SANTA TEREZINHA II, ALFREDO CHAVES -ES;Próximo ao ginásio de esportes Antônio Grassi;Onde comer;Pavimentada;Calçada/calçamento;Todos os dias;Todos os dias da semana (Domingo a Domingo);True;14h00 às 22h00;False;(27) 99575-2798;5527995752798;frutissimo_alfredochaves;;True;False;Estacionamento na rua;;;True;;De 10 a 25 visitantes;;;False;;sorveteria & acaiteria frutissimo alfredo chaves rua moacyr saudino, n 51, bairro: santa terezinha ii, alfredo chaves -es proximo ao ginasio de esportes antonio grassi sede alimentacao
+E091;Taberna Choperia e Cafeteria Som das Aguas LTDA;Sede;zona rural;ES-146 - São Marcos, Alfredo Chaves - ES, 29240-000;Pousada Recanto Som das Águas;Onde comer;Pavimentada;Calçada/calçamento;Qui · Sex · Sáb · Dom;Quinta-feira a Domingo;True;Quinta e Domingo, das 09:00 às 20:00 - Sexta e Sábado, das 09:00 às 21:00;False;(27) 99906-7595;5527999067595;taberna.saomarcos;;True;True;Gratuito, descoberto;15;1;True;;De 25 a 50 visitantes;;;False;;taberna choperia e cafeteria som das aguas ltda es-146 - sao marcos, alfredo chaves - es, 29240-000 pousada recanto som das aguas sede alimentacao
+E092;TakeOff Adventure Co.;Sede;zona rural;AV Luiz Gaigher sn Cachoeira Alta Alfredo Chaves-ES;Pousada Fora do Ar;Onde dormir · Aventura;Pavimentada;Asfaltada;Todos os dias;Todos os dias da semana (Domingo a Domingo);True;08h00 às 18h00;True;(27) 99981-6751;5527999816751;;https://Www.takeoff.esp.br;False;True;Gratuito, coberto e descoberto;10;0;False;Depende do porte do animal;De 10 a 25 visitantes;;Atende em espanhol;False;Espanhol;takeoff adventure co. av luiz gaigher sn cachoeira alta alfredo chaves-es pousada fora do ar sede hospedagem entretenimento/aventura
+E093;Villaggio Benevente;Matilde;zona rural;Comunidade de São Sebastião, distrito de Matilde, Alfredo Chaves - Espírito Santo;200 metros a frente da Tia Virgínia Pousada e Restaurante;Onde dormir;Não pavimentada;Terra;Qui · Sex · Sáb · Dom;Quinta-feira a Domingo;True;09h00 às 15h00;False;(27) 99634-7042;5527996347042;villaggiobenevente;;True;True;Gratuito, coberto;2;0;False;Não;Não recebe grupos;;;False;;villaggio benevente comunidade de sao sebastiao, distrito de matilde, alfredo chaves - espirito santo 200 metros a frente da tia virginia pousada e restaurante matilde hospedagem
+</script>
+<script type="text/plain" id="csv-dim_segmento">
+id_segmento;rotulo_visitante;ordem_chip
+1;Onde comer;1
+2;Onde dormir;2
+3;Aventura;6
+4;Produtos locais;4
+5;Compras e artesanato;5
+6;Cultura;7
+7;Cachoeiras e natureza;3
+</script>
+<script type="text/plain" id="csv-dim_regiao">
+id_regiao;regiao
+1;Crubixá
+2;Ibitiruí
+3;Matilde
+4;Ribeirão do Cristo
+5;Sagrada Família
+6;São Bento de Urânia
+7;Sede
+</script>
+<script type="text/plain" id="csv-dim_dia">
+dia;dia_abrev;ordem_dia
+Segunda-feira;Seg;1
+Terça-feira;Ter;2
+Quarta-feira;Qua;3
+Quinta-feira;Qui;4
+Sexta-feira;Sex;5
+Sábado;Sáb;6
+Domingo;Dom;7
+</script>
+<script type="text/plain" id="csv-dim_conveniencia">
+id_conveniencia;conveniencia;ordem_conveniencia
+cartao;Aceita cartão;1
+estac;Estacionamento próprio;2
+pet;Aceita pet;3
+infantil;Espaço infantil;4
+acess;Acessível;5
+idioma;Atende em outro idioma;6
+feriado;Abre em feriados;7
+</script>
+<script type="text/plain" id="csv-ponte_empreendimento_segmento">
+id_empreendimento;id_segmento
+E001;1
+E002;1
+E008;1
+E009;1
+E010;1
+E012;1
+E014;1
+E015;1
+E016;1
+E017;1
+E018;1
+E019;1
+E020;1
+E027;1
+E028;1
+E029;1
+E030;1
+E031;1
+E034;1
+E035;1
+E039;1
+E040;1
+E042;1
+E043;1
+E044;1
+E045;1
+E047;1
+E048;1
+E050;1
+E053;1
+E054;1
+E056;1
+E058;1
+E060;1
+E061;1
+E062;1
+E065;1
+E068;1
+E073;1
+E074;1
+E075;1
+E076;1
+E077;1
+E087;1
+E090;1
+E091;1
+E002;2
+E017;2
+E022;2
+E025;2
+E026;2
+E027;2
+E033;2
+E037;2
+E038;2
+E046;2
+E048;2
+E049;2
+E050;2
+E051;2
+E052;2
+E053;2
+E054;2
+E055;2
+E056;2
+E057;2
+E058;2
+E059;2
+E060;2
+E061;2
+E062;2
+E063;2
+E064;2
+E065;2
+E071;2
+E072;2
+E076;2
+E079;2
+E080;2
+E082;2
+E083;2
+E084;2
+E086;2
+E087;2
+E089;2
+E092;2
+E093;2
+E016;3
+E017;3
+E025;3
+E033;3
+E049;3
+E055;3
+E061;3
+E072;3
+E087;3
+E089;3
+E092;3
+E004;4
+E007;4
+E010;4
+E011;4
+E013;4
+E024;4
+E032;4
+E034;4
+E041;4
+E042;4
+E067;4
+E069;4
+E070;4
+E078;4
+E081;4
+E085;4
+E088;4
+E005;5
+E006;5
+E007;5
+E011;5
+E021;5
+E023;5
+E034;5
+E036;5
+E039;5
+E041;5
+E042;5
+E048;5
+E066;5
+E069;5
+E070;5
+E081;5
+E085;5
+E088;5
+E003;6
+E006;6
+E015;7
+E017;7
+E034;7
+E048;7
+E053;7
+E055;7
+E087;7
+</script>
+<script type="text/plain" id="csv-ponte_empreendimento_dia">
+id_empreendimento;dia
+E001;Segunda-feira
+E001;Terça-feira
+E001;Quarta-feira
+E001;Quinta-feira
+E001;Sexta-feira
+E001;Domingo
+E002;Segunda-feira
+E002;Terça-feira
+E002;Quarta-feira
+E002;Quinta-feira
+E002;Sexta-feira
+E002;Sábado
+E002;Domingo
+E003;Segunda-feira
+E003;Terça-feira
+E003;Quarta-feira
+E003;Quinta-feira
+E003;Sexta-feira
+E003;Sábado
+E003;Domingo
+E004;Sexta-feira
+E004;Sábado
+E004;Domingo
+E005;Quarta-feira
+E005;Quinta-feira
+E005;Sexta-feira
+E005;Sábado
+E005;Domingo
+E006;Segunda-feira
+E006;Terça-feira
+E006;Quarta-feira
+E006;Quinta-feira
+E006;Sexta-feira
+E007;Segunda-feira
+E007;Terça-feira
+E007;Quarta-feira
+E007;Quinta-feira
+E007;Sexta-feira
+E007;Sábado
+E008;Sexta-feira
+E008;Sábado
+E008;Domingo
+E009;Segunda-feira
+E009;Terça-feira
+E009;Quarta-feira
+E009;Quinta-feira
+E009;Sexta-feira
+E009;Sábado
+E009;Domingo
+E010;Segunda-feira
+E010;Terça-feira
+E010;Quarta-feira
+E010;Quinta-feira
+E010;Sexta-feira
+E011;Segunda-feira
+E011;Terça-feira
+E011;Quarta-feira
+E011;Quinta-feira
+E011;Sexta-feira
+E012;Segunda-feira
+E012;Terça-feira
+E012;Quarta-feira
+E012;Quinta-feira
+E012;Sexta-feira
+E012;Sábado
+E012;Domingo
+E013;Segunda-feira
+E013;Terça-feira
+E013;Quarta-feira
+E013;Quinta-feira
+E013;Sexta-feira
+E013;Sábado
+E013;Domingo
+E014;Segunda-feira
+E014;Terça-feira
+E014;Quarta-feira
+E014;Quinta-feira
+E014;Sexta-feira
+E014;Sábado
+E015;Segunda-feira
+E015;Sexta-feira
+E015;Sábado
+E015;Domingo
+E016;Sábado
+E016;Domingo
+E017;Sábado
+E017;Domingo
+E018;Sábado
+E018;Domingo
+E019;Segunda-feira
+E019;Terça-feira
+E019;Quarta-feira
+E019;Quinta-feira
+E019;Sexta-feira
+E019;Sábado
+E019;Domingo
+E020;Segunda-feira
+E020;Terça-feira
+E020;Quarta-feira
+E020;Quinta-feira
+E020;Sexta-feira
+E020;Sábado
+E020;Domingo
+E021;Segunda-feira
+E021;Terça-feira
+E021;Quarta-feira
+E021;Quinta-feira
+E021;Sexta-feira
+E022;Segunda-feira
+E022;Terça-feira
+E022;Quarta-feira
+E022;Quinta-feira
+E022;Sexta-feira
+E022;Sábado
+E022;Domingo
+E023;Terça-feira
+E023;Quarta-feira
+E023;Quinta-feira
+E023;Sexta-feira
+E023;Sábado
+E023;Domingo
+E024;Segunda-feira
+E024;Terça-feira
+E024;Quarta-feira
+E024;Quinta-feira
+E024;Sexta-feira
+E024;Sábado
+E025;Sexta-feira
+E025;Sábado
+E025;Domingo
+E026;Quinta-feira
+E026;Sexta-feira
+E026;Sábado
+E026;Domingo
+E027;Segunda-feira
+E027;Terça-feira
+E027;Quarta-feira
+E027;Quinta-feira
+E027;Sexta-feira
+E027;Sábado
+E027;Domingo
+E028;Segunda-feira
+E028;Terça-feira
+E028;Quarta-feira
+E028;Quinta-feira
+E028;Sexta-feira
+E028;Sábado
+E028;Domingo
+E029;Segunda-feira
+E029;Terça-feira
+E029;Quarta-feira
+E029;Quinta-feira
+E029;Sexta-feira
+E029;Sábado
+E030;Sexta-feira
+E030;Sábado
+E030;Domingo
+E031;Segunda-feira
+E031;Terça-feira
+E031;Quarta-feira
+E031;Quinta-feira
+E031;Sexta-feira
+E031;Sábado
+E032;Segunda-feira
+E032;Terça-feira
+E032;Quarta-feira
+E032;Quinta-feira
+E032;Sexta-feira
+E033;Sábado
+E033;Domingo
+E034;Segunda-feira
+E034;Terça-feira
+E034;Quarta-feira
+E034;Quinta-feira
+E034;Sexta-feira
+E034;Domingo
+E035;Segunda-feira
+E035;Terça-feira
+E035;Quarta-feira
+E035;Quinta-feira
+E035;Sexta-feira
+E035;Sábado
+E035;Domingo
+E036;Segunda-feira
+E036;Terça-feira
+E036;Quarta-feira
+E036;Quinta-feira
+E036;Sexta-feira
+E036;Sábado
+E037;Segunda-feira
+E037;Terça-feira
+E037;Quarta-feira
+E037;Quinta-feira
+E037;Sexta-feira
+E037;Sábado
+E037;Domingo
+E038;Segunda-feira
+E038;Terça-feira
+E038;Quarta-feira
+E038;Quinta-feira
+E038;Sexta-feira
+E038;Sábado
+E038;Domingo
+E039;Segunda-feira
+E039;Terça-feira
+E039;Quarta-feira
+E039;Quinta-feira
+E039;Sexta-feira
+E039;Sábado
+E039;Domingo
+E040;Terça-feira
+E040;Quarta-feira
+E040;Quinta-feira
+E040;Sexta-feira
+E040;Sábado
+E040;Domingo
+E041;Segunda-feira
+E041;Terça-feira
+E041;Quarta-feira
+E041;Quinta-feira
+E041;Sexta-feira
+E042;Sexta-feira
+E042;Sábado
+E042;Domingo
+E043;Segunda-feira
+E043;Terça-feira
+E043;Quarta-feira
+E043;Quinta-feira
+E043;Sexta-feira
+E043;Sábado
+E043;Domingo
+E044;Segunda-feira
+E044;Terça-feira
+E044;Quarta-feira
+E044;Quinta-feira
+E044;Sexta-feira
+E044;Sábado
+E045;Sábado
+E045;Domingo
+E046;Segunda-feira
+E046;Terça-feira
+E046;Quarta-feira
+E046;Quinta-feira
+E046;Sexta-feira
+E046;Sábado
+E046;Domingo
+E047;Segunda-feira
+E047;Terça-feira
+E047;Quarta-feira
+E047;Quinta-feira
+E047;Sexta-feira
+E047;Sábado
+E047;Domingo
+E048;Sexta-feira
+E048;Sábado
+E048;Domingo
+E049;Sexta-feira
+E049;Sábado
+E049;Domingo
+E050;Sábado
+E050;Domingo
+E051;Segunda-feira
+E051;Terça-feira
+E051;Quarta-feira
+E051;Quinta-feira
+E051;Sexta-feira
+E051;Sábado
+E051;Domingo
+E052;Segunda-feira
+E052;Terça-feira
+E052;Quarta-feira
+E052;Quinta-feira
+E052;Sexta-feira
+E052;Sábado
+E052;Domingo
+E053;Sexta-feira
+E053;Sábado
+E053;Domingo
+E054;Sábado
+E054;Domingo
+E055;Segunda-feira
+E055;Terça-feira
+E055;Quarta-feira
+E055;Quinta-feira
+E055;Sexta-feira
+E055;Sábado
+E055;Domingo
+E056;Sexta-feira
+E056;Sábado
+E056;Domingo
+E057;Segunda-feira
+E057;Terça-feira
+E057;Quarta-feira
+E057;Quinta-feira
+E057;Sexta-feira
+E057;Domingo
+E058;Segunda-feira
+E058;Terça-feira
+E058;Quarta-feira
+E058;Quinta-feira
+E058;Sexta-feira
+E058;Sábado
+E058;Domingo
+E059;Segunda-feira
+E059;Terça-feira
+E059;Quarta-feira
+E059;Quinta-feira
+E059;Sexta-feira
+E059;Sábado
+E059;Domingo
+E060;Sexta-feira
+E060;Sábado
+E060;Domingo
+E061;Sexta-feira
+E061;Sábado
+E061;Domingo
+E062;Sexta-feira
+E062;Sábado
+E062;Domingo
+E063;Quinta-feira
+E063;Sexta-feira
+E063;Sábado
+E063;Domingo
+E064;Segunda-feira
+E064;Terça-feira
+E064;Quarta-feira
+E064;Quinta-feira
+E064;Sexta-feira
+E064;Sábado
+E064;Domingo
+E065;Sexta-feira
+E065;Sábado
+E065;Domingo
+E066;Quinta-feira
+E066;Sexta-feira
+E067;Segunda-feira
+E067;Terça-feira
+E067;Quarta-feira
+E067;Quinta-feira
+E067;Sexta-feira
+E067;Sábado
+E067;Domingo
+E068;Quarta-feira
+E068;Quinta-feira
+E068;Sexta-feira
+E068;Sábado
+E068;Domingo
+E069;Segunda-feira
+E069;Terça-feira
+E069;Quarta-feira
+E069;Quinta-feira
+E069;Sexta-feira
+E069;Sábado
+E069;Domingo
+E070;Quinta-feira
+E070;Sexta-feira
+E070;Sábado
+E070;Domingo
+E071;Segunda-feira
+E071;Terça-feira
+E071;Quarta-feira
+E071;Quinta-feira
+E071;Sexta-feira
+E071;Sábado
+E071;Domingo
+E072;Segunda-feira
+E072;Terça-feira
+E072;Quarta-feira
+E072;Quinta-feira
+E072;Sexta-feira
+E072;Sábado
+E072;Domingo
+E073;Segunda-feira
+E073;Terça-feira
+E073;Quarta-feira
+E073;Quinta-feira
+E073;Sexta-feira
+E073;Sábado
+E073;Domingo
+E074;Segunda-feira
+E074;Terça-feira
+E074;Quarta-feira
+E074;Quinta-feira
+E074;Sexta-feira
+E074;Sábado
+E075;Segunda-feira
+E075;Terça-feira
+E075;Quarta-feira
+E075;Quinta-feira
+E075;Sexta-feira
+E075;Sábado
+E076;Sábado
+E076;Domingo
+E077;Terça-feira
+E077;Quarta-feira
+E077;Quinta-feira
+E077;Sexta-feira
+E077;Sábado
+E077;Domingo
+E078;Segunda-feira
+E078;Terça-feira
+E078;Quarta-feira
+E078;Quinta-feira
+E078;Sexta-feira
+E078;Domingo
+E079;Segunda-feira
+E079;Terça-feira
+E079;Quarta-feira
+E079;Quinta-feira
+E079;Sexta-feira
+E079;Sábado
+E079;Domingo
+E080;Segunda-feira
+E080;Terça-feira
+E080;Quarta-feira
+E080;Quinta-feira
+E080;Sexta-feira
+E080;Sábado
+E080;Domingo
+E081;Segunda-feira
+E081;Terça-feira
+E081;Quarta-feira
+E081;Quinta-feira
+E081;Sexta-feira
+E081;Sábado
+E081;Domingo
+E082;Quinta-feira
+E082;Sexta-feira
+E082;Sábado
+E082;Domingo
+E083;Sexta-feira
+E083;Sábado
+E083;Domingo
+E084;Segunda-feira
+E084;Terça-feira
+E084;Quarta-feira
+E084;Quinta-feira
+E084;Sexta-feira
+E084;Sábado
+E084;Domingo
+E085;Segunda-feira
+E085;Terça-feira
+E085;Quarta-feira
+E085;Quinta-feira
+E085;Sexta-feira
+E085;Sábado
+E085;Domingo
+E086;Sexta-feira
+E086;Sábado
+E086;Domingo
+E087;Segunda-feira
+E087;Terça-feira
+E087;Quarta-feira
+E087;Quinta-feira
+E087;Sexta-feira
+E087;Sábado
+E087;Domingo
+E088;Sábado
+E088;Domingo
+E089;Segunda-feira
+E089;Terça-feira
+E089;Quarta-feira
+E089;Quinta-feira
+E089;Sexta-feira
+E089;Sábado
+E089;Domingo
+E090;Segunda-feira
+E090;Terça-feira
+E090;Quarta-feira
+E090;Quinta-feira
+E090;Sexta-feira
+E090;Sábado
+E090;Domingo
+E091;Quinta-feira
+E091;Sexta-feira
+E091;Sábado
+E091;Domingo
+E092;Segunda-feira
+E092;Terça-feira
+E092;Quarta-feira
+E092;Quinta-feira
+E092;Sexta-feira
+E092;Sábado
+E092;Domingo
+E093;Quinta-feira
+E093;Sexta-feira
+E093;Sábado
+E093;Domingo
+</script>
+<script type="text/plain" id="csv-ponte_empreendimento_conveniencia">
+id_empreendimento;id_conveniencia
+E005;cartao
+E006;cartao
+E008;cartao
+E009;cartao
+E010;cartao
+E012;cartao
+E013;cartao
+E015;cartao
+E016;cartao
+E017;cartao
+E018;cartao
+E022;cartao
+E023;cartao
+E025;cartao
+E027;cartao
+E028;cartao
+E029;cartao
+E035;cartao
+E036;cartao
+E038;cartao
+E039;cartao
+E040;cartao
+E041;cartao
+E042;cartao
+E043;cartao
+E044;cartao
+E046;cartao
+E047;cartao
+E048;cartao
+E049;cartao
+E050;cartao
+E052;cartao
+E054;cartao
+E055;cartao
+E056;cartao
+E058;cartao
+E060;cartao
+E061;cartao
+E062;cartao
+E064;cartao
+E065;cartao
+E068;cartao
+E072;cartao
+E073;cartao
+E074;cartao
+E075;cartao
+E076;cartao
+E077;cartao
+E081;cartao
+E084;cartao
+E085;cartao
+E086;cartao
+E087;cartao
+E089;cartao
+E090;cartao
+E091;cartao
+E093;cartao
+E002;estac
+E004;estac
+E008;estac
+E009;estac
+E010;estac
+E011;estac
+E012;estac
+E013;estac
+E014;estac
+E015;estac
+E016;estac
+E018;estac
+E020;estac
+E022;estac
+E025;estac
+E026;estac
+E027;estac
+E028;estac
+E032;estac
+E033;estac
+E034;estac
+E036;estac
+E037;estac
+E038;estac
+E041;estac
+E042;estac
+E044;estac
+E045;estac
+E046;estac
+E047;estac
+E048;estac
+E049;estac
+E050;estac
+E051;estac
+E053;estac
+E054;estac
+E055;estac
+E056;estac
+E057;estac
+E058;estac
+E059;estac
+E060;estac
+E061;estac
+E062;estac
+E063;estac
+E064;estac
+E065;estac
+E067;estac
+E068;estac
+E069;estac
+E070;estac
+E071;estac
+E072;estac
+E074;estac
+E076;estac
+E079;estac
+E080;estac
+E081;estac
+E082;estac
+E083;estac
+E084;estac
+E085;estac
+E086;estac
+E087;estac
+E088;estac
+E089;estac
+E091;estac
+E092;estac
+E093;estac
+E002;pet
+E017;pet
+E022;pet
+E027;pet
+E037;pet
+E038;pet
+E046;pet
+E049;pet
+E051;pet
+E053;pet
+E055;pet
+E056;pet
+E057;pet
+E058;pet
+E059;pet
+E060;pet
+E061;pet
+E062;pet
+E063;pet
+E064;pet
+E065;pet
+E071;pet
+E072;pet
+E076;pet
+E079;pet
+E080;pet
+E082;pet
+E083;pet
+E084;pet
+E086;pet
+E087;pet
+E089;pet
+E092;pet
+E002;infantil
+E008;infantil
+E010;infantil
+E016;infantil
+E025;infantil
+E027;infantil
+E034;infantil
+E042;infantil
+E047;infantil
+E048;infantil
+E049;infantil
+E050;infantil
+E053;infantil
+E054;infantil
+E055;infantil
+E056;infantil
+E060;infantil
+E061;infantil
+E062;infantil
+E065;infantil
+E068;infantil
+E071;infantil
+E076;infantil
+E077;infantil
+E079;infantil
+E080;infantil
+E082;infantil
+E086;infantil
+E087;infantil
+E089;infantil
+E090;infantil
+E091;infantil
+E001;acess
+E005;acess
+E010;acess
+E012;acess
+E014;acess
+E016;acess
+E020;acess
+E023;acess
+E024;acess
+E026;acess
+E033;acess
+E034;acess
+E035;acess
+E039;acess
+E040;acess
+E042;acess
+E043;acess
+E045;acess
+E046;acess
+E047;acess
+E048;acess
+E050;acess
+E054;acess
+E055;acess
+E056;acess
+E059;acess
+E060;acess
+E061;acess
+E062;acess
+E063;acess
+E065;acess
+E068;acess
+E069;acess
+E076;acess
+E077;acess
+E079;acess
+E080;acess
+E081;acess
+E082;acess
+E084;acess
+E087;acess
+E089;acess
+E012;idioma
+E019;idioma
+E022;idioma
+E027;idioma
+E033;idioma
+E039;idioma
+E042;idioma
+E046;idioma
+E050;idioma
+E055;idioma
+E063;idioma
+E064;idioma
+E068;idioma
+E077;idioma
+E079;idioma
+E085;idioma
+E087;idioma
+E092;idioma
+E001;feriado
+E002;feriado
+E004;feriado
+E005;feriado
+E006;feriado
+E009;feriado
+E010;feriado
+E012;feriado
+E013;feriado
+E014;feriado
+E015;feriado
+E016;feriado
+E017;feriado
+E018;feriado
+E020;feriado
+E022;feriado
+E023;feriado
+E025;feriado
+E026;feriado
+E027;feriado
+E028;feriado
+E030;feriado
+E031;feriado
+E032;feriado
+E033;feriado
+E034;feriado
+E035;feriado
+E036;feriado
+E037;feriado
+E039;feriado
+E040;feriado
+E041;feriado
+E042;feriado
+E043;feriado
+E046;feriado
+E047;feriado
+E048;feriado
+E049;feriado
+E050;feriado
+E051;feriado
+E052;feriado
+E053;feriado
+E054;feriado
+E055;feriado
+E056;feriado
+E057;feriado
+E058;feriado
+E059;feriado
+E060;feriado
+E061;feriado
+E062;feriado
+E063;feriado
+E064;feriado
+E065;feriado
+E067;feriado
+E068;feriado
+E069;feriado
+E070;feriado
+E071;feriado
+E072;feriado
+E073;feriado
+E076;feriado
+E077;feriado
+E078;feriado
+E079;feriado
+E080;feriado
+E081;feriado
+E082;feriado
+E083;feriado
+E084;feriado
+E085;feriado
+E086;feriado
+E087;feriado
+E089;feriado
+E090;feriado
+E091;feriado
+E092;feriado
+E093;feriado
+</script>
+
+<script>
+"use strict";
+(function () {
+
+/* ==================================================================
+   1. Leitura dos dados
+   ================================================================== */
+
+function parseCSV(texto) {
+  var txt = (texto || "").replace(/^﻿/, "").replace(/\r\n?/g, "\n").trim();
+  if (!txt) { return []; }
+
+  var linhas = [], linha = [], campo = "", dentro = false, i, c;
+  for (i = 0; i < txt.length; i++) {
+    c = txt.charAt(i);
+    if (dentro) {
+      if (c === '"') {
+        if (txt.charAt(i + 1) === '"') { campo += '"'; i++; }
+        else { dentro = false; }
+      } else { campo += c; }
+    } else if (c === '"') { dentro = true; }
+    else if (c === ";") { linha.push(campo); campo = ""; }
+    else if (c === "\n") { linha.push(campo); linhas.push(linha); linha = []; campo = ""; }
+    else { campo += c; }
+  }
+  linha.push(campo);
+  linhas.push(linha);
+
+  var cab = linhas.shift().map(function (n) { return n.replace(/^﻿/, "").trim(); });
+  return linhas
+    .filter(function (l) { return l.length > 1 || l[0] !== ""; })
+    .map(function (l) {
+      var o = {}, j;
+      for (j = 0; j < cab.length; j++) { o[cab[j]] = (l[j] === undefined ? "" : l[j]).trim(); }
+      return o;
+    });
+}
+
+function tabela(nome) {
+  var el = document.getElementById("csv-" + nome);
+  return el ? parseCSV(el.textContent) : [];
+}
+
+/** "True"/"False" é como o preparar_dados.py grava os booleanos. */
+function sim(v) { return v === "True" || v === "true" || v === "Sim"; }
+
+function porOrdem(campo) {
+  return function (a, b) { return (parseInt(a[campo], 10) || 0) - (parseInt(b[campo], 10) || 0); };
+}
+
+/** tira acento e caixa — o mesmo tratamento da coluna `busca` */
+function normalizar(v) {
+  return (v || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+}
+
+var EMPS  = tabela("dim_empreendimento");
+var SEGS  = tabela("dim_segmento").sort(porOrdem("ordem_chip"));
+var REGS  = tabela("dim_regiao");
+var DIAS  = tabela("dim_dia").sort(porOrdem("ordem_dia"));
+var CONVS = tabela("dim_conveniencia").sort(porOrdem("ordem_conveniencia"));
+
+function indexar(linhas, chave, valor) {
+  var mapa = {};
+  linhas.forEach(function (l) {
+    var k = l[chave];
+    if (!mapa[k]) { mapa[k] = []; }
+    mapa[k].push(l[valor]);
+  });
+  return mapa;
+}
+
+var SEG_DE  = indexar(tabela("ponte_empreendimento_segmento"), "id_empreendimento", "id_segmento");
+var DIA_DE  = indexar(tabela("ponte_empreendimento_dia"), "id_empreendimento", "dia");
+var CONV_DE = indexar(tabela("ponte_empreendimento_conveniencia"), "id_empreendimento", "id_conveniencia");
+
+var TOTAL = EMPS.length;
+
+/* ==================================================================
+   2. Ícones — porte direto de src/icones.ts (SVG 16x16, currentColor)
+   ================================================================== */
+
+var NS = "http://www.w3.org/2000/svg";
+
+var ICONES = {
+  local: [
+    ["path", { d: "M8 14.6s4.9-5.2 4.9-8.5a4.9 4.9 0 1 0-9.8 0c0 3.3 4.9 8.5 4.9 8.5Z" }],
+    ["circle", { cx: "8", cy: "6.1", r: "1.8" }]
+  ],
+  calendario: [
+    ["rect", { x: "2.2", y: "3.4", width: "11.6", height: "10.4", rx: "1.4" }],
+    ["path", { d: "M5.2 1.8v3M10.8 1.8v3M2.2 6.6h11.6" }]
+  ],
+  relogio: [
+    ["circle", { cx: "8", cy: "8", r: "6.2" }],
+    ["path", { d: "M8 4.4V8l2.6 1.6" }]
+  ],
+  alerta: [
+    ["path", { d: "M8 2.2 14.4 13.4H1.6Z" }],
+    ["path", { d: "M8 6.6v3.1" }],
+    ["circle", { cx: "8", cy: "11.5", r: ".55", fill: "currentColor", stroke: "none" }]
+  ],
+  telefone: [
+    ["path", { d: "M4.3 2.4a1 1 0 0 1 1.4.3l1.1 1.7a1 1 0 0 1-.1 1.2l-.8.8a8.2 8.2 0 0 0 3.7 3.7l.8-.8a1 1 0 0 1 1.2-.1l1.7 1.1a1 1 0 0 1 .3 1.4l-.8 1.1a1.7 1.7 0 0 1-1.9.6C7.5 12.2 3.8 8.5 2.6 5.1a1.7 1.7 0 0 1 .6-1.9Z" }]
+  ],
+  conversa: [
+    ["path", { d: "M8 2.6c3.3 0 5.9 2.1 5.9 4.8S11.3 12.2 8 12.2c-.7 0-1.3-.1-1.9-.3l-3 1 .9-2.2a4.5 4.5 0 0 1-1.9-3.3c0-2.7 2.6-4.8 5.9-4.8Z" }]
+  ],
+  camera: [
+    ["rect", { x: "1.9", y: "4.6", width: "12.2", height: "8.8", rx: "1.4" }],
+    ["circle", { cx: "8", cy: "9", r: "2.5" }],
+    ["path", { d: "M5.6 4.6l.9-1.9h3l.9 1.9" }]
+  ],
+  globo: [
+    ["circle", { cx: "8", cy: "8", r: "6.2" }],
+    ["path", { d: "M1.8 8h12.4M8 1.8c1.7 1.8 2.6 3.9 2.6 6.2S9.7 12.4 8 14.2C6.3 12.4 5.4 10.3 5.4 8S6.3 3.6 8 1.8Z" }]
+  ],
+  seta: [
+    ["path", { d: "M4.4 6.4 8 10l3.6-3.6" }]
+  ]
+};
+
+function icone(nome, classe) {
+  var svg = document.createElementNS(NS, "svg");
+  svg.setAttribute("viewBox", "0 0 16 16");
+  svg.setAttribute("class", classe);
+  svg.setAttribute("fill", "none");
+  svg.setAttribute("stroke", "currentColor");
+  svg.setAttribute("stroke-width", "1.3");
+  svg.setAttribute("stroke-linecap", "round");
+  svg.setAttribute("stroke-linejoin", "round");
+  svg.setAttribute("aria-hidden", "true");
+  svg.setAttribute("focusable", "false");
+  (ICONES[nome] || []).forEach(function (forma) {
+    var el = document.createElementNS(NS, forma[0]);
+    Object.keys(forma[1]).forEach(function (k) { el.setAttribute(k, forma[1][k]); });
+    svg.appendChild(el);
+  });
+  return svg;
+}
+
+/* ==================================================================
+   3. Contato — porte direto de src/contato.ts
+   ================================================================== */
+
+function digitos(valor) {
+  var apenas = (valor || "").replace(/\D+/g, "");
+  if (apenas.length > 11 && apenas.indexOf("55") === 0) { apenas = apenas.substring(2); }
+  return apenas;
+}
+
+function mesmoNumero(a, b) {
+  var x = digitos(a), y = digitos(b);
+  if (x.length < 8 || y.length < 8) { return false; }
+  return x === y || x.slice(-y.length) === y || y.slice(-x.length) === x;
+}
+
+function formatarTelefone(valor) {
+  var d = digitos(valor);
+  if (d.length === 11) { return "(" + d.slice(0, 2) + ") " + d.slice(2, 7) + "-" + d.slice(7); }
+  if (d.length === 10) { return "(" + d.slice(0, 2) + ") " + d.slice(2, 6) + "-" + d.slice(6); }
+  return valor;
+}
+
+function telefonesDoCard(lista, whatsapp) {
+  var numeros = (lista || "").split(/[;,]|\s\/\s/)
+    .map(function (n) { return n.trim(); })
+    .filter(function (n) { return n.length > 0; });
+
+  var saida = [], achou = false;
+  numeros.forEach(function (numero) {
+    var eWpp = !!whatsapp && mesmoNumero(numero, whatsapp);
+    if (eWpp) { achou = true; }
+    saida.push({ numero: numero, whatsapp: eWpp });
+  });
+  if (whatsapp && !achou) { saida.push({ numero: formatarTelefone(whatsapp), whatsapp: true }); }
+  return saida;
+}
+
+/** Aqui `tel:` funciona — o site não roda dentro do iframe do Power BI. */
+function urlTelefone(numero) {
+  var d = (numero || "").replace(/\D+/g, "");
+  if (d.length < 10) { return ""; }
+  return "tel:+" + (d.length <= 11 ? "55" + d : d);
+}
+
+function urlWhatsapp(numero) {
+  var d = (numero || "").replace(/\D+/g, "");
+  if (d.length < 10) { return ""; }
+  return "https://wa.me/" + (d.length <= 11 ? "55" + d : d);
+}
+
+function urlInstagram(usuario) {
+  var u = (usuario || "").trim()
+    .replace(/^https?:\/\/(www\.)?instagram\.com\//i, "")
+    .replace(/^@+/, "")
+    .replace(/\/+$/, "");
+  return u ? "https://instagram.com/" + u : "";
+}
+
+function urlSite(site) {
+  var s = (site || "").trim();
+  if (!s) { return ""; }
+  return /^https?:\/\//i.test(s) ? s : "https://" + s;
+}
+
+/* ==================================================================
+   4. Selos — a mesma divisão de capabilities.json
+        badgesBool  -> o rótulo, quando verdadeiro
+        badgesTexto -> "rótulo: valor", quando preenchido
+        badgesValor -> o valor, sem prefixo
+   ================================================================== */
+
+var SELOS_BOOL = [
+  ["aceita_cartao", "Aceita cartão"],
+  ["tem_estacionamento_proprio", "Estacionamento próprio"],
+  ["espaco_infantil", "Espaço infantil"],
+  ["atende_24h", "Atende 24 horas"]
+];
+var SELOS_TEXTO = [
+  ["pet_texto", "Aceita pet"],
+  ["grupos_capacidade", "Recebe grupos"]
+];
+var SELOS_VALOR = ["badge_acessibilidade", "badge_idiomas"];
+
+function selosDoCard(e) {
+  var textos = [];
+
+  SELOS_BOOL.forEach(function (par) {
+    if (sim(e[par[0]])) { textos.push(par[1]); }
+  });
+
+  SELOS_TEXTO.forEach(function (par) {
+    var v = (e[par[0]] || "").trim();
+    if (!v) { return; }
+    // "Não recebe grupos" / "Não se aplica" já são a frase inteira:
+    // prefixar viraria "Recebe grupos: Não recebe grupos".
+    textos.push(/^n(ã|a)o/i.test(v) && par[0] === "grupos_capacidade" ? v : par[1] + ": " + v);
+  });
+
+  SELOS_VALOR.forEach(function (col) {
+    var v = (e[col] || "").trim();
+    if (v) { textos.push(v); }
+  });
+
+  return textos;
+}
+
+/* ícones da moldura do site (o card usa só os de src/icones.ts) */
+ICONES.busca = [
+  ["circle", { cx: "7", cy: "7", r: "4.6" }],
+  ["path", { d: "M10.4 10.4 14 14" }]
+];
+ICONES.filtro = [
+  ["path", { d: "M2 4.5h12M4.5 8h7M7 11.5h2" }]
+];
+ICONES.fechar = [
+  ["path", { d: "M3.5 3.5l9 9M12.5 3.5l-9 9" }]
+];
+ICONES.abrir = [
+  ["path", { d: "M9.5 2.5h4v4M13.5 2.5 8.6 7.4M6.5 13.5h-4v-4M2.5 13.5l4.9-4.9" }]
+];
+
+/* ==================================================================
+   5. O card — mesma ordem de montagem de src/listaCards.ts
+      O ▼ do visual vira o botão que abre a ficha (modal).
+   ================================================================== */
+
+function criar(tag, classe) {
+  var el = document.createElement(tag);
+  if (classe) { el.className = classe; }
+  return el;
+}
+
+function itemMeta(nomeDoIcone, texto) {
+  if (!texto) { return null; }
+  var raiz = criar("span", "ce-meta-item");
+  raiz.appendChild(icone(nomeDoIcone, "ce-icone"));
+  var t = criar("span", "ce-meta-txt");
+  t.textContent = texto;
+  raiz.appendChild(t);
+  return raiz;
+}
+
+function botaoLink(nomeDoIcone, classe, rotulo, url, novaAba) {
+  if (!url || !rotulo) { return null; }
+  var a = criar("a", classe);
+  a.href = url;
+  if (novaAba) { a.target = "_blank"; a.rel = "noopener noreferrer"; }
+  a.appendChild(icone(nomeDoIcone, "ce-icone"));
+  var t = criar("span", "ce-botao-txt");
+  t.textContent = rotulo;
+  a.appendChild(t);
+  return a;
+}
+
+/** O sufixo "· WhatsApp" só aparece quando o card tem mais de um número. */
+function rotuloLigar(numero, marcarWhatsapp) {
+  return "Ligar " + numero + (marcarWhatsapp ? " · WhatsApp" : "");
+}
+
+function localDe(e) {
+  return [e.distrito, e.localizacao_rotulo].filter(Boolean).join(" · ");
+}
+
+function diasDe(e) {
+  return e.dias_resumo ? (sim(e.abre_feriados) ? e.dias_resumo + " · abre em feriados" : e.dias_resumo) : "";
+}
+
+function viaDe(e) {
+  var via = (e.condicao_via || "").trim();
+  if (!via || via === "Pavimentada") { return null; }
+  var p = criar("p", "ce-via");
+  p.appendChild(icone("alerta", "ce-icone"));
+  var t = criar("span", "ce-via-txt");
+  t.textContent = "Via: " + via;
+  p.appendChild(t);
+  return p;
+}
+
+function selosDe(e) {
+  var textos = selosDoCard(e);
+  if (!textos.length) { return null; }
+  var selos = criar("div", "ce-selos");
+  textos.forEach(function (t) {
+    var s = criar("span", "ce-selo");
+    s.textContent = t;
+    selos.appendChild(s);
+  });
+  return selos;
+}
+
+function acoesDe(e) {
+  var acoes = criar("div", "ce-acoes");
+  var tels = telefonesDoCard(e.telefones, e.whatsapp);
+  var varios = tels.length > 1;
+  tels.forEach(function (tel) {
+    var b = botaoLink("telefone", "ce-botao", rotuloLigar(tel.numero, varios && tel.whatsapp), urlTelefone(tel.numero), false);
+    if (b) { acoes.appendChild(b); }
+  });
+  [
+    botaoLink("conversa", "ce-botao ce-botao--wpp", "WhatsApp", urlWhatsapp(e.whatsapp), true),
+    botaoLink("camera", "ce-botao", e.instagram ? "@" + e.instagram.replace(/^@+/, "") : "", urlInstagram(e.instagram), true),
+    botaoLink("globo", "ce-botao", "Site", urlSite(e.site), true)
+  ].forEach(function (b) { if (b) { acoes.appendChild(b); } });
+  return acoes;
+}
+
+/** Linha do resumo: sempre presente, para todos os cards terem a mesma altura. */
+function linhaMeta(nomeDoIcone, texto, seVazio) {
+  var raiz = criar("span", "ce-meta-item" + (texto ? "" : " vazio"));
+  raiz.appendChild(icone(nomeDoIcone, "ce-icone"));
+  var t = criar("span", "ce-meta-txt");
+  t.textContent = texto || seVazio;
+  if (texto) { t.title = texto; }
+  raiz.appendChild(t);
+  return raiz;
+}
+
+/** Contatos do card: um número só e ícones para Instagram e site. A ficha tem todos. */
+function acoesDoCard(e) {
+  var acoes = criar("div", "ce-acoes");
+  var tels = telefonesDoCard(e.telefones, e.whatsapp);
+  if (tels.length) {
+    var b = botaoLink("telefone", "ce-botao", tels[0].numero, urlTelefone(tels[0].numero), false);
+    if (b) { b.setAttribute("aria-label", "Ligar " + tels[0].numero); acoes.appendChild(b); }
+  }
+  var wpp = botaoLink("conversa", "ce-botao ce-botao--wpp", "WhatsApp", urlWhatsapp(e.whatsapp), true);
+  if (wpp) { acoes.appendChild(wpp); }
+
+  var insta = e.instagram ? "@" + e.instagram.replace(/^@+/, "") : "";
+  [["camera", insta, urlInstagram(e.instagram), "Instagram " + insta],
+   ["globo", "Site", urlSite(e.site), "Site"]].forEach(function (c) {
+    var a = botaoLink(c[0], "ce-botao ce-botao--icone", c[1], c[2], true);
+    if (!a) { return; }
+    a.querySelector(".ce-botao-txt").remove();
+    a.setAttribute("aria-label", c[3]);
+    a.title = c[3];
+    acoes.appendChild(a);
+  });
+  return acoes;
+}
+
+function montarCard(e) {
+  var raiz = criar("article", "ce-card");
+  raiz.setAttribute("data-id", e.id_empreendimento);
+  var nome = e.nome_empreendimento || e.id_empreendimento;
+  var corpo = criar("div", "ce-corpo");
+  raiz.appendChild(corpo);
+
+  /* cabeçalho: título (abre a ficha) + botão de abrir */
+  var titulo = criar("h2", "ce-titulo");
+  var tBtn = criar("button", null);
+  tBtn.type = "button";
+  tBtn.textContent = nome;
+  titulo.appendChild(tBtn);
+
+  var abrir = criar("button", "ce-abrir");
+  abrir.type = "button";
+  abrir.tabIndex = -1;          // o título já é o alvo de teclado; este é atalho de mouse
+  abrir.setAttribute("aria-hidden", "true");
+  abrir.title = "Ver ficha completa";
+  abrir.appendChild(icone("abrir", "ce-icone"));
+
+  var cabecalho = criar("div", "ce-cabecalho");
+  cabecalho.appendChild(titulo);
+  cabecalho.appendChild(abrir);
+  corpo.appendChild(cabecalho);
+
+  /* segmentos · local */
+  var segmentos = (e.segmentos_rotulo || "").trim();
+  var local = localDe(e);
+  var sub = criar("p", "ce-sub ce-linha");
+  var sSeg = criar("span", "ce-segmentos");
+  sSeg.textContent = segmentos;
+  var sLoc = criar("span", "ce-local");
+  sLoc.textContent = local ? (segmentos ? " · " : "") + local : "";
+  sub.appendChild(sSeg);
+  sub.appendChild(sLoc);
+  sub.title = sub.textContent;
+  corpo.appendChild(sub);
+
+  /* endereço, dias e horário: uma linha cada, sempre */
+  var meta = criar("div", "ce-meta");
+  meta.appendChild(linhaMeta("local", e.endereco_completo, "Endereço não informado"));
+  meta.appendChild(linhaMeta("calendario", diasDe(e), "Dias não informados"));
+  meta.appendChild(linhaMeta("relogio", sim(e.atende_24h) ? "24 horas" : e.horario_atendimento, "Horário não informado"));
+  corpo.appendChild(meta);
+
+  /* tarja de via + selos, num bloco de no máximo duas linhas */
+  var textos = selosDoCard(e);
+  var via = (e.condicao_via || "").trim();
+  if (textos.length || (via && via !== "Pavimentada")) {
+    var selos = criar("div", "ce-selos");
+    if (via && via !== "Pavimentada") {
+      var v = criar("span", "ce-via");
+      v.appendChild(icone("alerta", "ce-icone"));
+      var vt = criar("span", null);
+      vt.textContent = "Via: " + via;
+      v.appendChild(vt);
+      selos.appendChild(v);
+    }
+    textos.forEach(function (t) {
+      var sl = criar("span", "ce-selo");
+      sl.textContent = t;
+      selos.appendChild(sl);
+    });
+    corpo.appendChild(selos);
+  }
+
+  var acoes = acoesDoCard(e);
+  if (acoes.childElementCount) { raiz.appendChild(acoes); }
+
+  /* clicar em qualquer parte do card abre a ficha — menos nos links de contato */
+  raiz.addEventListener("click", function (ev) {
+    if (ev.target.closest("a")) { return; }
+    abrirFicha(e.id_empreendimento);
+  });
+  return raiz;
+}
+
+/**
+ * Os selos ocupam no máximo duas linhas. Os que não cabem saem do card e viram um
+ * "+N" — a lista inteira continua na ficha. Precisa medir, então roda depois do
+ * layout: a cada filtro e quando a largura da janela muda.
+ */
+function ajustarSelos(card) {
+  var cont = card.querySelector(".ce-selos");
+  if (!cont) { return; }
+  var mais = cont.querySelector(".ce-mais");
+  if (mais) { mais.remove(); }
+  var itens = Array.prototype.slice.call(cont.children);
+  itens.forEach(function (i) { i.classList.remove("ce-oculto"); });
+  if (cont.scrollHeight <= cont.clientHeight + 1) { return; }
+
+  mais = criar("span", "ce-selo ce-mais");
+  cont.appendChild(mais);
+  var escondidos = 0;
+  for (var k = itens.length - 1; k >= 0 && cont.scrollHeight > cont.clientHeight + 1; k--) {
+    itens[k].classList.add("ce-oculto");
+    escondidos++;
+    mais.textContent = "+" + escondidos;
+  }
+  mais.title = escondidos + (escondidos === 1 ? " item a mais" : " itens a mais") + " na ficha";
+}
+
+function ajustarTodosSelos() {
+  Array.prototype.forEach.call(grade.children, function (card) {
+    if (!card.classList.contains("ce-oculto")) { ajustarSelos(card); }
+  });
+}
+
+var esperaResize = 0;
+window.addEventListener("resize", function () {
+  clearTimeout(esperaResize);
+  esperaResize = setTimeout(ajustarTodosSelos, 120);
+});
+
+/* ==================================================================
+   6. A ficha completa (modal). Abre pelo endereço #E001, então dá para
+      mandar o link de um lugar e o botão "voltar" do navegador fecha.
+   ================================================================== */
+
+var FICHA_SECOES = [
+  ["Como chegar", [
+    ["Endereço", function (e) { return e.endereco_completo; }],
+    ["Referência", function (e) { return e.ponto_referencia; }],
+    ["Região", localDe],
+    ["Via de acesso", function (e) {
+      if (!e.condicao_via) { return e.via_acesso; }
+      return e.via_acesso && e.via_acesso !== e.condicao_via ? e.condicao_via + " (" + e.via_acesso.toLowerCase() + ")" : e.condicao_via;
+    }],
+    ["Estacionamento", function (e) {
+      var partes = [];
+      if (sim(e.tem_estacionamento_proprio)) { partes.push("Próprio"); }
+      else if (e.estacionamento) { partes.push(e.estacionamento); }
+      if (e.vagas_automoveis && e.vagas_automoveis !== "0") { partes.push(e.vagas_automoveis + " vagas para carro"); }
+      if (e.vagas_onibus && e.vagas_onibus !== "0") { partes.push(e.vagas_onibus + " para ônibus"); }
+      return partes.join(", ");
+    }]
+  ]],
+  ["Quando abre", [
+    ["Dias", function (e) { return e.dias_funcionamento; }],
+    ["Horário", function (e) { return sim(e.atende_24h) ? "24 horas" : e.horario_atendimento; }],
+    ["Feriados", function (e) { return sim(e.abre_feriados) ? "Abre em feriados" : "Não abre em feriados"; }]
+  ]],
+  ["Estrutura e atendimento", [
+    ["Pagamento", function (e) { return sim(e.aceita_cartao) ? "Aceita cartão" : "Não aceita cartão"; }],
+    ["Grupos", function (e) { return e.grupos_capacidade; }],
+    ["Animais de estimação", function (e) { return e.pet_texto; }],
+    ["Crianças", function (e) { return sim(e.espaco_infantil) ? "Tem espaço infantil" : ""; }],
+    ["Idiomas", function (e) { return e.idiomas; }],
+    ["Acessibilidade", function (e) {
+      var itens = [];
+      if (e.badge_acessibilidade) { itens.push(e.badge_acessibilidade); }
+      if (sim(e.sanitario_adaptado) && itens.indexOf("Sanitário adaptado") < 0) { itens.push("Sanitário adaptado"); }
+      return itens.length ? itens.join(", ") : "Informou não ter recursos de acessibilidade";
+    }]
+  ]]
+];
+
+var EMP_POR_ID = {};
+EMPS.forEach(function (e) { EMP_POR_ID[e.id_empreendimento] = e; });
+
+var ficha = document.getElementById("ficha");
+var fichaCorpo = document.getElementById("ficha-corpo");
+var fichaAcoes = document.getElementById("ficha-acoes");
+var abriuPorNavegacao = false;
+
+function preencherFicha(e) {
+  document.getElementById("ficha-seg").textContent = e.segmentos_rotulo || "";
+  document.getElementById("ficha-nome").textContent = e.nome_empreendimento || e.id_empreendimento;
+  document.getElementById("ficha-local").textContent = localDe(e);
+
+  fichaCorpo.innerHTML = "";
+  var via = viaDe(e);
+  if (via) { fichaCorpo.appendChild(via); }
+  var selos = selosDe(e);
+  if (selos) { fichaCorpo.appendChild(selos); }
+
+  FICHA_SECOES.forEach(function (secao) {
+    var dl = criar("dl", null);
+    secao[1].forEach(function (par) {
+      var valor = (par[1](e) || "").trim();
+      if (!valor) { return; }
+      var dt = criar("dt", null); dt.textContent = par[0];
+      var dd = criar("dd", null); dd.textContent = valor;
+      dl.appendChild(dt);
+      dl.appendChild(dd);
+    });
+    if (!dl.childElementCount) { return; }
+    var sec = criar("section", "ficha-sec");
+    var h = criar("h3", null);
+    h.textContent = secao[0];
+    sec.appendChild(h);
+    sec.appendChild(dl);
+    fichaCorpo.appendChild(sec);
+  });
+
+  fichaAcoes.innerHTML = "";
+  var acoes = acoesDe(e);
+  while (acoes.firstChild) { fichaAcoes.appendChild(acoes.firstChild); }
+  fichaAcoes.parentNode.classList.toggle("sem-acoes", !fichaAcoes.childElementCount);
+}
+
+function mostrarFicha(id) {
+  var e = EMP_POR_ID[id];
+  if (!e) { return; }
+  preencherFicha(e);
+  fichaCorpo.scrollTop = 0;
+  if (!ficha.open) { ficha.showModal(); }
+  document.getElementById("ficha-fechar").focus();
+}
+
+function abrirFicha(id) {
+  if (location.hash === "#" + id) { mostrarFicha(id); return; }
+  abriuPorNavegacao = true;
+  location.hash = id;            // o hashchange abre a ficha
+}
+
+function limparHash() {
+  try { history.replaceState(null, "", location.href.split("#")[0]); }
+  catch (err) { location.hash = ""; }
+}
+
+function fecharFicha() {
+  if (abriuPorNavegacao) {
+    abriuPorNavegacao = false;
+    history.back();              // o hashchange fecha a ficha
+  } else {
+    limparHash();
+    if (ficha.open) { ficha.close(); }
+  }
+}
+
+function sincronizarHash() {
+  var id = decodeURIComponent(location.hash.replace(/^#/, ""));
+  if (EMP_POR_ID[id]) {
+    mostrarFicha(id);
+  } else if (ficha.open) {
+    abriuPorNavegacao = false;
+    ficha.close();
+  }
+}
+
+ficha.addEventListener("cancel", function (ev) { ev.preventDefault(); fecharFicha(); });
+ficha.addEventListener("click", function (ev) { if (ev.target === ficha) { fecharFicha(); } });
+document.getElementById("ficha-fechar").addEventListener("click", fecharFicha);
+window.addEventListener("hashchange", sincronizarHash);
+
+/* ==================================================================
+   7. Filtros
+   ================================================================== */
+
+function estadoVazio() { return { seg: "", q: "", distrito: "", local: "", dia: "", conv: [] }; }
+var estado = estadoVazio();
+
+function passa(e, ignorarSegmento) {
+  if (!ignorarSegmento && estado.seg && (SEG_DE[e.id_empreendimento] || []).indexOf(estado.seg) < 0) { return false; }
+  if (estado.q && (e.busca || "").indexOf(estado.q) < 0) { return false; }
+  if (estado.distrito && e.distrito !== estado.distrito) { return false; }
+  if (estado.local && e.localizacao_rotulo !== estado.local) { return false; }
+  if (estado.dia && (DIA_DE[e.id_empreendimento] || []).indexOf(estado.dia) < 0) { return false; }
+  if (estado.conv.length) {
+    var minhas = CONV_DE[e.id_empreendimento] || [];
+    if (!estado.conv.every(function (c) { return minhas.indexOf(c) >= 0; })) { return false; }
+  }
+  return true;
+}
+
+function contar(fn) {
+  var n = 0;
+  EMPS.forEach(function (e) { if (fn(e)) { n++; } });
+  return n;
+}
+
+var grade = document.getElementById("grade");
+var nos = {};
+
+function desenharCards() {
+  EMPS.slice()
+    .sort(function (a, b) {
+      return (a.nome_empreendimento || "").localeCompare(b.nome_empreendimento || "", "pt-BR");
+    })
+    .forEach(function (e) {
+      var no = montarCard(e);
+      nos[e.id_empreendimento] = no;
+      grade.appendChild(no);
+    });
+}
+
+/* ------------------------------------------------- abas de segmento */
+
+var elAbas = document.getElementById("abas");
+
+function montarAbas() {
+  [{ id_segmento: "", rotulo_visitante: "Todos" }].concat(SEGS).forEach(function (s) {
+    var b = criar("button", "aba");
+    b.type = "button";
+    b.setAttribute("role", "tab");
+    b.setAttribute("data-seg", s.id_segmento);
+    var nome = criar("span", null);
+    nome.textContent = s.rotulo_visitante;
+    b.appendChild(nome);
+    b.appendChild(criar("span", "n"));
+    b.addEventListener("click", function () { estado.seg = s.id_segmento; atualizar(); });
+    elAbas.appendChild(b);
+  });
+}
+
+function atualizarAbas() {
+  Array.prototype.forEach.call(elAbas.children, function (b) {
+    var id = b.getAttribute("data-seg");
+    var n = contar(function (e) {
+      return passa(e, true) && (!id || (SEG_DE[e.id_empreendimento] || []).indexOf(id) >= 0);
+    });
+    b.querySelector(".n").textContent = String(n);
+    var ativa = estado.seg === id;
+    b.setAttribute("aria-selected", String(ativa));
+    b.tabIndex = ativa ? 0 : -1;
+    b.classList.toggle("vazia", n === 0 && !ativa);
+  });
+}
+
+/* setas do teclado entre as abas */
+elAbas.addEventListener("keydown", function (ev) {
+  if (ev.key !== "ArrowRight" && ev.key !== "ArrowLeft") { return; }
+  var abas = Array.prototype.slice.call(elAbas.children);
+  var i = abas.indexOf(document.activeElement);
+  if (i < 0) { return; }
+  var j = (i + (ev.key === "ArrowRight" ? 1 : -1) + abas.length) % abas.length;
+  abas[j].focus();
+  abas[j].click();
+  ev.preventDefault();
+});
+
+/* ------------------------------------------------- painel de filtros */
+
+var fBusca = document.getElementById("f-busca");
+var fDistrito = document.getElementById("f-distrito");
+var fDia = document.getElementById("f-dia");
+var fLocal = document.getElementById("f-local");
+var fConvs = document.getElementById("f-convs");
+var painel = document.getElementById("painel");
+
+function opcoes(select, primeira, valores) {
+  select.innerHTML = "";
+  var o = document.createElement("option");
+  o.value = ""; o.textContent = primeira;
+  select.appendChild(o);
+  valores.forEach(function (v) {
+    var op = document.createElement("option");
+    op.value = v; op.textContent = v;
+    select.appendChild(op);
+  });
+}
+
+var NOME_CONV = {};
+CONVS.forEach(function (c) { NOME_CONV[c.id_conveniencia] = c.conveniencia; });
+
+function montarFiltros() {
+  opcoes(fDistrito, "Todos os distritos", REGS.map(function (r) { return r.regiao; }));
+  opcoes(fDia, "Qualquer dia", DIAS.map(function (d) { return d.dia; }));
+
+  CONVS.forEach(function (c) {
+    var l = criar("label", "opcao");
+    var i = document.createElement("input");
+    i.type = "checkbox";
+    i.value = c.id_conveniencia;
+    var t = criar("span", null);
+    t.textContent = c.conveniencia;
+    l.appendChild(i);
+    l.appendChild(t);
+    l.appendChild(criar("span", "n"));
+    i.addEventListener("change", function () {
+      var k = estado.conv.indexOf(c.id_conveniencia);
+      if (i.checked && k < 0) { estado.conv.push(c.id_conveniencia); }
+      if (!i.checked && k >= 0) { estado.conv.splice(k, 1); }
+      atualizar();
+    });
+    fConvs.appendChild(l);
+  });
+
+  fBusca.addEventListener("input", function () { estado.q = normalizar(fBusca.value.trim()); atualizar(); });
+  fDistrito.addEventListener("change", function () { estado.distrito = fDistrito.value; atualizar(); });
+  fDia.addEventListener("change", function () { estado.dia = fDia.value; atualizar(); });
+  fLocal.addEventListener("change", function (ev) { estado.local = ev.target.value; atualizar(); });
+
+  document.getElementById("btn-filtros").addEventListener("click", function () { painel.showModal(); });
+  document.getElementById("painel-fechar").addEventListener("click", function () { painel.close(); });
+  document.getElementById("painel-ver").addEventListener("click", function () { painel.close(); });
+  document.getElementById("painel-limpar").addEventListener("click", function () { limparPainel(); atualizar(); });
+  painel.addEventListener("click", function (ev) { if (ev.target === painel) { painel.close(); } });
+
+  document.getElementById("estado-limpar").addEventListener("click", limparTudo);
+}
+
+function limparPainel() {
+  estado.distrito = ""; estado.local = ""; estado.dia = ""; estado.conv = [];
+}
+
+function limparTudo() {
+  estado = estadoVazio();
+  atualizar();
+}
+
+/** Leva o estado para os controles — os filtros também são removidos pelas pílulas. */
+function sincronizarControles() {
+  if (normalizar(fBusca.value.trim()) !== estado.q) { fBusca.value = ""; }
+  fDistrito.value = estado.distrito;
+  fDia.value = estado.dia;
+  Array.prototype.forEach.call(fLocal.querySelectorAll("input"), function (r) { r.checked = r.value === estado.local; });
+  Array.prototype.forEach.call(fConvs.querySelectorAll("input"), function (i) {
+    i.checked = estado.conv.indexOf(i.value) >= 0;
+    var outro = estado.conv;
+    estado.conv = estado.conv.filter(function (c) { return c !== i.value; }).concat([i.value]);
+    i.parentNode.querySelector(".n").textContent = String(contar(function (e) { return passa(e, false); }));
+    estado.conv = outro;
+  });
+}
+
+/* ------------------------------------------------- barra de resultado */
+
+var barra = document.getElementById("barra");
+
+function pilula(texto, remover) {
+  var p = criar("span", "pilula");
+  var t = criar("span", null);
+  t.textContent = texto;
+  var x = criar("button", null);
+  x.type = "button";
+  x.setAttribute("aria-label", "Remover filtro " + texto);
+  x.appendChild(icone("fechar", "ce-icone"));
+  x.addEventListener("click", function () { remover(); atualizar(); });
+  p.appendChild(t);
+  p.appendChild(x);
+  return p;
+}
+
+function atualizarBarra(visiveis) {
+  while (barra.children.length > 1) { barra.removeChild(barra.lastChild); }
+
+  var total = document.getElementById("total");
+  total.innerHTML = "";
+  total.appendChild(document.createTextNode(visiveis + (visiveis === 1 ? " lugar" : " lugares")));
+  if (visiveis !== TOTAL) {
+    var de = criar("span", null);
+    de.textContent = " de " + TOTAL;
+    total.appendChild(de);
+  }
+
+  var pils = [];
+  if (estado.distrito) { pils.push(pilula(estado.distrito, function () { estado.distrito = ""; })); }
+  if (estado.local) { pils.push(pilula(estado.local.charAt(0).toUpperCase() + estado.local.slice(1), function () { estado.local = ""; })); }
+  if (estado.dia) { pils.push(pilula("Aberto " + estado.dia.toLowerCase(), function () { estado.dia = ""; })); }
+  estado.conv.forEach(function (c) {
+    pils.push(pilula(NOME_CONV[c] || c, function () { estado.conv = estado.conv.filter(function (x) { return x !== c; }); }));
+  });
+  pils.forEach(function (p) { barra.appendChild(p); });
+
+  var algum = estado.seg || estado.q || pils.length;
+  if (algum) {
+    var l = criar("button", "link");
+    l.type = "button";
+    l.textContent = "Limpar filtros";
+    l.addEventListener("click", limparTudo);
+    barra.appendChild(l);
+  }
+
+  var qtd = document.getElementById("qtd-filtros");
+  qtd.textContent = pils.length ? String(pils.length) : "";
+  qtd.classList.toggle("ce-oculto", !pils.length);
+  document.getElementById("btn-filtros").setAttribute("aria-label", pils.length ? "Filtros, " + pils.length + " ativos" : "Filtros");
+  document.getElementById("painel-ver").textContent = visiveis === 0
+    ? "Nenhum lugar" : "Ver " + visiveis + (visiveis === 1 ? " lugar" : " lugares");
+}
+
+function atualizar() {
+  var visiveis = 0;
+  EMPS.forEach(function (e) {
+    var ok = passa(e, false);
+    nos[e.id_empreendimento].classList.toggle("ce-oculto", !ok);
+    if (ok) { visiveis++; }
+  });
+
+  var vazio = visiveis === 0;
+  document.getElementById("estado").classList.toggle("ce-oculto", !vazio);
+  document.getElementById("estado-txt").textContent = vazio
+    ? (estado.q
+      ? "Nenhum lugar encontrado para “" + fBusca.value.trim() + "” com esses filtros."
+      : "Nenhum lugar atende a todos esses filtros. Tire um deles para ver mais opções.")
+    : "";
+
+  atualizarAbas();
+  sincronizarControles();
+  atualizarBarra(visiveis);
+  ajustarTodosSelos();
+}
+
+/* ==================================================================
+   8. Início
+   ================================================================== */
+
+(function iconesDaMoldura() {
+  var busca = document.querySelector(".busca");
+  busca.insertBefore(icone("busca", "ce-icone"), busca.firstChild);
+  var bf = document.getElementById("btn-filtros");
+  bf.insertBefore(icone("filtro", "ce-icone"), bf.firstChild);
+  ["ficha-fechar", "painel-fechar"].forEach(function (id) {
+    document.getElementById(id).appendChild(icone("fechar", "ce-icone"));
+  });
+})();
+
+if (!EMPS.length) {
+  document.getElementById("estado").classList.remove("ce-oculto");
+  document.getElementById("estado-txt").textContent =
+    "Os dados ainda não foram colocados neste arquivo. Rode: python site-publico/gerar_site.py";
+  document.getElementById("estado-limpar").classList.add("ce-oculto");
+} else {
+  montarAbas();
+  montarFiltros();
+  desenharCards();
+  atualizar();
+  sincronizarHash();
+}
+
+document.getElementById("cab-desc").textContent =
+  TOTAL + " lugares para comer, dormir, passear e comprar no município, com o contato direto de cada um.";
+document.getElementById("rodape-txt").textContent =
+  "Dados do diagnóstico turístico de Alfredo Chaves, pesquisa de campo de out/2025 a ago/2026. "
+  + "Horários, contatos e recursos foram informados pelos próprios estabelecimentos e podem ter mudado. "
+  + "Confirme por telefone antes de ir.";
+
+})();
+</script>
+</body>
+</html>
