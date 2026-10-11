@@ -3,282 +3,436 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>O que fazer em Alfredo Chaves</title>
-<meta name="description" content="Onde comer, dormir, passear e comprar em Alfredo Chaves (ES) — 93 lugares do diagnóstico turístico Montanhas Capixabas.">
+<title>Montanhas Capixabas · O que fazer em Alfredo Chaves</title>
+<meta name="description" content="Guia da oferta turística de Alfredo Chaves (ES): onde comer, dormir, passear e comprar, com endereço, horário e contato direto de cada lugar.">
+<meta name="theme-color" content="#1F3D2B">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%231F3D2B'/%3E%3Cpath d='M5 23 12 13.5l3.6 4.6L20 11l7 12Z' fill='%23F6F1E7'/%3E%3C/svg%3E">
 <style>
 /* ==================================================================
-   Site público da oferta turística de Alfredo Chaves.
+   Montanhas Capixabas — guia público da oferta turística de Alfredo
+   Chaves (ES).
 
-   O card é o visual CardEmpreendimento (powerbi/visuais/) reescrito
-   para a web: mesmos nomes de classe (ce-*), mesma paleta, mesmos
-   ícones SVG e a mesma ordem de montagem. Em volta dele, a moldura
-   do site: cabeçalho com busca, abas de segmento, painel lateral de
-   filtros e a ficha completa num modal.
+   Identidade: estética de guia de viagem e de carta topográfica.
+   Verde-floresta, creme e terra; títulos em serifa do sistema; linhas
+   de nível e a serra são SVG próprios (assets/). Nenhuma fotografia,
+   nenhuma fonte web, nenhuma imagem remota.
 
-   Nenhum recurso externo: sem CDN, sem web font, sem imagem remota.
+   Os cards mantêm os nomes de classe do visual CardEmpreendimento do
+   Power BI (ce-*) e a mesma origem de dados; a moldura é nova.
+
+   Recursos locais: assets/ (grafismos). A página não faz nenhum pedido
+   de rede: abre e funciona sem internet.
    ================================================================== */
 :root{
-  /* paleta do card — a mesma de style/visual.less */
-  --ink-1:#252423;
-  --ink-2:#605E5C;
-  --ink-3:#8A8886;
-  --line:#E1E1E1;
-  --line-forte:#D2D0CE;
-  --fundo:#F2F4F3;     /* --cor-fundo-geral da Prefeitura */
-  --chip:#F2F4F3;
-  --azul:#0F6CBD;
-  --azul-claro:#EFF6FC;
-  --azul-borda:#CFE4FA;
-  --verde:#157F3E;
-  --verde-fundo:#116835;
-  --ambar:#FFF4CE;
-  --ambar-ink:#6B5900;
+  /* superfícies */
+  --creme:#F6F1E7;
+  --papel:#FFFDF8;
+  --areia:#EDE5D6;
+  --nevoa:#EEF1E8;
+  --linha:#E2D9C8;
+  --linha-forte:#CBBFA8;
 
-  /* moldura do site: o verde do site da Prefeitura de Alfredo Chaves, só no
-     cabeçalho e nas ações principais */
-  --mata:#005946;      /* --cor-primaria do site da Prefeitura */
-  --mata-2:#014C3F;    /* faixa inferior do cabeçalho da Prefeitura */
-  --mata-3:#1D6B59;
-  --mata-txt:#DDE8E2;  /* --cor-texto-footer da Prefeitura */
+  /* verdes */
+  --floresta:#1F3D2B;
+  --floresta-2:#2E5A3F;
+  --musgo:#5E7F52;
+  --salvia:#A3B592;
+  --salvia-clara:#DCE4D2;
 
-  /* Tamanho base do card. 12px é o visual do Power BI pixel a pixel;
-     13px lê melhor num site. Todo o card deriva deste valor. */
-  --base:13px;
-  --raio:6px;
+  /* terra */
+  --terra:#9A4F2A;
+  --terra-clara:#F4E4D6;
+
+  /* texto */
+  --ink:#1C211D;
+  --ink-2:#4B534D;
+  --ink-3:#646A64;
+
+  /* avisos e contato */
+  --ambar:#FBEFD0;
+  --ambar-borda:#EBD38F;
+  --ambar-ink:#6B4E00;
+  --wpp:#1F7A45;
+  --wpp-2:#17633A;
+
+  --serifa:"Iowan Old Style","Palatino Linotype","Book Antiqua",Palatino,"Noto Serif",Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans","Helvetica Neue",Arial,sans-serif;
+
+  /* tamanho base do card: todo o card deriva deste valor */
+  --base:14px;
+  --raio:8px;
+  --raio-p:5px;
+  --sombra:0 1px 2px rgba(31,61,43,.06),0 4px 14px rgba(31,61,43,.06);
+  --largura:1280px;
+  --altura-barra:64px;
 }
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(var(--altura-barra) + 12px)}
 body{
-  margin:0;
-  background:var(--fundo);
-  color:var(--ink-1);
-  font-family:"Segoe UI","Segoe UI Web (West European)",-apple-system,system-ui,sans-serif;
-  font-size:var(--base);
-  line-height:1.4;
-  -webkit-font-smoothing:antialiased;
+  margin:0;background:var(--creme);color:var(--ink);
+  font-family:var(--sans);font-size:15px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
 }
 body:has(dialog[open]){overflow:hidden}
-button{font:inherit;color:inherit}
-:focus-visible{outline:2px solid var(--azul);outline-offset:2px}
-.ce-oculto{display:none !important}
-.env{max-width:1240px;margin:0 auto;padding:0 20px}
-.ce-icone{width:12px;height:12px;flex:0 0 auto;margin-top:1px}
+button,input,select{font:inherit;color:inherit}
+a{color:var(--floresta-2)}
+:focus-visible{outline:3px solid var(--terra);outline-offset:2px;border-radius:2px}
+.ce-oculto,[hidden]{display:none !important}
+.sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.env{max-width:var(--largura);margin:0 auto;padding:0 32px}
+.ce-icone{width:14px;height:14px;flex:0 0 auto;margin-top:2px}
 
-/* ------------------------------------------------------- cabeçalho */
-.cab{position:relative;background:var(--mata);color:#FFFFFF;overflow:hidden}
-.cab .env{position:relative;z-index:1;padding-top:30px;padding-bottom:72px}
-.cab-sup{margin:0 0 8px;color:var(--mata-txt);font-size:13px}
-.cab h1{margin:0;font-size:clamp(26px,3.6vw,36px);font-weight:600;letter-spacing:-.02em;line-height:1.15}
-.cab-desc{margin:8px 0 0;max-width:60ch;color:var(--mata-txt);font-size:15px;line-height:1.5}
+.pular{position:absolute;left:12px;top:-60px;z-index:2000;padding:10px 14px;border-radius:var(--raio-p);background:var(--floresta);color:var(--creme);text-decoration:none;font-weight:600}
+.pular:focus{top:12px}
 
-.busca-linha{display:flex;gap:10px;margin-top:22px;max-width:680px}
-.busca{position:relative;flex:1 1 auto;min-width:0}
-.busca .ce-icone{position:absolute;left:14px;top:50%;width:16px;height:16px;margin:-8px 0 0;color:var(--ink-3);pointer-events:none}
-.busca input{
-  width:100%;height:46px;padding:0 14px 0 40px;
-  border:1px solid transparent;border-radius:var(--raio);
-  background:#FFFFFF;color:var(--ink-1);font:inherit;font-size:15px;
+/* ------------------------------------------------------- tipografia editorial */
+.sobretitulo{
+  margin:0 0 10px;color:var(--terra);font-size:12.5px;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;
 }
-.busca input::placeholder{color:var(--ink-3)}
-.busca input:focus-visible{outline:3px solid #FFC400;outline-offset:0}
-
-.btn-filtros{
-  display:inline-flex;align-items:center;gap:8px;flex:0 0 auto;
-  height:46px;padding:0 16px;border-radius:var(--raio);
-  border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.08);
-  color:#FFFFFF;font-size:14px;font-weight:600;cursor:pointer;
+.titulo-secao{
+  margin:0;font-family:var(--serifa);font-weight:600;letter-spacing:-.01em;line-height:1.12;
+  font-size:clamp(28px,3.4vw,40px);color:var(--floresta);
 }
-.btn-filtros:hover{background:rgba(255,255,255,.16)}
-.btn-filtros .ce-icone{width:16px;height:16px;margin:0}
-.btn-filtros .qtd{
-  min-width:20px;height:20px;padding:0 6px;border-radius:10px;
-  background:#FFFFFF;color:var(--mata);font-size:12px;line-height:20px;text-align:center;
+.texto-secao{margin:12px 0 0;max-width:62ch;color:var(--ink-2);font-size:16px}
+
+/* ------------------------------------------------------- topo */
+.topo{background:var(--floresta);color:var(--creme)}
+.topo .env{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:68px}
+.marca{display:inline-flex;align-items:center;gap:12px;color:inherit;text-decoration:none}
+.marca svg{width:36px;height:36px;flex:0 0 auto}
+.marca-nome{display:block;white-space:nowrap;font-family:var(--serifa);font-size:19px;font-weight:600;line-height:1.1;letter-spacing:.01em}
+.marca-sub{display:block;margin-top:2px;color:var(--salvia-clara);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.nav{display:flex;gap:4px}
+.nav a{
+  display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border-radius:999px;
+  color:var(--salvia-clara);text-decoration:none;font-size:14.5px;
+}
+.nav a:hover{background:rgba(246,241,231,.1);color:#FFFFFF}
+.nav a.destaque{background:var(--creme);color:var(--floresta);font-weight:600}
+.nav a.destaque:hover{background:#FFFFFF;color:var(--floresta)}
+.nav a:focus-visible{outline-color:var(--creme)}
+
+/* ------------------------------------------------------- hero */
+.hero{position:relative;overflow:hidden;background:var(--creme)}
+.hero-relevo{
+  position:absolute;inset:0 0 0 38%;
+  background:url("assets/relevo.svg") center/cover no-repeat;opacity:.38;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 30%);mask-image:linear-gradient(90deg,transparent,#000 30%);
+  pointer-events:none;
+}
+.hero .env{position:relative;z-index:1;padding-top:64px;padding-bottom:0}
+.hero-grade{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:48px;align-items:end}
+.hero h1{
+  margin:0;font-family:var(--serifa);font-weight:600;color:var(--floresta);
+  font-size:clamp(38px,5.6vw,68px);line-height:1.02;letter-spacing:-.02em;
+}
+.hero h1 em{font-style:italic;color:var(--terra);font-weight:500}
+.hero-desc{margin:20px 0 0;max-width:52ch;color:var(--ink-2);font-size:18px;line-height:1.55}
+
+.busca-hero{display:flex;gap:8px;margin-top:30px;max-width:620px;padding:6px;border:1px solid var(--linha-forte);border-radius:12px;background:var(--papel);box-shadow:var(--sombra)}
+.campo-busca{position:relative;flex:1 1 auto;min-width:0;display:block}
+.campo-busca .ce-icone{position:absolute;left:14px;top:50%;width:18px;height:18px;margin:-9px 0 0;color:var(--ink-3);pointer-events:none}
+.campo-busca input{
+  width:100%;height:48px;padding:0 12px 0 42px;border:0;border-radius:8px;background:transparent;font-size:16px;
+}
+.campo-busca input::placeholder{color:var(--ink-3)}
+.campo-busca input:focus-visible{outline:2px solid var(--floresta-2);outline-offset:0}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;flex:0 0 auto;
+  min-height:44px;padding:0 18px;border:1px solid var(--linha-forte);border-radius:8px;
+  background:var(--papel);color:var(--ink);font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;
+}
+.btn:hover{background:var(--areia)}
+.btn .ce-icone{width:16px;height:16px;margin:0}
+.btn-primario{border-color:var(--floresta);background:var(--floresta);color:var(--creme)}
+.btn-primario:hover{background:var(--floresta-2);border-color:var(--floresta-2)}
+
+.hero-numeros{display:flex;flex-wrap:wrap;gap:12px 36px;margin:30px 0 0;padding:0;list-style:none}
+.hero-numeros li{display:flex;flex-direction:column}
+.hero-numeros strong{font-family:var(--serifa);font-size:32px;font-weight:600;line-height:1;color:var(--floresta)}
+.hero-numeros span{margin-top:6px;color:var(--ink-2);font-size:13.5px}
+
+/* a carta: o contorno real dos 7 distritos (bloco geo-distritos) */
+.hero-carta{position:relative;align-self:center;margin:0}
+.hero-carta svg{display:block;width:100%;height:auto;max-height:380px}
+.hero-carta .d-forma{fill:var(--papel);fill-opacity:.82;stroke:var(--floresta-2);stroke-width:1.2;vector-effect:non-scaling-stroke}
+.hero-carta .d-sede{fill:var(--terra)}
+.hero-carta .d-rotulo{font-family:var(--sans);font-size:11px;fill:var(--ink-2);paint-order:stroke;stroke:var(--papel);stroke-width:3px;stroke-linejoin:round}
+.hero-carta figcaption{margin-top:8px;color:var(--ink-3);font-size:12.5px;text-align:right}
+.hero-serra{position:relative;z-index:1;display:block;width:100%;aspect-ratio:1600/300;min-height:90px;margin-top:28px;margin-bottom:-1px;background:url("assets/serra.svg") center bottom/cover no-repeat}
+
+/* ------------------------------------------------------- categorias */
+.secao{padding:72px 0}
+.categorias{background:var(--floresta);color:var(--creme);padding:56px 0 64px}
+.categorias .sobretitulo{color:var(--salvia)}
+.categorias .titulo-secao{color:var(--creme)}
+.categorias .texto-secao{color:var(--salvia-clara)}
+.cat-topo{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.cat-grade{
+  display:grid;gap:12px;margin:32px 0 0;padding:0;list-style:none;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
+.cat{
+  position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:14px;width:100%;height:100%;
+  padding:18px 18px 16px;border:1px solid rgba(220,228,210,.22);border-radius:var(--raio);
+  background:rgba(246,241,231,.04);color:var(--creme);text-align:left;cursor:pointer;
+  transition:background-color .15s,border-color .15s;
+}
+.cat:hover{background:rgba(246,241,231,.1);border-color:rgba(220,228,210,.5)}
+.cat:focus-visible{outline-color:var(--creme)}
+.cat-icone{
+  display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;
+  background:var(--creme);color:var(--cor-cat,var(--floresta));
+}
+.cat-icone .ce-icone{width:20px;height:20px;margin:0}
+.cat-nome{font-family:var(--serifa);font-size:19px;font-weight:600;line-height:1.2}
+.cat-n{margin-top:auto;color:var(--salvia-clara);font-size:13.5px}
+.cat--todos .cat-icone{background:transparent;border:1px solid rgba(220,228,210,.5);color:var(--creme)}
+.cat[aria-pressed="true"]{background:var(--creme);color:var(--floresta);border-color:var(--creme)}
+.cat[aria-pressed="true"] .cat-n{color:var(--ink-2)}
+.cat[aria-pressed="true"] .cat-icone{background:var(--cor-cat,var(--floresta));color:var(--creme)}
+.cat:disabled{opacity:.45;cursor:default}
+
+/* ------------------------------------------------------- explorador */
+.explorar{padding:56px 0 72px}
+.explorar-topo{margin-bottom:22px}
+.barra-ferramentas{
+  position:sticky;top:0;z-index:20;background:rgba(246,241,231,.96);
+  border-bottom:1px solid var(--linha);
+  -webkit-backdrop-filter:saturate(1.2) blur(6px);backdrop-filter:saturate(1.2) blur(6px);
+}
+.barra-ferramentas .env{display:flex;align-items:center;gap:10px;min-height:var(--altura-barra);padding-top:10px;padding-bottom:10px}
+.barra-ferramentas .campo-busca{max-width:420px;border:1px solid var(--linha-forte);border-radius:8px;background:var(--papel)}
+.barra-ferramentas .campo-busca input{height:44px;font-size:15px}
+.barra-ferramentas .btn{font-weight:500}
+.qtd{
+  min-width:22px;height:22px;padding:0 6px;border-radius:11px;
+  background:var(--terra);color:#FFFFFF;font-size:12px;font-weight:700;line-height:22px;text-align:center;
+}
+.ordem{display:flex;align-items:center;gap:8px;margin-left:auto;color:var(--ink-2);font-size:14px;white-space:nowrap}
+.ordem select,.campo select{
+  height:44px;padding:0 34px 0 12px;appearance:none;cursor:pointer;
+  border:1px solid var(--linha-forte);border-radius:8px;background-color:var(--papel);font-size:14.5px;color:var(--ink);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%234B534D' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;
 }
 
-/* a serra: duas linhas de cumeada, a da frente da cor da faixa de abas */
-.serra{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:64px;display:block}
-
-/* ------------------------------------------------------- abas de segmento */
-.abas{background:#FFFFFF;border-bottom:1px solid var(--line)}
-.abas .env{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
-.abas .env::-webkit-scrollbar{display:none}
+/* chips de segmento (as antigas abas) */
+.abas{display:flex;flex-wrap:wrap;gap:8px;padding:18px 0 4px}
+.abas::-webkit-scrollbar{display:none}
 .aba{
-  flex:0 0 auto;display:inline-flex;align-items:baseline;gap:6px;
-  padding:12px 12px 11px;border:0;border-bottom:2px solid transparent;
-  background:none;color:var(--ink-2);font-size:14px;cursor:pointer;white-space:nowrap;
+  flex:0 0 auto;display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px 0 12px;
+  border:1px solid var(--linha-forte);border-radius:999px;background:var(--papel);
+  color:var(--ink-2);font-size:14px;cursor:pointer;white-space:nowrap;
 }
-.aba:hover{color:var(--ink-1)}
-.aba .n{color:var(--ink-3);font-size:12px}
-.aba[aria-selected="true"]{color:var(--ink-1);font-weight:600;border-bottom-color:var(--mata)}
-.aba[aria-selected="true"] .n{color:var(--ink-2)}
-.aba.vazia{opacity:.45}
-.aba:focus-visible{outline-offset:-2px}
+.aba::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--cor-cat,var(--linha-forte))}
+.aba[data-seg=""]::before{display:none}
+.aba[data-seg=""]{padding-left:14px}
+.aba:hover{border-color:var(--floresta-2);color:var(--ink)}
+.aba .n{color:var(--ink-3);font-size:12.5px;font-variant-numeric:tabular-nums}
+.aba[aria-pressed="true"]{border-color:var(--floresta);background:var(--floresta);color:var(--creme);font-weight:600}
+.aba[aria-pressed="true"] .n{color:var(--salvia-clara)}
+.aba.vazia{opacity:.5}
 
-/* ------------------------------------------------------- barra de resultado */
-.barra{display:flex;align-items:center;flex-wrap:wrap;gap:8px 10px;padding:20px 0 14px}
-.total{margin:0 6px 0 0;font-size:15px;font-weight:600}
+/* barra de resultado */
+.barra{display:flex;align-items:center;flex-wrap:wrap;gap:8px 10px;padding:14px 0 16px}
+.total{margin:0 6px 0 0;font-size:16px;font-weight:600}
 .total span{font-weight:400;color:var(--ink-2)}
 .pilula{
-  display:inline-flex;align-items:center;gap:4px;
-  padding:3px 4px 3px 10px;border:1px solid var(--azul-borda);border-radius:999px;
-  background:var(--azul-claro);color:#0B4E8A;font-size:12.5px;
+  display:inline-flex;align-items:center;gap:2px;min-height:32px;
+  padding:0 2px 0 12px;border:1px solid #D9C1AE;border-radius:999px;
+  background:var(--terra-clara);color:#6F3417;font-size:13.5px;
 }
 .pilula button{
   display:inline-flex;align-items:center;justify-content:center;
-  width:20px;height:20px;padding:0;border:0;border-radius:50%;background:none;color:inherit;cursor:pointer;
+  width:28px;height:28px;padding:0;border:0;border-radius:50%;background:none;color:inherit;cursor:pointer;
 }
-.pilula button:hover{background:var(--azul-borda)}
-.pilula .ce-icone{width:10px;height:10px;margin:0}
-.link{padding:4px 2px;border:0;background:none;color:var(--azul);font-size:13px;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.pilula button:hover{background:#EBCFB9}
+.pilula .ce-icone{width:12px;height:12px;margin:0}
+.link{min-height:32px;padding:4px 2px;border:0;background:none;color:var(--floresta-2);font-size:14px;font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 
-/* ------------------------------------------------------- grade e cards */
-main{padding-bottom:40px}
+
+/* ------------------------------------------------------- cards */
 .ce-grade{
   display:grid;gap:14px;align-items:stretch;
-  grid-template-columns:repeat(auto-fill,minmax(min(340px,100%),1fr));
+  grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr));
 }
+/* paginação: 9 cards por página */
+.ce-card.fora-da-pagina{display:none}
+.paginacao{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 20px;margin-top:28px;padding-top:20px;border-top:1px solid var(--linha)}
+.paginacao-info{margin:0;color:var(--ink-2);font-size:14.5px}
+.paginas{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0;padding:0;list-style:none}
+.pag{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:44px;min-height:44px;padding:0 12px;
+  border:1px solid var(--linha-forte);border-radius:8px;background:var(--papel);color:var(--ink);font-size:15px;cursor:pointer;
+  font-variant-numeric:tabular-nums;
+}
+.pag:hover{background:var(--areia)}
+.pag[aria-current="page"]{border-color:var(--floresta);background:var(--floresta);color:var(--creme);font-weight:600;cursor:default}
+.pag:disabled{opacity:.4;cursor:default;background:var(--papel)}
+.pag .ce-icone{width:16px;height:16px;margin:0}
+.pag-reticencias{min-width:24px;color:var(--ink-3);text-align:center}
 .ce-estado{
-  margin:8px 0;padding:36px 20px;border:1px dashed var(--line-forte);border-radius:var(--raio);
-  background:#FFFFFF;color:var(--ink-2);text-align:center;font-size:14px;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  margin:4px 0;padding:40px 24px;border:1px dashed var(--linha-forte);border-radius:var(--raio);
+  background:var(--papel);color:var(--ink-2);text-align:center;font-size:15px;
 }
-.ce-estado p{margin:0 0 12px}
+.ce-estado svg{width:64px;height:64px;color:var(--salvia);margin-bottom:6px}
+.ce-estado p{margin:0 0 12px;max-width:44ch}
 
 .ce-card{
-  display:flex;flex-direction:column;overflow:hidden;
-  border:1px solid var(--line);border-radius:var(--raio);background:#FFFFFF;
-  min-width:0;cursor:pointer;
+  position:relative;display:flex;flex-direction:column;overflow:hidden;min-width:0;
+  border:1px solid var(--linha);border-radius:var(--raio);background:var(--papel);
+  cursor:pointer;transition:border-color .15s,box-shadow .15s;
 }
-.ce-card:hover{border-color:#B9C2BE}
-.ce-corpo{padding:13px 14px 12px;min-width:0}
+.ce-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--cor-cat,var(--linha))}
+.ce-card:hover{border-color:var(--linha-forte);box-shadow:var(--sombra)}
+.ce-corpo{padding:16px 16px 14px 19px;min-width:0}
+.ce-segmentos{
+  margin:0 0 6px;color:var(--terra);font-size:11.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+}
 .ce-cabecalho{display:flex;align-items:flex-start;gap:8px}
 .ce-titulo{
-  flex:1 1 auto;min-width:0;margin:0;font-size:calc(var(--base) * 14 / 12);font-weight:600;line-height:1.25;
-  display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;
+  flex:1 1 auto;min-width:0;margin:0;font-family:var(--serifa);font-size:20px;font-weight:600;line-height:1.2;
+  display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;color:var(--floresta);
 }
-.ce-titulo button{
-  padding:0;border:0;background:none;text-align:left;cursor:pointer;
-  font:inherit;color:var(--ink-1);
-}
-.ce-card:hover .ce-titulo button{text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--ink-3)}
+.ce-titulo button{padding:0;border:0;background:none;text-align:left;cursor:pointer;font:inherit;color:inherit}
+.ce-card:hover .ce-titulo button{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
 .ce-abrir{
   flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;
-  width:24px;height:24px;margin:-3px -5px 0 0;padding:0;
-  border:0;border-radius:4px;background:none;color:var(--ink-3);cursor:pointer;
+  width:30px;height:30px;margin:-4px -6px 0 0;padding:0;
+  border:0;border-radius:6px;background:none;color:var(--ink-3);cursor:pointer;
 }
-.ce-abrir:hover{background:var(--fundo);color:var(--ink-1)}
+.ce-abrir:hover{background:var(--areia);color:var(--ink)}
 .ce-abrir .ce-icone{margin:0}
 
 /* toda linha do resumo tem uma linha só: o texto inteiro está na ficha */
 .ce-linha{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ce-sub{margin:2px 0 0;font-size:calc(var(--base) * 11.5 / 12)}
-.ce-segmentos{color:var(--azul)}
-.ce-local{color:var(--ink-2)}
-.ce-meta{margin-top:9px;display:flex;flex-direction:column;gap:4px;color:var(--ink-2);font-size:calc(var(--base) * 11.5 / 12)}
-.ce-meta-item{display:flex;align-items:flex-start;gap:6px;min-width:0}
+.ce-sub{margin:6px 0 0;display:flex;align-items:center;gap:6px;color:var(--ink-2);font-size:13.5px}
+.ce-sub .ce-icone{margin:0;color:var(--musgo)}
+.ce-local{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.ce-meta{margin-top:12px;padding-top:12px;border-top:1px dashed var(--linha);display:flex;flex-direction:column;gap:6px;color:var(--ink-2);font-size:13.5px}
+.ce-meta-item{display:flex;align-items:flex-start;gap:8px;min-width:0}
+.ce-meta-item .ce-icone{color:var(--ink-3)}
 .ce-meta-txt{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ce-meta-item.vazio{color:var(--ink-3)}
+.ce-meta-item.vazio{color:var(--ink-3);font-style:italic}
 
 /* selos: no máximo duas linhas; o que não cabe vira "+N" (ajustarSelos) */
-.ce-selos{margin-top:10px;display:flex;flex-wrap:wrap;gap:4px;max-height:48px;overflow:hidden}
+.ce-selos{margin-top:12px;display:flex;flex-wrap:wrap;gap:5px;max-height:57px;overflow:hidden}
 .ce-selo,.ce-via{
-  height:22px;line-height:20px;padding:0 8px;max-width:100%;
-  border:1px solid var(--line);border-radius:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  background:var(--chip);color:var(--ink-1);font-size:calc(var(--base) * 11 / 12);
+  height:26px;line-height:24px;padding:0 9px;max-width:100%;
+  border:1px solid var(--linha);border-radius:999px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  background:var(--nevoa);color:var(--ink);font-size:12.5px;
 }
-.ce-via{display:inline-flex;align-items:center;gap:5px;border-color:#F1DE9A;background:var(--ambar);color:var(--ambar-ink);padding-left:6px}
-.ce-via .ce-icone{margin:0}
-.ce-mais{background:#FFFFFF;color:var(--ink-2);border-style:dashed}
+.ce-via{display:inline-flex;align-items:center;gap:5px;border-color:var(--ambar-borda);background:var(--ambar);color:var(--ambar-ink);padding-left:7px}
+.ce-via .ce-icone{margin:0;width:13px;height:13px}
+.ce-mais{background:var(--papel);color:var(--ink-2);border-style:dashed}
 
-/* ------------------------------------------------------- botões de contato */
+/* botões de contato */
 .ce-acoes{display:flex;flex-wrap:wrap;gap:6px}
-.ce-card .ce-acoes{
-  margin-top:auto;padding:10px 14px;border-top:1px solid #ECEEED;background:#FAFBFA;
-}
+.ce-card .ce-acoes{margin-top:auto;padding:10px 12px 12px 17px;border-top:1px solid var(--linha);background:#FBF7EF}
 .ce-botao{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:5px 10px;border:1px solid var(--line-forte);border-radius:4px;
-  background:#FFFFFF;color:var(--ink-1);font:inherit;font-size:calc(var(--base) * 11.5 / 12);
+  display:inline-flex;align-items:center;gap:6px;min-height:36px;
+  padding:0 10px;border:1px solid var(--linha-forte);border-radius:6px;
+  background:var(--papel);color:var(--ink);font-size:13.5px;
   text-decoration:none;cursor:pointer;white-space:nowrap;
 }
-.ce-botao:hover{background:var(--fundo)}
-.ce-botao:active{background:var(--line)}
-.ce-botao .ce-icone{margin-top:0}
-.ce-botao--icone{padding:5px 8px}
-.ce-botao--icone .ce-icone{width:13px;height:13px}
-.ce-botao--wpp{border-color:var(--verde);background:var(--verde);color:#FFFFFF}
-.ce-botao--wpp:hover,.ce-botao--wpp:active{background:var(--verde-fundo);border-color:var(--verde-fundo)}
+.ce-botao:hover{background:var(--areia)}
+.ce-botao .ce-icone{margin:0}
+.ce-botao--icone{width:36px;padding:0;justify-content:center}
+.ce-botao--icone .ce-icone{width:16px;height:16px}
+.ce-botao--wpp{border-color:var(--wpp);background:var(--wpp);color:#FFFFFF}
+.ce-botao--wpp:hover{background:var(--wpp-2);border-color:var(--wpp-2)}
+
+/* ------------------------------------------------------- sobre */
+.sobre{background:var(--papel);border-top:1px solid var(--linha)}
+.sobre-grade{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;margin-top:8px}
+.sobre p{color:var(--ink-2);font-size:16px;max-width:60ch}
+.sobre h3{margin:28px 0 8px;font-family:var(--serifa);font-size:21px;font-weight:600;color:var(--floresta)}
+.fatos{margin:0;padding:0;list-style:none;border-top:1px solid var(--linha)}
+.fatos li{display:grid;grid-template-columns:160px minmax(0,1fr);gap:16px;padding:14px 0;border-bottom:1px solid var(--linha);font-size:15px}
+.fatos dt,.fatos .rot{color:var(--ink-3)}
+.fatos .val{color:var(--ink)}
+
+/* ------------------------------------------------------- rodapé */
+.rodape{background:var(--floresta);color:var(--salvia-clara);font-size:14px}
+.rodape .env{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px 40px;padding-top:32px;padding-bottom:36px}
+.rodape p{margin:0;max-width:70ch;line-height:1.6}
+.rodape strong{color:var(--creme);font-family:var(--serifa);font-size:17px;font-weight:600}
+.rodape a{color:var(--creme)}
 
 /* ------------------------------------------------------- diálogos (ficha e filtros) */
-dialog{padding:0;border:0;color:var(--ink-1);background:#FFFFFF}
-dialog::backdrop{background:rgba(18,32,25,.55)}
+dialog{padding:0;border:0;color:var(--ink);background:var(--papel)}
+dialog::backdrop{background:rgba(20,36,26,.55)}
 .fechar{
   display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;
-  width:34px;height:34px;padding:0;border:0;border-radius:50%;
+  width:40px;height:40px;padding:0;border:0;border-radius:50%;
   background:none;color:var(--ink-2);cursor:pointer;
 }
-.fechar:hover{background:var(--fundo);color:var(--ink-1)}
-.fechar .ce-icone{width:16px;height:16px;margin:0}
+.fechar:hover{background:var(--areia);color:var(--ink)}
+.fechar .ce-icone{width:18px;height:18px;margin:0}
 
-/* a ficha */
 .ficha{
-  width:min(720px,calc(100vw - 32px));max-height:min(860px,calc(100vh - 48px));
-  border-radius:10px;box-shadow:0 24px 70px rgba(0,0,0,.28);
-  flex-direction:column;overflow:hidden;
+  width:min(740px,calc(100vw - 32px));max-height:min(880px,calc(100vh - 48px));
+  border-radius:12px;box-shadow:0 24px 70px rgba(0,0,0,.28);flex-direction:column;overflow:hidden;
 }
 .ficha[open]{display:flex}
-.ficha-cab{display:flex;align-items:flex-start;gap:12px;padding:22px 20px 16px 26px;border-bottom:1px solid var(--line)}
-.ficha-cab>div{flex:1 1 auto;min-width:0}
-.ficha-seg{margin:0 0 4px;color:var(--azul);font-size:13px}
-.ficha h2{margin:0;font-size:22px;font-weight:600;letter-spacing:-.01em;line-height:1.2}
-.ficha-local{margin:4px 0 0;color:var(--ink-2);font-size:14px}
-.ficha-corpo{flex:1 1 auto;overflow-y:auto;padding:6px 26px 20px}
-.ficha-corpo .ce-via{margin-top:14px;font-size:13px;height:auto;line-height:1.4;padding:3px 9px 3px 7px;white-space:normal}
-.ficha-corpo .ce-selos{margin-top:12px;max-height:none}
-.ficha-corpo .ce-selo{font-size:12.5px;height:auto;line-height:1.4;padding:3px 9px;white-space:normal}
-.ficha-sec{margin-top:20px}
-.ficha-sec h3{margin:0 0 8px;font-size:14px;font-weight:600}
-.ficha-sec dl{margin:0;display:grid;grid-template-columns:150px 1fr;gap:7px 16px;font-size:14px}
+.ficha-cab{
+  position:relative;display:flex;align-items:flex-start;gap:12px;padding:26px 20px 20px 28px;
+  border-bottom:1px solid var(--linha);background:var(--creme);overflow:hidden;
+}
+.ficha-cab::after{
+  content:"";position:absolute;inset:0 0 0 45%;background:url("assets/relevo.svg") center/cover no-repeat;opacity:.22;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 60%);mask-image:linear-gradient(90deg,transparent,#000 60%);pointer-events:none;
+}
+.ficha-cab>div{position:relative;z-index:1;flex:1 1 auto;min-width:0}
+.ficha-cab .fechar{position:relative;z-index:1}
+.ficha-seg{margin:0 0 6px;color:var(--terra);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.ficha h2{margin:0;font-family:var(--serifa);font-size:28px;font-weight:600;letter-spacing:-.01em;line-height:1.15;color:var(--floresta)}
+.ficha-local{margin:6px 0 0;color:var(--ink-2);font-size:15px}
+.ficha-corpo{flex:1 1 auto;overflow-y:auto;padding:6px 28px 22px}
+.ficha-corpo .ce-via{margin-top:16px;font-size:13.5px;height:auto;line-height:1.4;padding:5px 11px 5px 9px;white-space:normal;border-radius:8px}
+.ficha-corpo .ce-selos{margin-top:14px;max-height:none}
+.ficha-corpo .ce-selo{font-size:13px;height:auto;line-height:1.4;padding:4px 11px;white-space:normal}
+.ficha-sec{margin-top:22px}
+.ficha-sec h3{margin:0 0 10px;font-family:var(--serifa);font-size:18px;font-weight:600;color:var(--floresta)}
+.ficha-sec dl{margin:0;display:grid;grid-template-columns:170px 1fr;gap:8px 16px;font-size:15px}
 .ficha-sec dt{color:var(--ink-3)}
-.ficha-sec dd{margin:0;color:var(--ink-1);word-break:break-word}
-.ficha-pe{padding:14px 26px 18px;border-top:1px solid var(--line);background:#FAFAF9}
+.ficha-sec dd{margin:0;color:var(--ink);word-break:break-word}
+.ficha-pe{padding:16px 28px 20px;border-top:1px solid var(--linha);background:#FBF7EF}
 .ficha-pe .ce-acoes{margin:0;padding:0}
-.ficha-pe .ce-botao{font-size:14px;padding:7px 14px}
-.ficha-pe .ce-botao .ce-icone{width:14px;height:14px}
-.ficha-aviso{margin:12px 0 0;color:var(--ink-3);font-size:12.5px}
+.ficha-pe .ce-botao{font-size:14.5px;min-height:42px;padding:0 15px}
+.ficha-pe .ce-botao .ce-icone{width:16px;height:16px}
+.ficha-aviso{margin:12px 0 0;color:var(--ink-3);font-size:13px}
 
-/* o painel de filtros, preso à direita */
 .painel{
-  margin:0 0 0 auto;width:min(380px,100vw);height:100vh;max-height:100vh;
+  margin:0 0 0 auto;width:min(400px,100vw);max-width:100vw;height:100vh;max-height:100vh;
   box-shadow:-12px 0 40px rgba(0,0,0,.18);flex-direction:column;
 }
 .painel[open]{display:flex}
-.painel-cab{display:flex;align-items:center;justify-content:space-between;padding:16px 16px 14px 24px;border-bottom:1px solid var(--line)}
-.painel-cab h2{margin:0;font-size:18px;font-weight:600}
-.painel-corpo{flex:1 1 auto;overflow-y:auto;padding:8px 24px 24px}
-.campo{margin:20px 0 0;border:0;padding:0;min-width:0}
-.campo>label,.campo legend{display:block;margin:0 0 8px;padding:0;font-size:14px;font-weight:600}
-.campo select{
-  width:100%;height:40px;padding:0 34px 0 12px;appearance:none;cursor:pointer;
-  border:1px solid var(--line-forte);border-radius:var(--raio);background:#FFFFFF;font:inherit;font-size:14px;color:var(--ink-1);
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%23605E5C' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;background-position:right 12px center;
-}
-.segmentado{display:flex;border:1px solid var(--line-forte);border-radius:var(--raio);overflow:hidden}
+.painel-cab{display:flex;align-items:center;justify-content:space-between;padding:18px 16px 16px 24px;border-bottom:1px solid var(--linha);background:var(--creme)}
+.painel-cab h2{margin:0;font-family:var(--serifa);font-size:24px;font-weight:600;color:var(--floresta)}
+.painel-corpo{flex:1 1 auto;overflow-y:auto;padding:4px 24px 24px}
+.campo{margin:22px 0 0;border:0;padding:0;min-width:0}
+.campo>label,.campo legend{display:block;margin:0 0 8px;padding:0;font-size:15px;font-weight:600}
+.campo select{width:100%}
+.segmentado{display:flex;border:1px solid var(--linha-forte);border-radius:8px;overflow:hidden;background:var(--papel)}
 .segmentado label{flex:1 1 0;position:relative;text-align:center;cursor:pointer}
-.segmentado label+label{border-left:1px solid var(--line-forte)}
+.segmentado label+label{border-left:1px solid var(--linha-forte)}
 .segmentado input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
-.segmentado span{display:block;padding:9px 6px;font-size:13.5px;color:var(--ink-2)}
-.segmentado input:checked+span{background:var(--mata);color:#FFFFFF;font-weight:600}
-.segmentado input:focus-visible+span{outline:2px solid var(--azul);outline-offset:-3px}
+.segmentado span{display:flex;align-items:center;justify-content:center;min-height:42px;padding:0 6px;font-size:14px;color:var(--ink-2)}
+.segmentado input:checked+span{background:var(--floresta);color:var(--creme);font-weight:600}
+.segmentado input:focus-visible+span{outline:3px solid var(--terra);outline-offset:-3px}
 .opcoes{display:flex;flex-direction:column}
-.opcao{display:flex;align-items:center;gap:10px;padding:8px 0;font-size:14px;cursor:pointer;border-bottom:1px solid #F0EFEE}
+.opcao{display:flex;align-items:center;gap:12px;min-height:44px;padding:4px 0;font-size:15px;cursor:pointer;border-bottom:1px solid var(--linha)}
 .opcao:last-child{border-bottom:0}
-.opcao input{width:17px;height:17px;margin:0;accent-color:var(--mata);cursor:pointer}
-.opcao .n{margin-left:auto;color:var(--ink-3);font-size:12.5px}
-.painel-pe{display:flex;gap:10px;padding:14px 24px;border-top:1px solid var(--line)}
-.painel-pe .ce-botao{justify-content:center;height:42px;font-size:14px}
-.painel-pe .primario{flex:1 1 auto;border-color:var(--mata);background:var(--mata);color:#FFFFFF;font-weight:600}
-.painel-pe .primario:hover{background:var(--mata-2)}
+.opcao input{width:19px;height:19px;margin:0;accent-color:var(--floresta);cursor:pointer}
+.opcao .n{margin-left:auto;color:var(--ink-3);font-size:13px;font-variant-numeric:tabular-nums}
+.painel-pe{display:flex;gap:10px;padding:16px 24px;border-top:1px solid var(--linha)}
+.painel-pe .ce-botao{justify-content:center;min-height:46px;font-size:15px}
+.painel-pe .primario{flex:1 1 auto;border-color:var(--floresta);background:var(--floresta);color:var(--creme);font-weight:600}
+.painel-pe .primario:hover{background:var(--floresta-2)}
 
 @media (prefers-reduced-motion:no-preference){
   .ficha[open]{animation:surgir .18s ease-out}
@@ -286,76 +440,219 @@ dialog::backdrop{background:rgba(18,32,25,.55)}
   @keyframes surgir{from{opacity:0;transform:translateY(8px) scale(.99)}to{opacity:1;transform:none}}
   @keyframes deslizar{from{transform:translateX(24px);opacity:.6}to{transform:none;opacity:1}}
 }
+@media (prefers-reduced-motion:reduce){
+  *{scroll-behavior:auto !important}
+  .cat,.ce-card{transition:none}
+}
 
-/* ------------------------------------------------------- rodapé */
-.rodape{background:#FFFFFF;border-top:1px solid var(--line);color:var(--ink-2);font-size:13px}
-.rodape .env{padding-top:22px;padding-bottom:28px;display:flex;flex-wrap:wrap;gap:8px 40px;justify-content:space-between}
-.rodape p{margin:0;max-width:70ch;line-height:1.5}
-.rodape strong{color:var(--ink-1);font-weight:600}
-
-/* ------------------------------------------------------- telas estreitas */
+/* ------------------------------------------------------- larguras menores */
+@media (max-width:1099px){
+  .hero-grade{grid-template-columns:minmax(0,1fr) minmax(0,.7fr);gap:32px}
+}
+@media (max-width:820px){
+  .env{padding:0 20px}
+  .cat-grade{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hero-grade{grid-template-columns:minmax(0,1fr)}
+  .hero-carta{display:none}
+  .hero-relevo{inset:0;opacity:.22}
+  .sobre-grade{grid-template-columns:minmax(0,1fr);gap:8px}
+  .nav a:not(.destaque){display:none}
+  .ordem .rot{display:none}
+}
 @media (max-width:640px){
+  :root{--altura-barra:116px}
   .env{padding:0 16px}
-  .cab .env{padding-top:22px;padding-bottom:56px}
-  .cab-desc{font-size:14px}
-  .serra{height:44px}
-  .btn-filtros span.rot{display:none}
-  .btn-filtros{padding:0 13px}
+  .topo .env{min-height:60px}
+  .marca svg{width:32px;height:32px}
+  .marca-nome{font-size:17px}
+  .marca-sub{font-size:11px}
+  .rot-longo{display:none}
+  .hero .env{padding-top:36px}
+  .hero-desc{font-size:16px}
+  .busca-hero{flex-direction:column}
+  .busca-hero .btn{width:100%}
+  .hero-numeros{gap:10px 24px}
+  .hero-numeros strong{font-size:26px}
+  .secao{padding:52px 0}
+  .categorias{padding:44px 0 48px}
+  .cat-grade{gap:10px}
+  .cat{padding:14px 14px 12px;gap:10px}
+  .cat-nome{font-size:16.5px}
+  .abas{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:16px 16px 4px}
+  .abas::-webkit-scrollbar{display:none}
+  .barra-ferramentas .env{flex-wrap:wrap;gap:8px}
+  .barra-ferramentas .campo-busca{flex:1 1 100%;max-width:none}
+  .barra-ferramentas .btn{padding:0 12px}
+  .ordem select{max-width:128px;padding-right:28px;background-position:right 9px center}
   .ficha{width:100vw;max-width:100vw;height:100%;max-height:100%;border-radius:0}
-  .ficha-cab{padding:16px 12px 14px 18px}
-  .ficha-corpo{padding:4px 18px 18px}
-  .ficha-pe{padding:12px 18px 16px}
+  .ficha-cab{padding:18px 12px 16px 20px}
+  .ficha h2{font-size:24px}
+  .ficha-corpo{padding:4px 20px 18px}
+  .ficha-pe{padding:12px 20px 16px}
   .ficha-sec dl{grid-template-columns:1fr;gap:1px}
-  .ficha-sec dd{margin-bottom:8px}
+  .ficha-sec dd{margin-bottom:10px}
+  .fatos li{grid-template-columns:1fr;gap:2px}
+}
+@media (max-width:400px){
+  .topo .env{gap:10px}
+  .marca{gap:9px}
+  .marca-nome{white-space:normal;font-size:16px;line-height:1.05}
+  .marca-sub{display:none}
+  .nav a{padding:0 12px}
+}
+@media (max-width:640px){
+  .paginacao{justify-content:center}
+  .paginacao-info{width:100%;text-align:center}
+  .pag .rot{display:none}
+  .paginas{gap:4px}
+  .pag{min-width:42px;padding:0 10px}
 }
 @media print{
-  .cab,.abas,.barra,.ce-abrir{display:none}
+  .topo,.hero,.categorias,.barra-ferramentas,.abas,.barra,.ce-abrir,.sobre{display:none}
   .ce-card{break-inside:avoid;border-color:#BBB}
 }
 </style>
 </head>
 <body>
 
-<header class="cab">
+<a class="pular" href="#explorar">Pular para a lista de lugares</a>
+
+<header class="topo">
   <div class="env">
-    <p class="cab-sup">Projeto Montanhas Capixabas &ndash; Alfredo Chaves, ES</p>
-    <h1>O que fazer em Alfredo Chaves</h1>
-    <p class="cab-desc" id="cab-desc">Onde comer, dormir, passear e comprar no município, com contato direto de cada lugar.</p>
-    <div class="busca-linha">
-      <label class="busca">
-        <span class="ce-oculto">Buscar</span>
-        <input type="search" id="f-busca" placeholder="Buscar por nome ou endereço" autocomplete="off">
-      </label>
-      <button type="button" class="btn-filtros" id="btn-filtros" aria-haspopup="dialog">
-        <span class="rot">Filtros</span><span class="qtd ce-oculto" id="qtd-filtros"></span>
-      </button>
-    </div>
+    <a class="marca" href="#inicio" aria-label="Montanhas Capixabas, início">
+      <svg viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+        <circle cx="20" cy="20" r="19" fill="#F6F1E7"/>
+        <path d="M6.5 28.5 15 17.5l4.3 5.4L25.4 14l8.6 14.5Z" fill="#1F3D2B"/>
+        <path d="M25.4 14l2.4 4-1.3-.6-1.1 1.3-1.1-1.3-1.3.6Z" fill="#F6F1E7"/>
+        <path d="M5 32.2c5-2.2 9.2-2.6 15-.8s10 1.4 15-.8" fill="none" stroke="#9A4F2A" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      <span>
+        <span class="marca-nome">Montanhas Capixabas</span>
+        <span class="marca-sub">Alfredo Chaves · ES</span>
+      </span>
+    </a>
+    <nav class="nav" aria-label="Seções do guia">
+      <a href="#categorias">Categorias</a>
+      <a href="#sobre">Sobre os dados</a>
+      <a href="#explorar" class="destaque">Explorar<span class="rot-longo">&nbsp;lugares</span></a>
+    </nav>
   </div>
-  <svg class="serra" viewBox="0 0 1440 64" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-    <path fill="#1D6B59" d="M0 40 L90 22 L160 34 L260 8 L340 28 L420 18 L520 36 L610 12 L700 30 L790 16 L880 34 L980 6 L1070 26 L1160 20 L1250 36 L1340 14 L1440 28 V64 H0 Z"/>
-    <path fill="#FFFFFF" d="M0 54 L120 40 L220 50 L330 32 L440 48 L560 38 L660 52 L780 34 L900 50 L1010 40 L1120 54 L1230 36 L1340 48 L1440 40 V64 H0 Z"/>
-  </svg>
 </header>
 
-<nav class="abas" aria-label="Tipo de lugar">
-  <div class="env" id="abas" role="tablist"></div>
-</nav>
+<main id="inicio">
 
-<main class="env">
-  <div class="barra" id="barra">
-    <p class="total" id="total" aria-live="polite"></p>
+<section class="hero" aria-labelledby="hero-titulo">
+  <div class="hero-relevo" aria-hidden="true"></div>
+  <div class="env">
+    <div class="hero-grade">
+      <div>
+        <p class="sobretitulo">Guia da oferta turística</p>
+        <h1 id="hero-titulo">O que fazer em <em>Alfredo Chaves</em></h1>
+        <p class="hero-desc" id="hero-desc">Onde comer, dormir, passear e comprar no município, com endereço, dias de funcionamento e contato direto de cada lugar.</p>
+        <form class="busca-hero" id="form-busca" role="search">
+          <label class="campo-busca">
+            <span class="sr">Buscar lugares</span>
+            <input type="search" id="f-busca-hero" placeholder="Nome, endereço ou localidade" autocomplete="off">
+          </label>
+          <button type="submit" class="btn btn-primario">Ver resultados</button>
+        </form>
+        <ul class="hero-numeros" id="hero-numeros" aria-label="O guia em números"></ul>
+      </div>
+      <figure class="hero-carta" id="hero-carta" aria-hidden="true"></figure>
+    </div>
   </div>
-  <div class="ce-grade" id="grade"></div>
-  <div class="ce-estado ce-oculto" id="estado">
-    <p id="estado-txt"></p>
-    <button type="button" class="ce-botao" id="estado-limpar">Limpar filtros</button>
+  <div class="hero-serra" aria-hidden="true"></div>
+</section>
+
+<section class="categorias" id="categorias" aria-labelledby="cat-titulo">
+  <div class="env">
+    <div class="cat-topo">
+      <div>
+        <p class="sobretitulo">Por onde começar</p>
+        <h2 class="titulo-secao" id="cat-titulo">Escolha o que você procura</h2>
+        <p class="texto-secao">As categorias são as do diagnóstico turístico. Um mesmo lugar pode estar em mais de uma.</p>
+      </div>
+    </div>
+    <ul class="cat-grade" id="cat-grade"></ul>
   </div>
+</section>
+
+<section class="explorar" id="explorar" aria-labelledby="explorar-titulo">
+  <div class="env explorar-topo">
+    <p class="sobretitulo">Lugares</p>
+    <h2 class="titulo-secao" id="explorar-titulo">Explore os lugares cadastrados</h2>
+    <p class="texto-secao">Filtre por categoria, distrito, dia de funcionamento e estrutura, e abra a ficha de cada lugar para ver tudo o que ele informou.</p>
+  </div>
+
+  <div class="barra-ferramentas">
+    <div class="env">
+      <label class="campo-busca">
+        <span class="sr">Buscar lugares</span>
+        <input type="search" id="f-busca" placeholder="Buscar por nome ou endereço" autocomplete="off">
+      </label>
+      <button type="button" class="btn" id="btn-filtros" aria-haspopup="dialog">
+        <span class="rot">Filtros</span><span class="qtd ce-oculto" id="qtd-filtros"></span>
+      </button>
+      <label class="ordem">
+        <span class="rot">Ordenar</span>
+        <select id="f-ordem">
+          <option value="nome">Nome (A–Z)</option>
+          <option value="distrito">Distrito</option>
+        </select>
+      </label>
+    </div>
+  </div>
+
+  <div class="env">
+    <div class="abas" id="abas" role="group" aria-label="Categoria"></div>
+    <div class="barra" id="barra">
+      <p class="total" id="total" aria-live="polite"></p>
+    </div>
+
+    <div class="lista" id="lista">
+      <h3 class="sr">Lista de lugares</h3>
+      <div class="ce-grade" id="grade"></div>
+      <nav class="paginacao" id="paginacao" aria-label="Páginas de resultados" hidden>
+        <p class="paginacao-info" id="paginacao-info"></p>
+        <ul class="paginas" id="paginas"></ul>
+      </nav>
+      <div class="ce-estado ce-oculto" id="estado">
+        <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M6 46c8-5 14-6 20-2s12 4 20-2 12-6 12-6"/><path d="M10 34c6-4 11-5 16-2s10 3 16-1"/><path d="M18 22c4-3 8-3 12-1s7 2 10 0"/>
+          <circle cx="44" cy="20" r="9"/><path d="m50.5 26.5 6 6"/>
+        </svg>
+        <p id="estado-txt"></p>
+        <button type="button" class="ce-botao" id="estado-limpar">Limpar filtros</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="secao sobre" id="sobre" aria-labelledby="sobre-titulo">
+  <div class="env">
+    <p class="sobretitulo">Sobre o guia</p>
+    <h2 class="titulo-secao" id="sobre-titulo">De onde vêm estas informações</h2>
+    <div class="sobre-grade">
+      <div>
+        <p>Este guia reúne os empreendimentos turísticos de Alfredo Chaves levantados no diagnóstico da oferta turística do projeto Montanhas Capixabas. O objetivo é ajudar quem visita (e quem mora) a encontrar onde comer, dormir, passear e comprar no município, e a falar direto com cada lugar.</p>
+        <h3>O que você encontra aqui</h3>
+        <p>Endereço e ponto de referência, dias e horário de funcionamento, condição da via de acesso, estrutura (cartão, estacionamento, espaço infantil, pet, grupos, acessibilidade, idiomas) e os contatos que cada lugar autorizou publicar.</p>
+        <h3>Antes de sair</h3>
+        <p>As informações foram declaradas pelos próprios estabelecimentos e podem ter mudado. Confirme horário e condições por telefone ou WhatsApp antes de ir, principalmente para lugares na zona rural.</p>
+      </div>
+      <div>
+        <ul class="fatos" id="fatos"></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
 </main>
 
 <footer class="rodape">
   <div class="env">
+    <p><strong>Montanhas Capixabas</strong><br>Diagnóstico da oferta turística de Alfredo Chaves, ES.</p>
     <p id="rodape-txt"></p>
-    <p><strong>Montanhas Capixabas</strong><br>Diagnóstico turístico de Alfredo Chaves</p>
   </div>
 </footer>
 
@@ -1520,7 +1817,28 @@ E091;feriado
 E092;feriado
 E093;feriado
 </script>
-
+<!-- ================================================================
+     Contorno dos 7 distritos oficiais de Alfredo Chaves (IBGE 3200300),
+     usado na carta do topo. Fonte: relações de limite
+     administrativo do OpenStreetMap (osm_relation), © contribuidores do
+     OpenStreetMap, licença ODbL; códigos IBGE conferidos nas próprias
+     relações (tag IBGE:GEOCODIGO). Simplificado (~30 m) e codificado
+     como polilinha (precisão 1e-4 grau, ordem lat/lon). "Sede" e
+     "São Bento de Urânia" são os nomes usados nos dados do diagnóstico
+     para os distritos que o IBGE chama de "Alfredo Chaves" e "Urânia".
+     sede_lat/sede_lon = nó place=town/village da vila-sede no OSM.
+     Extraído em 11/10/2026.
+     ================================================================ -->
+<script type="text/plain" id="geo-distritos">
+distrito;nome_oficial;ibge;osm_relation;sede_lat;sede_lon;contorno
+Sede;Alfredo Chaves;320030005;1902985;-20.6348;-40.7503;j`sKhv|Wq@VqA?w@M[]?kBa@uB`@eCm@Om@a@qA]USWGWDg@]k@Qg@AmAiBFe@UKOe@QIMc@m@Be@j@q@^YDg@Eo@m@g@oBIqAk@wAe@q@aFaFONGZQVu@d@Mf@SLAf@Wp@FlBQpAk@zAOJaAu@MDY`@Ed@X`@GHA|@^f@K\OBOToAx@W^gCdAeBlA}@^cAr@_@qAMyByAsAc@o@[H[SI[Ji@Xm@U@[o@eBaA[E_@[]o@J[O]LSOc@Y?m@e@k@Rm@s@WIK_@cAYn@eBQ}@W[hA@vBgAj@RV`An@?l@c@h@{@f@Od@Rf@c@^\n@@b@g@o@yA[oAy@oByBuAs@BeAuBkBy@iBi@@y@lDaAxBUh@[R[r@}B`BcDXM\Ct@n@rAnBzAj@`@?`C_@j@]tAORKzAgBCc@HOB_KLFL^l@`@Zz@IxAd@d@FZ`@?Xd@b@HDZNPv@U^b@^?FpAt@x@LP@X`@`@X@^c@VFn@CXF\^b@CX[`@ARr@Cn@SZCV@Lb@Z?b@Od@c@^h@j@bA^Xj@x@Ot@q@RFH|A[bDPf@dK~E|CBb@NLWTFVINJVWxC_@v@Vd@@AXLDOh@FRUx@?b@a@n@V\G`@y@`BUtA_AdACh@[x@Cr@Y^APL@Q~@c@d@FFEZk@l@M|@a@f@SdAYd@q@bCaAdBATZTFt@F@r@QR}@f@KTFNOKdB
+Crubixá;Crubixá;320030010;1902986;-20.6415;-40.8676;bgqK|i|WC\jAf@PP`Cp@\h@VFVf@bAn@q@\a@`@_@~@Ah@Rx@b@R`A|A^tBbCjCL\Af@Qj@{@pA_AdCQfBJd@GlChAJTNn@|@|@\hAlAXn@`A@l@N@`@JRV@z@^~@CLv@|@jCt@NTOLB\RZl@ZLJX|@LNVL?TVn@EZURBFQ\YXf@TCd@TP_@n@Q@ORMDSSaASSOAEOTW|ANf@_@JeAM_AAcADKt@UMu@QEUULi@y@UCMHUW[Dc@g@CUOS{Ce@I@YkAgAGU\w@XUL{BFCFJZUAe@`@_@Js@LQl@Sl@cBXSLc@Mo@Bk@`@]Re@Ae@Me@q@VqA?w@M[]?kBa@uB`@eCm@Om@a@qA]USWGWDg@]k@Qg@AmAiBFe@UKOe@QIC[KIk@De@j@q@^aA?o@m@g@oBIqAk@wAe@q@aFaFONGZQVu@d@Mf@SLAf@Wp@FlBQpAk@zAOJaAu@MDY`@Ed@X`@GHA|@^f@K\OBOToAx@W^UDi@^
+Ibitiruí;Ibitiruí;320030015;1902987;-20.6014;-40.8593;|jqKhn~WLUX@Vg@h@U\cC`@_@Ha@JAVc@V_A^OH]l@GHYrBOfARRVZQYo@iAmA}@]o@}@UOiAKFmCKe@PgB~@eCz@qAPk@@g@M]cCkC_@uBaA}Ac@SSy@@i@^_A`@a@p@]cAo@Wg@WG]i@aCq@QQkAg@B]gA^eBlA{BhAmAvBy@Zs@Ge@HWrCFnBIvALfAPXb@dBb@z@j@z@dAl@V\jB]GbBDT`@b@Ld@b@d@L^x@l@@pAG\o@`AI`@h@jBpAXFv@SdBHZb@ZVr@a@hC_@`@@LpB\
+Matilde;Matilde;320030020;1902988;-20.5530;-40.8141;|jqKhn~WqB]AM^a@`@iCWs@c@[I[ReBGw@qAYi@kBHa@n@aAF]AqAy@m@M_@c@e@Me@a@c@EUFcBkB\W]eAm@oAwB_AyCDeCGoBVsCd@Ir@Fx@[fAmB_@qAMyByAsAc@o@[H[SI[Ji@Xm@U@[o@eBaA[E_@[]o@J[O]LSOc@Y?m@e@k@Rm@s@WIK_@u@Wc@Fi@^gCZsBh@W?uA}@sBe@_A?wAa@a@POjADRrApAp@V@TPRVJHl@Z\^PZjACl@MXHTh@b@Oh@o@HY\FTONWDa@c@UCUYY?_@UEDQIQk@[Ge@m@SFSE[m@Q?OQg@H_@Yw@E[UUHS`@WB_@Yk@dAg@FLpAVUPCBn@l@|@?RLXMz@YDOXUFARJjAf@VNr@YTIf@[JAVh@\LjAj@^D`@R^Nr@W`Ak@jAZBnAhAbAUv@Cf@?f@LVZGfADd@hAdBt`@`OHHGRBJf@SN@`@Z\?I~@k@DBp@Tb@TJ?ZND?L\h@MP@Lf@VVl@TEIRLXINBXMn@`@NX?Sh@XNG\WGOJKKIFAn@FRCLUNANHN?TNREt@W@SPSp@Ex@V^St@Hd@Qn@Wb@g@IaAb@Gb@PAFZ\Mh@F`AE|@\d@DV[|@[Vk@d@A`@cAbBk@X]XNNZp@Eh@Pj@l@@VV?@Ob@s@?Ws@Y?WLYE]P_@@c@^Sf@}@D_@CMa@Iu@iAo@k@d@{@
+Ribeirão do Cristo;Ribeirão do Cristo;320030025;1902989;-20.4944;-40.7376;hgpKrs{Wn@eBQ}@W[hA@vBgAj@RV`An@?l@c@h@{@f@Od@Rf@c@^\n@@b@g@o@yA[oAy@oByBuAs@BeAuBkBy@iBi@@y@HGbDy@xBUh@[R[r@}B`BcDi@CuAq@q@SeBS{DgBmFaBGe@cB?i@QEQg@AWy@Hc@Ei@IIW@IYS@Up@[JeCGQ[SEo@n@_ABUE]Yw@Mc@DEm@RaC[a@uAEWMOU_@t@s@Q?]Zg@Mu@QCyBVYSGe@YN_@j@i@X_@MGWa@Pq@OUi@]CK]?MNOFk@o@c@Wc@DyA\}@IIe@IUWWAGp@IJi@A]X]H}AGKVRh@BbEOh@m@p@sAd@KTCh@WNCPs@LWNIXe@JY~AXpBMV_@P?^v@h@dChE\Y@[pAiAt@JLj@b@KpABVQTAHF^fBMn@LZy@vAz@b@Xx@x@XP`@E`@L~@VDr@S`@\r@CLZGtAJNh@Av@q@`@VFb@j@G`A`BDx@TNZSTe@\SFPJD?x@XLJf@P?VSX^\dAVPT@PNAd@{@`@gAGMDGTJt@?rEv@PJ^`@D\\bA?b@^Lr@vA`@~@?dATvAf@j@d@jAOxAa@lBS~@i@
+Sagrada Família;Sagrada Família;320030030;1902990;-20.5789;-40.6985;txpKhhzWi@CuAq@q@SeBS{DgBmFaBGe@JwBv@_B@a@Mo@T]ZmA`@c@?e@^sBT?\Rh@@\}@J?^d@X@n@VRRKPcAB?JV\Bd@LR^BXSCIH?f@p@vAn@vC@fA[PSF[My@g@c@C_A~Be@~@RbBAVQd@@HWF@Jl@CjAb@tAx@dBv@Pf@`@Vl@B`@K~@p@^C~JINBb@{AfBSJuANk@\aC^}@G_Ac@sAoBu@o@w@P
+São Bento de Urânia;Urânia;320030035;1902991;-20.4714;-40.9179;bzpKdl~WIKLm@CYHOMYHSUDWm@g@WAMLQ]i@?MOE?[UKUc@Cq@j@EH_A]?a@[OAg@RCKFSIIu`@aOiAeBEe@FgAW[g@Mg@?w@BcAToAiA[C}@h@MXYG_@N_@@k@t@U]QD_AOeBt@WAa@TSl@LTRdBOJIb@VZK^g@HGJBj@KVNZEn@^p@Ix@Wr@BLM\@n@e@P_@WeA~@DZGNe@DyAz@Vb@UxAcABYUYTM\FrAIZFTe@?gAp@Gz@DjAGRVVANl@TY`A@HZD?b@MPgANAbANR@VcA`Bs@RG`@LT`@F`@IVHGNJb@S^Zl@Jn@Cj@_@b@QhAVhCz@p@DNKZL\`@PNTP@RW?_AP]f@OPm@PSf@At@T|@Cl@JJL\@HIDa@Ka@k@aA[OE_@n@]Fg@ZSh@w@D[d@L`AQVD`@Z`@M\?@hAHDd@SvAGRi@VWIg@TUx@Px@WfAh@`AVREa@iA?g@Xs@JI^@@GVJb@AVVd@AfAs@j@Z@XTTb@a@tARFSp@YbAb@fA]dA`@b@Kn@T^A\n@l@LTZdAs@Vm@|@a@H[RWRCh@j@P@^o@REHWHAJZ`@@Ph@Oh@R^G^LXHA?WLIr@Yd@HJG^kAIe@Ru@We@VaBTUVADu@OS?UIO@OTOBMGS@o@HGJJNKVFF]YORi@q@E
+</script>
 <script>
 "use strict";
 (function () {
@@ -1598,8 +1916,70 @@ var CONV_DE = indexar(tabela("ponte_empreendimento_conveniencia"), "id_empreendi
 
 var TOTAL = EMPS.length;
 
+var EMP_POR_ID = {};
+EMPS.forEach(function (e) { EMP_POR_ID[e.id_empreendimento] = e; });
+
+var SEG_POR_ID = {};
+SEGS.forEach(function (s) { SEG_POR_ID[s.id_segmento] = s; });
+
+/** Segmentos de um lugar na ordem oficial dos chips (dim_segmento.ordem_chip). */
+function segmentosDe(e) {
+  return (SEG_DE[e.id_empreendimento] || []).slice().sort(function (a, b) {
+    return (parseInt((SEG_POR_ID[a] || {}).ordem_chip, 10) || 99) - (parseInt((SEG_POR_ID[b] || {}).ordem_chip, 10) || 99);
+  });
+}
+
+/* ------------------------------------------------------------------
+   Geometria dos distritos (bloco geo-distritos): contorno de cada um
+   dos 7 distritos oficiais (IBGE 3200300) em polilinha codificada
+   (precisão 1e-4 grau), extraído das relações de limite do
+   OpenStreetMap. Serve para a carta do topo.
+   ------------------------------------------------------------------ */
+
+function decodificarPolilinha(s) {
+  var i = 0, lat = 0, lng = 0, pts = [];
+  while (i < s.length) {
+    var k, b, desloc, res, d;
+    for (k = 0; k < 2; k++) {
+      desloc = 0; res = 0;
+      do { b = s.charCodeAt(i++) - 63; res |= (b & 0x1f) << desloc; desloc += 5; } while (b >= 0x20);
+      d = (res & 1) ? ~(res >> 1) : (res >> 1);
+      if (k === 0) { lat += d; } else { lng += d; }
+    }
+    pts.push([lat / 1e4, lng / 1e4]);
+  }
+  return pts;
+}
+
+var DISTRITOS = (function () {
+  var el = document.getElementById("geo-distritos");
+  if (!el) { return []; }
+  return parseCSV(el.textContent).map(function (l) {
+    return {
+      distrito: l.distrito,
+      oficial: l.nome_oficial,
+      ibge: l.ibge,
+      sede: [parseFloat(l.sede_lat), parseFloat(l.sede_lon)],
+      anel: decodificarPolilinha(l.contorno)
+    };
+  }).filter(function (d) { return d.anel.length > 3; });
+})();
+
+var LIMITES = (function () {
+  var b = { s: 90, n: -90, o: 180, l: -180 };
+  DISTRITOS.forEach(function (d) {
+    d.anel.forEach(function (p) {
+      if (p[0] < b.s) { b.s = p[0]; } if (p[0] > b.n) { b.n = p[0]; }
+      if (p[1] < b.o) { b.o = p[1]; } if (p[1] > b.l) { b.l = p[1]; }
+    });
+  });
+  return b;
+})();
+
+
 /* ==================================================================
-   2. Ícones — porte direto de src/icones.ts (SVG 16x16, currentColor)
+   2. Ícones — SVG 16x16 em traço (currentColor). Os do card vêm de
+      src/icones.ts; os de categoria são da identidade nova.
    ================================================================== */
 
 var NS = "http://www.w3.org/2000/svg";
@@ -1637,8 +2017,60 @@ var ICONES = {
     ["circle", { cx: "8", cy: "8", r: "6.2" }],
     ["path", { d: "M1.8 8h12.4M8 1.8c1.7 1.8 2.6 3.9 2.6 6.2S9.7 12.4 8 14.2C6.3 12.4 5.4 10.3 5.4 8S6.3 3.6 8 1.8Z" }]
   ],
-  seta: [
-    ["path", { d: "M4.4 6.4 8 10l3.6-3.6" }]
+  busca: [
+    ["circle", { cx: "7", cy: "7", r: "4.6" }],
+    ["path", { d: "M10.4 10.4 14 14" }]
+  ],
+  filtro: [
+    ["path", { d: "M2 4.5h12M4.5 8h7M7 11.5h2" }]
+  ],
+  fechar: [
+    ["path", { d: "M3.5 3.5l9 9M12.5 3.5l-9 9" }]
+  ],
+  abrir: [
+    ["path", { d: "M9.5 2.5h4v4M13.5 2.5 8.6 7.4M6.5 13.5h-4v-4M2.5 13.5l4.9-4.9" }]
+  ],
+  anterior: [
+    ["path", { d: "M10 3.5 5.5 8l4.5 4.5" }]
+  ],
+  proxima: [
+    ["path", { d: "M6 3.5 10.5 8 6 12.5" }]
+  ],
+  /* categorias */
+  comer: [
+    ["path", { d: "M3.6 1.8v3.8a1.8 1.8 0 0 0 3.6 0V1.8M5.4 1.8v12.4" }],
+    ["path", { d: "M11.8 14.2V1.8c-1.7.7-2.6 2.5-2.6 4.6 0 1.7.9 2.8 2.6 2.9" }]
+  ],
+  dormir: [
+    ["path", { d: "M1.6 3.4v10M1.6 10.6h12.8v2.8M14.4 10.6V8.8a2 2 0 0 0-2-2H7.2v3.8" }],
+    ["circle", { cx: "4.4", cy: "8.2", r: "1.4" }]
+  ],
+  natureza: [
+    ["path", { d: "M1.8 3h6" }],
+    ["path", { d: "M7.6 3c.5 3.3 1 6.4 1 11.2M10.6 5.8c.3 2.6.6 4.8.6 8.4M13.4 8.4c.2 1.9.3 3.5.3 5.8" }],
+    ["path", { d: "M1.8 14.2h12.4" }]
+  ],
+  produtos: [
+    ["path", { d: "M5.4 1.9h5.2M5.8 1.9v2c-1.7.6-2.8 2-2.8 3.8v4.9c0 .9.6 1.5 1.5 1.5h7c.9 0 1.5-.6 1.5-1.5V7.7c0-1.8-1.1-3.2-2.8-3.8v-2" }],
+    ["path", { d: "M3 8.6h10" }]
+  ],
+  compras: [
+    ["path", { d: "M2.8 5.4h10.4l-.9 8.8H3.7Z" }],
+    ["path", { d: "M5.6 7V4.6a2.4 2.4 0 0 1 4.8 0V7" }]
+  ],
+  aventura: [
+    ["path", { d: "M1.4 14 6.6 5.6l2.4 3.9 1.7-2.5 3.9 7Z" }],
+    ["path", { d: "M6.6 5.6V1.8l2.8 1.3-2.8 1.3" }]
+  ],
+  cultura: [
+    ["path", { d: "M1.8 5.8h12.4L8 2.2Z" }],
+    ["path", { d: "M3.4 5.8v6.6M6.4 5.8v6.6M9.6 5.8v6.6M12.6 5.8v6.6M1.6 13.8h12.8" }]
+  ],
+  todos: [
+    ["rect", { x: "2", y: "2", width: "5", height: "5", rx: "1" }],
+    ["rect", { x: "9", y: "2", width: "5", height: "5", rx: "1" }],
+    ["rect", { x: "2", y: "9", width: "5", height: "5", rx: "1" }],
+    ["rect", { x: "9", y: "9", width: "5", height: "5", rx: "1" }]
   ]
 };
 
@@ -1660,6 +2092,24 @@ function icone(nome, classe) {
   });
   return svg;
 }
+
+/* ------------------------------------------------------------------
+   Aparência das categorias: só apresentação (cor e ícone), indexada
+   pelo id_segmento de dim_segmento. Nome, ordem e pertencimento vêm
+   dos dados; uma categoria nova sem entrada aqui usa o ícone e a cor
+   padrão.
+   ------------------------------------------------------------------ */
+var APARENCIA_SEG = {
+  "1": { cor: "#B5562D", icone: "comer" },     // Onde comer
+  "2": { cor: "#3B5B8C", icone: "dormir" },    // Onde dormir
+  "7": { cor: "#2F7F73", icone: "natureza" },  // Cachoeiras e natureza
+  "4": { cor: "#8C6C14", icone: "produtos" },  // Produtos locais
+  "5": { cor: "#8A4F7D", icone: "compras" },   // Compras e artesanato
+  "3": { cor: "#4E7A2E", icone: "aventura" },  // Aventura
+  "6": { cor: "#6B4F3A", icone: "cultura" }    // Cultura
+};
+function aparencia(idSeg) { return APARENCIA_SEG[idSeg] || { cor: "#5E7F52", icone: "local" }; }
+function corDe(e) { var s = segmentosDe(e); return s.length ? aparencia(s[0]).cor : "#5E7F52"; }
 
 /* ==================================================================
    3. Contato — porte direto de src/contato.ts
@@ -1768,40 +2218,14 @@ function selosDoCard(e) {
   return textos;
 }
 
-/* ícones da moldura do site (o card usa só os de src/icones.ts) */
-ICONES.busca = [
-  ["circle", { cx: "7", cy: "7", r: "4.6" }],
-  ["path", { d: "M10.4 10.4 14 14" }]
-];
-ICONES.filtro = [
-  ["path", { d: "M2 4.5h12M4.5 8h7M7 11.5h2" }]
-];
-ICONES.fechar = [
-  ["path", { d: "M3.5 3.5l9 9M12.5 3.5l-9 9" }]
-];
-ICONES.abrir = [
-  ["path", { d: "M9.5 2.5h4v4M13.5 2.5 8.6 7.4M6.5 13.5h-4v-4M2.5 13.5l4.9-4.9" }]
-];
-
 /* ==================================================================
-   5. O card — mesma ordem de montagem de src/listaCards.ts
-      O ▼ do visual vira o botão que abre a ficha (modal).
+   5. O card — mesma origem de src/listaCards.ts, moldura nova
    ================================================================== */
 
 function criar(tag, classe) {
   var el = document.createElement(tag);
   if (classe) { el.className = classe; }
   return el;
-}
-
-function itemMeta(nomeDoIcone, texto) {
-  if (!texto) { return null; }
-  var raiz = criar("span", "ce-meta-item");
-  raiz.appendChild(icone(nomeDoIcone, "ce-icone"));
-  var t = criar("span", "ce-meta-txt");
-  t.textContent = texto;
-  raiz.appendChild(t);
-  return raiz;
 }
 
 function botaoLink(nomeDoIcone, classe, rotulo, url, novaAba) {
@@ -1852,6 +2276,7 @@ function selosDe(e) {
   return selos;
 }
 
+/** Todos os contatos (ficha). */
 function acoesDe(e) {
   var acoes = criar("div", "ce-acoes");
   var tels = telefonesDoCard(e.telefones, e.whatsapp);
@@ -1879,7 +2304,7 @@ function linhaMeta(nomeDoIcone, texto, seVazio) {
   return raiz;
 }
 
-/** Contatos do card: um número só e ícones para Instagram e site. A ficha tem todos. */
+/** Contatos do card: um número, WhatsApp e ícones de Instagram e site. A ficha tem todos. */
 function acoesDoCard(e) {
   var acoes = criar("div", "ce-acoes");
   var tels = telefonesDoCard(e.telefones, e.whatsapp);
@@ -1900,18 +2325,29 @@ function acoesDoCard(e) {
     a.title = c[3];
     acoes.appendChild(a);
   });
+
   return acoes;
 }
 
 function montarCard(e) {
   var raiz = criar("article", "ce-card");
   raiz.setAttribute("data-id", e.id_empreendimento);
+  raiz.style.setProperty("--cor-cat", corDe(e));
   var nome = e.nome_empreendimento || e.id_empreendimento;
   var corpo = criar("div", "ce-corpo");
   raiz.appendChild(corpo);
 
+  /* categorias, como sobretítulo */
+  var segmentos = (e.segmentos_rotulo || "").trim();
+  if (segmentos) {
+    var sSeg = criar("p", "ce-segmentos ce-linha");
+    sSeg.textContent = segmentos;
+    sSeg.title = segmentos;
+    corpo.appendChild(sSeg);
+  }
+
   /* cabeçalho: título (abre a ficha) + botão de abrir */
-  var titulo = criar("h2", "ce-titulo");
+  var titulo = criar("h3", "ce-titulo");
   var tBtn = criar("button", null);
   tBtn.type = "button";
   tBtn.textContent = nome;
@@ -1929,18 +2365,16 @@ function montarCard(e) {
   cabecalho.appendChild(abrir);
   corpo.appendChild(cabecalho);
 
-  /* segmentos · local */
-  var segmentos = (e.segmentos_rotulo || "").trim();
+  /* distrito · zona */
   var local = localDe(e);
-  var sub = criar("p", "ce-sub ce-linha");
-  var sSeg = criar("span", "ce-segmentos");
-  sSeg.textContent = segmentos;
-  var sLoc = criar("span", "ce-local");
-  sLoc.textContent = local ? (segmentos ? " · " : "") + local : "";
-  sub.appendChild(sSeg);
-  sub.appendChild(sLoc);
-  sub.title = sub.textContent;
-  corpo.appendChild(sub);
+  if (local) {
+    var sub = criar("p", "ce-sub ce-linha");
+    sub.appendChild(icone("local", "ce-icone"));
+    var sLoc = criar("span", "ce-local");
+    sLoc.textContent = local;
+    sub.appendChild(sLoc);
+    corpo.appendChild(sub);
+  }
 
   /* endereço, dias e horário: uma linha cada, sempre */
   var meta = criar("div", "ce-meta");
@@ -2006,16 +2440,18 @@ function ajustarSelos(card) {
   mais.title = escondidos + (escondidos === 1 ? " item a mais" : " itens a mais") + " na ficha";
 }
 
+var grade = document.getElementById("grade");
+
 function ajustarTodosSelos() {
   Array.prototype.forEach.call(grade.children, function (card) {
-    if (!card.classList.contains("ce-oculto")) { ajustarSelos(card); }
+    if (!card.classList.contains("ce-oculto") && !card.classList.contains("fora-da-pagina")) { ajustarSelos(card); }
   });
 }
 
 var esperaResize = 0;
 window.addEventListener("resize", function () {
   clearTimeout(esperaResize);
-  esperaResize = setTimeout(ajustarTodosSelos, 120);
+  esperaResize = setTimeout(aplicarPagina, 120);   // redesenha as páginas e reajusta os selos
 });
 
 /* ==================================================================
@@ -2060,9 +2496,6 @@ var FICHA_SECOES = [
     }]
   ]]
 ];
-
-var EMP_POR_ID = {};
-EMPS.forEach(function (e) { EMP_POR_ID[e.id_empreendimento] = e; });
 
 var ficha = document.getElementById("ficha");
 var fichaCorpo = document.getElementById("ficha-corpo");
@@ -2151,14 +2584,22 @@ document.getElementById("ficha-fechar").addEventListener("click", fecharFicha);
 window.addEventListener("hashchange", sincronizarHash);
 
 /* ==================================================================
-   7. Filtros
+   7. Filtros — UMA regra (passa) para cards, categorias, abas e
+      contagens do painel.
    ================================================================== */
 
-function estadoVazio() { return { seg: "", q: "", distrito: "", local: "", dia: "", conv: [] }; }
+function estadoVazio() { return { seg: "", q: "", qTexto: "", distrito: "", local: "", dia: "", conv: [] }; }
 var estado = estadoVazio();
+var ui = { ordem: "nome", pagina: 1 };
+var POR_PAGINA = 9;
 
-function passa(e, ignorarSegmento) {
-  if (!ignorarSegmento && estado.seg && (SEG_DE[e.id_empreendimento] || []).indexOf(estado.seg) < 0) { return false; }
+/**
+ * `ignorar` deixa uma dimensão de fora — é assim que cada controle mostra
+ * quantos lugares teria se fosse escolhido (as abas ignoram a categoria).
+ */
+function passa(e, ignorar) {
+  ignorar = ignorar || {};
+  if (!ignorar.seg && estado.seg && (SEG_DE[e.id_empreendimento] || []).indexOf(estado.seg) < 0) { return false; }
   if (estado.q && (e.busca || "").indexOf(estado.q) < 0) { return false; }
   if (estado.distrito && e.distrito !== estado.distrito) { return false; }
   if (estado.local && e.localizacao_rotulo !== estado.local) { return false; }
@@ -2176,31 +2617,168 @@ function contar(fn) {
   return n;
 }
 
-var grade = document.getElementById("grade");
+function contarNoSegmento(idSeg) {
+  return contar(function (e) {
+    return passa(e, { seg: true }) && (!idSeg || (SEG_DE[e.id_empreendimento] || []).indexOf(idSeg) >= 0);
+  });
+}
+
 var nos = {};
 
 function desenharCards() {
-  EMPS.slice()
-    .sort(function (a, b) {
-      return (a.nome_empreendimento || "").localeCompare(b.nome_empreendimento || "", "pt-BR");
-    })
-    .forEach(function (e) {
-      var no = montarCard(e);
-      nos[e.id_empreendimento] = no;
-      grade.appendChild(no);
-    });
+  EMPS.forEach(function (e) { nos[e.id_empreendimento] = montarCard(e); });
+  ordenarCards();
 }
 
-/* ------------------------------------------------- abas de segmento */
+function ordenarCards() {
+  var porNome = function (a, b) {
+    return (a.nome_empreendimento || "").localeCompare(b.nome_empreendimento || "", "pt-BR");
+  };
+  var lista = EMPS.slice().sort(ui.ordem === "distrito"
+    ? function (a, b) { return (a.distrito || "").localeCompare(b.distrito || "", "pt-BR") || porNome(a, b); }
+    : porNome);
+  lista.forEach(function (e) { grade.appendChild(nos[e.id_empreendimento]); });
+}
 
+/* ------------------------------------------------- paginação (9 por página) */
+
+var elPaginacao = document.getElementById("paginacao");
+var elPaginas = document.getElementById("paginas");
+
+/** Os cards que passam nos filtros, na ordem da grade. */
+function cardsDoResultado() {
+  return Array.prototype.filter.call(grade.children, function (c) { return !c.classList.contains("ce-oculto"); });
+}
+
+/** Mostra só os cards da página atual e redesenha os controles. */
+function aplicarPagina() {
+  var cards = cardsDoResultado();
+  var total = Math.max(1, Math.ceil(cards.length / POR_PAGINA));
+  ui.pagina = Math.min(Math.max(1, ui.pagina), total);
+  var ini = (ui.pagina - 1) * POR_PAGINA, fim = ini + POR_PAGINA;
+  Array.prototype.forEach.call(grade.children, function (c) { c.classList.remove("fora-da-pagina"); });
+  cards.forEach(function (c, i) { c.classList.toggle("fora-da-pagina", i < ini || i >= fim); });
+
+  elPaginacao.hidden = cards.length <= POR_PAGINA;
+  document.getElementById("paginacao-info").textContent = cards.length
+    ? "Mostrando " + (ini + 1) + "–" + Math.min(fim, cards.length) + " de " + cards.length
+    : "";
+  desenharPaginas(total);
+  ajustarTodosSelos();
+}
+
+/** Números das páginas: primeira, última, a atual e (fora do celular) as vizinhas; o resto vira "…". */
+function numerosDePagina(total, atual) {
+  var ns = [];
+  var vizinhas = window.matchMedia && window.matchMedia("(max-width: 640px)").matches ? 0 : 1;  // celular: 1 … 4 … 11
+  for (var n = 1; n <= total; n++) {
+    if (n === 1 || n === total || Math.abs(n - atual) <= vizinhas) { ns.push(n); }
+    else if (ns[ns.length - 1] !== "…") { ns.push("…"); }
+  }
+  return ns;
+}
+
+function botaoPagina(conteudo, rotulo, destino, desligado) {
+  var li = criar("li", null);
+  var b = criar("button", "pag");
+  b.type = "button";
+  b.setAttribute("aria-label", rotulo);
+  if (typeof conteudo === "string") { b.textContent = conteudo; } else { conteudo.forEach(function (n) { b.appendChild(n); }); }
+  if (destino === ui.pagina && !desligado && typeof conteudo === "string") { b.setAttribute("aria-current", "page"); }
+  b.disabled = !!desligado;
+  b.addEventListener("click", function () { if (destino !== ui.pagina) { irParaPagina(destino); } });
+  li.appendChild(b);
+  return li;
+}
+
+function desenharPaginas(total) {
+  elPaginas.innerHTML = "";
+  var antTxt = criar("span", "rot"); antTxt.textContent = "Anterior";
+  var proxTxt = criar("span", "rot"); proxTxt.textContent = "Próxima";
+  elPaginas.appendChild(botaoPagina([icone("anterior", "ce-icone"), antTxt], "Página anterior", ui.pagina - 1, ui.pagina === 1));
+  numerosDePagina(total, ui.pagina).forEach(function (n) {
+    if (n === "…") {
+      var li = criar("li", "pag-reticencias");
+      li.textContent = "…";
+      li.setAttribute("aria-hidden", "true");
+      elPaginas.appendChild(li);
+    } else {
+      elPaginas.appendChild(botaoPagina(String(n), "Página " + n + " de " + total, n, false));
+    }
+  });
+  elPaginas.appendChild(botaoPagina([proxTxt, icone("proxima", "ce-icone")], "Próxima página", ui.pagina + 1, ui.pagina === total));
+}
+
+function irParaPagina(n) {
+  ui.pagina = n;
+  aplicarPagina();
+  rolarPara(document.getElementById("barra"));
+  var t = document.getElementById("total");
+  t.setAttribute("tabindex", "-1");
+  t.focus({ preventScroll: true });
+}
+
+/* ------------------------------------------------- categorias (topo) e chips */
+
+var elCats = document.getElementById("cat-grade");
 var elAbas = document.getElementById("abas");
+
+function escolherSegmento(id, rolar) {
+  estado.seg = (estado.seg === id && id) ? "" : id;
+  atualizar();
+  if (rolar) { rolarPara(document.getElementById("explorar")); }
+}
+
+function montarCategorias() {
+  SEGS.forEach(function (s) {
+    var li = criar("li", null);
+    var b = criar("button", "cat");
+    b.type = "button";
+    b.setAttribute("data-seg", s.id_segmento);
+    b.style.setProperty("--cor-cat", aparencia(s.id_segmento).cor);
+    var ic = criar("span", "cat-icone");
+    ic.appendChild(icone(aparencia(s.id_segmento).icone, "ce-icone"));
+    var nome = criar("span", "cat-nome");
+    nome.textContent = s.rotulo_visitante;
+    var n = criar("span", "cat-n");
+    b.appendChild(ic);
+    b.appendChild(nome);
+    b.appendChild(n);
+    b.addEventListener("click", function () { escolherSegmento(s.id_segmento, true); });
+    li.appendChild(b);
+    elCats.appendChild(li);
+  });
+  var li = criar("li", null);
+  var t = criar("button", "cat cat--todos");
+  t.type = "button";
+  t.setAttribute("data-seg", "");
+  var ic = criar("span", "cat-icone");
+  ic.appendChild(icone("todos", "ce-icone"));
+  var nome = criar("span", "cat-nome");
+  nome.textContent = "Todos os lugares";
+  t.appendChild(ic); t.appendChild(nome); t.appendChild(criar("span", "cat-n"));
+  t.addEventListener("click", function () { estado.seg = ""; atualizar(); rolarPara(document.getElementById("explorar")); });
+  li.appendChild(t);
+  elCats.appendChild(li);
+}
+
+function atualizarCategorias() {
+  Array.prototype.forEach.call(elCats.querySelectorAll(".cat"), function (b) {
+    var id = b.getAttribute("data-seg");
+    var n = contarNoSegmento(id);
+    b.querySelector(".cat-n").textContent = n + (n === 1 ? " lugar" : " lugares");
+    var ativa = estado.seg === id;
+    b.setAttribute("aria-pressed", String(ativa));
+    b.disabled = n === 0 && !ativa;
+  });
+}
 
 function montarAbas() {
   [{ id_segmento: "", rotulo_visitante: "Todos" }].concat(SEGS).forEach(function (s) {
     var b = criar("button", "aba");
     b.type = "button";
-    b.setAttribute("role", "tab");
     b.setAttribute("data-seg", s.id_segmento);
+    if (s.id_segmento) { b.style.setProperty("--cor-cat", aparencia(s.id_segmento).cor); }
     var nome = criar("span", null);
     nome.textContent = s.rotulo_visitante;
     b.appendChild(nome);
@@ -2213,36 +2791,23 @@ function montarAbas() {
 function atualizarAbas() {
   Array.prototype.forEach.call(elAbas.children, function (b) {
     var id = b.getAttribute("data-seg");
-    var n = contar(function (e) {
-      return passa(e, true) && (!id || (SEG_DE[e.id_empreendimento] || []).indexOf(id) >= 0);
-    });
+    var n = contarNoSegmento(id);
     b.querySelector(".n").textContent = String(n);
     var ativa = estado.seg === id;
-    b.setAttribute("aria-selected", String(ativa));
-    b.tabIndex = ativa ? 0 : -1;
+    b.setAttribute("aria-pressed", String(ativa));
     b.classList.toggle("vazia", n === 0 && !ativa);
   });
 }
 
-/* setas do teclado entre as abas */
-elAbas.addEventListener("keydown", function (ev) {
-  if (ev.key !== "ArrowRight" && ev.key !== "ArrowLeft") { return; }
-  var abas = Array.prototype.slice.call(elAbas.children);
-  var i = abas.indexOf(document.activeElement);
-  if (i < 0) { return; }
-  var j = (i + (ev.key === "ArrowRight" ? 1 : -1) + abas.length) % abas.length;
-  abas[j].focus();
-  abas[j].click();
-  ev.preventDefault();
-});
-
-/* ------------------------------------------------- painel de filtros */
+/* ------------------------------------------------- painel de filtros e busca */
 
 var fBusca = document.getElementById("f-busca");
+var fBuscaHero = document.getElementById("f-busca-hero");
 var fDistrito = document.getElementById("f-distrito");
 var fDia = document.getElementById("f-dia");
 var fLocal = document.getElementById("f-local");
 var fConvs = document.getElementById("f-convs");
+var fOrdem = document.getElementById("f-ordem");
 var painel = document.getElementById("painel");
 
 function opcoes(select, primeira, valores) {
@@ -2259,6 +2824,12 @@ function opcoes(select, primeira, valores) {
 
 var NOME_CONV = {};
 CONVS.forEach(function (c) { NOME_CONV[c.id_conveniencia] = c.conveniencia; });
+
+function definirBusca(texto) {
+  estado.qTexto = texto;
+  estado.q = normalizar(texto.trim());
+  atualizar();
+}
 
 function montarFiltros() {
   opcoes(fDistrito, "Todos os distritos", REGS.map(function (r) { return r.regiao; }));
@@ -2283,10 +2854,20 @@ function montarFiltros() {
     fConvs.appendChild(l);
   });
 
-  fBusca.addEventListener("input", function () { estado.q = normalizar(fBusca.value.trim()); atualizar(); });
+  fBusca.addEventListener("input", function () { definirBusca(fBusca.value); });
+  fBuscaHero.addEventListener("input", function () { definirBusca(fBuscaHero.value); });
+  document.getElementById("form-busca").addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    definirBusca(fBuscaHero.value);
+    rolarPara(document.getElementById("explorar"));
+    var t = document.getElementById("explorar-titulo");
+    t.setAttribute("tabindex", "-1");
+    t.focus({ preventScroll: true });
+  });
   fDistrito.addEventListener("change", function () { estado.distrito = fDistrito.value; atualizar(); });
   fDia.addEventListener("change", function () { estado.dia = fDia.value; atualizar(); });
   fLocal.addEventListener("change", function (ev) { estado.local = ev.target.value; atualizar(); });
+  fOrdem.addEventListener("change", function () { ui.ordem = fOrdem.value; ordenarCards(); ui.pagina = 1; aplicarPagina(); });
 
   document.getElementById("btn-filtros").addEventListener("click", function () { painel.showModal(); });
   document.getElementById("painel-fechar").addEventListener("click", function () { painel.close(); });
@@ -2306,9 +2887,11 @@ function limparTudo() {
   atualizar();
 }
 
-/** Leva o estado para os controles — os filtros também são removidos pelas pílulas. */
+/** Leva o estado para os controles — os filtros também são removidos pelas pílulas e pelas categorias. */
 function sincronizarControles() {
-  if (normalizar(fBusca.value.trim()) !== estado.q) { fBusca.value = ""; }
+  [fBusca, fBuscaHero].forEach(function (inp) {
+    if (inp.value !== estado.qTexto) { inp.value = estado.qTexto; }
+  });
   fDistrito.value = estado.distrito;
   fDia.value = estado.dia;
   Array.prototype.forEach.call(fLocal.querySelectorAll("input"), function (r) { r.checked = r.value === estado.local; });
@@ -2316,7 +2899,7 @@ function sincronizarControles() {
     i.checked = estado.conv.indexOf(i.value) >= 0;
     var outro = estado.conv;
     estado.conv = estado.conv.filter(function (c) { return c !== i.value; }).concat([i.value]);
-    i.parentNode.querySelector(".n").textContent = String(contar(function (e) { return passa(e, false); }));
+    i.parentNode.querySelector(".n").textContent = String(contar(function (e) { return passa(e); }));
     estado.conv = outro;
   });
 }
@@ -2351,28 +2934,31 @@ function atualizarBarra(visiveis) {
     total.appendChild(de);
   }
 
+  /* pílulas: tudo o que está ativo, cada um removível */
   var pils = [];
-  if (estado.distrito) { pils.push(pilula(estado.distrito, function () { estado.distrito = ""; })); }
-  if (estado.local) { pils.push(pilula(estado.local.charAt(0).toUpperCase() + estado.local.slice(1), function () { estado.local = ""; })); }
-  if (estado.dia) { pils.push(pilula("Aberto " + estado.dia.toLowerCase(), function () { estado.dia = ""; })); }
+  if (estado.seg && SEG_POR_ID[estado.seg]) { pils.push(pilula(SEG_POR_ID[estado.seg].rotulo_visitante, function () { estado.seg = ""; })); }
+  if (estado.q) { pils.push(pilula("Busca: “" + estado.qTexto.trim() + "”", function () { estado.q = ""; estado.qTexto = ""; })); }
+  var doPainel = [];
+  if (estado.distrito) { doPainel.push(pilula(estado.distrito, function () { estado.distrito = ""; })); }
+  if (estado.local) { doPainel.push(pilula(estado.local.charAt(0).toUpperCase() + estado.local.slice(1), function () { estado.local = ""; })); }
+  if (estado.dia) { doPainel.push(pilula("Aberto " + estado.dia.toLowerCase(), function () { estado.dia = ""; })); }
   estado.conv.forEach(function (c) {
-    pils.push(pilula(NOME_CONV[c] || c, function () { estado.conv = estado.conv.filter(function (x) { return x !== c; }); }));
+    doPainel.push(pilula(NOME_CONV[c] || c, function () { estado.conv = estado.conv.filter(function (x) { return x !== c; }); }));
   });
-  pils.forEach(function (p) { barra.appendChild(p); });
+  pils.concat(doPainel).forEach(function (p) { barra.appendChild(p); });
 
-  var algum = estado.seg || estado.q || pils.length;
-  if (algum) {
+  if (pils.length || doPainel.length) {
     var l = criar("button", "link");
     l.type = "button";
-    l.textContent = "Limpar filtros";
+    l.textContent = "Limpar tudo";
     l.addEventListener("click", limparTudo);
     barra.appendChild(l);
   }
 
   var qtd = document.getElementById("qtd-filtros");
-  qtd.textContent = pils.length ? String(pils.length) : "";
-  qtd.classList.toggle("ce-oculto", !pils.length);
-  document.getElementById("btn-filtros").setAttribute("aria-label", pils.length ? "Filtros, " + pils.length + " ativos" : "Filtros");
+  qtd.textContent = doPainel.length ? String(doPainel.length) : "";
+  qtd.classList.toggle("ce-oculto", !doPainel.length);
+  document.getElementById("btn-filtros").setAttribute("aria-label", doPainel.length ? "Filtros, " + doPainel.length + " ativos" : "Filtros");
   document.getElementById("painel-ver").textContent = visiveis === 0
     ? "Nenhum lugar" : "Ver " + visiveis + (visiveis === 1 ? " lugar" : " lugares");
 }
@@ -2380,7 +2966,7 @@ function atualizarBarra(visiveis) {
 function atualizar() {
   var visiveis = 0;
   EMPS.forEach(function (e) {
-    var ok = passa(e, false);
+    var ok = passa(e);
     nos[e.id_empreendimento].classList.toggle("ce-oculto", !ok);
     if (ok) { visiveis++; }
   });
@@ -2389,23 +2975,107 @@ function atualizar() {
   document.getElementById("estado").classList.toggle("ce-oculto", !vazio);
   document.getElementById("estado-txt").textContent = vazio
     ? (estado.q
-      ? "Nenhum lugar encontrado para “" + fBusca.value.trim() + "” com esses filtros."
+      ? "Nenhum lugar encontrado para “" + estado.qTexto.trim() + "” com esses filtros."
       : "Nenhum lugar atende a todos esses filtros. Tire um deles para ver mais opções.")
     : "";
 
+  atualizarCategorias();
   atualizarAbas();
   sincronizarControles();
   atualizarBarra(visiveis);
-  ajustarTodosSelos();
+  ui.pagina = 1;              // filtro novo, resultado novo: volta ao começo
+  aplicarPagina();
 }
 
 /* ==================================================================
-   8. Início
+   8. Rolagem
+   ================================================================== */
+
+function reduzirMovimento() {
+  return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function rolarPara(el) {
+  if (!el) { return; }
+  el.scrollIntoView({ behavior: reduzirMovimento() ? "auto" : "smooth", block: "start" });
+}
+
+/* ==================================================================
+   9. Topo: números, carta dos distritos, seção "Sobre"
+   ================================================================== */
+
+function heroNumeros() {
+  var rural = contar(function (e) { return e.localizacao_rotulo === "zona rural"; });
+  var ul = document.getElementById("hero-numeros");
+  [[TOTAL, TOTAL === 1 ? "lugar cadastrado" : "lugares cadastrados"],
+   [REGS.length, "distritos"],
+   [rural, "na zona rural"]].forEach(function (par) {
+    var li = criar("li", null);
+    var s = criar("strong", null); s.textContent = String(par[0]);
+    var t = criar("span", null); t.textContent = par[1];
+    li.appendChild(s); li.appendChild(t);
+    ul.appendChild(li);
+  });
+}
+
+/** A carta do topo: os contornos reais dos distritos, em SVG, com as vilas-sede. */
+function heroCarta() {
+  var fig = document.getElementById("hero-carta");
+  if (!DISTRITOS.length) { fig.remove(); return; }
+  var latMedia = (LIMITES.s + LIMITES.n) / 2;
+  var kx = Math.cos(latMedia * Math.PI / 180);
+  var largura = (LIMITES.l - LIMITES.o) * kx, altura = LIMITES.n - LIMITES.s;
+  var W = 520, H = Math.round(W * altura / largura), m = 12;
+  var esc = (W - 2 * m) / largura;
+  function xy(p) { return [m + (p[1] - LIMITES.o) * kx * esc, m + (LIMITES.n - p[0]) * esc]; }
+  var svg = document.createElementNS(NS, "svg");
+  svg.setAttribute("viewBox", "0 0 " + W + " " + (H + 2 * m));
+  DISTRITOS.forEach(function (d) {
+    var path = document.createElementNS(NS, "path");
+    path.setAttribute("class", "d-forma");
+    path.setAttribute("d", "M" + d.anel.map(function (p) { var q = xy(p); return q[0].toFixed(1) + " " + q[1].toFixed(1); }).join("L") + "Z");
+    svg.appendChild(path);
+  });
+  DISTRITOS.forEach(function (d) {
+    var q = xy(d.sede);
+    var c = document.createElementNS(NS, "circle");
+    c.setAttribute("class", "d-sede"); c.setAttribute("cx", q[0].toFixed(1)); c.setAttribute("cy", q[1].toFixed(1)); c.setAttribute("r", "3.5");
+    var t = document.createElementNS(NS, "text");
+    t.setAttribute("class", "d-rotulo"); t.setAttribute("x", (q[0] + 7).toFixed(1)); t.setAttribute("y", (q[1] + 4).toFixed(1));
+    t.textContent = d.distrito;
+    svg.appendChild(c); svg.appendChild(t);
+  });
+  fig.appendChild(svg);
+  var cap = criar("figcaption", null);
+  cap.textContent = "Os " + DISTRITOS.length + " distritos de Alfredo Chaves";
+  fig.appendChild(cap);
+}
+
+function sobre() {
+  var fatos = [
+    ["Lugares no guia", TOTAL + " estabelecimentos"],
+    ["Pesquisa de campo", "out/2025 a ago/2026, formulário do diagnóstico turístico"],
+    ["Quem informou", "Os próprios estabelecimentos, que autorizaram publicar endereço, horário e contato"],
+    ["Distritos", REGS.map(function (r) { return r.regiao; }).join(", ")]
+  ];
+  var ul = document.getElementById("fatos");
+  fatos.forEach(function (f) {
+    var li = criar("li", null);
+    var a = criar("span", "rot"); a.textContent = f[0];
+    var b = criar("span", "val"); b.textContent = f[1];
+    li.appendChild(a); li.appendChild(b);
+    ul.appendChild(li);
+  });
+}
+
+/* ==================================================================
+   10. Início
    ================================================================== */
 
 (function iconesDaMoldura() {
-  var busca = document.querySelector(".busca");
-  busca.insertBefore(icone("busca", "ce-icone"), busca.firstChild);
+  Array.prototype.forEach.call(document.querySelectorAll(".campo-busca"), function (l) {
+    l.insertBefore(icone("busca", "ce-icone"), l.firstChild);
+  });
   var bf = document.getElementById("btn-filtros");
   bf.insertBefore(icone("filtro", "ce-icone"), bf.firstChild);
   ["ficha-fechar", "painel-fechar"].forEach(function (id) {
@@ -2413,21 +3083,26 @@ function atualizar() {
   });
 })();
 
+heroCarta();
+
 if (!EMPS.length) {
   document.getElementById("estado").classList.remove("ce-oculto");
   document.getElementById("estado-txt").textContent =
     "Os dados ainda não foram colocados neste arquivo. Rode: python site-publico/gerar_site.py";
   document.getElementById("estado-limpar").classList.add("ce-oculto");
 } else {
+  heroNumeros();
+  montarCategorias();
   montarAbas();
   montarFiltros();
   desenharCards();
+  sobre();
   atualizar();
   sincronizarHash();
+  document.getElementById("hero-desc").textContent =
+    TOTAL + " lugares para comer, dormir, passear e comprar no município, com endereço, dias de funcionamento e contato direto de cada um.";
 }
 
-document.getElementById("cab-desc").textContent =
-  TOTAL + " lugares para comer, dormir, passear e comprar no município, com o contato direto de cada um.";
 document.getElementById("rodape-txt").textContent =
   "Dados do diagnóstico turístico de Alfredo Chaves, pesquisa de campo de out/2025 a ago/2026. "
   + "Horários, contatos e recursos foram informados pelos próprios estabelecimentos e podem ter mudado. "

@@ -1,40 +1,102 @@
-# site-publico — o site da oferta turística, feito do card do Power BI
+# site-publico — guia da oferta turística de Alfredo Chaves
 
-Site público de quem está escolhendo o que fazer em Alfredo Chaves. **O card é o visual
-`powerbi/visuais/CardEmpreendimento` reescrito para a web**: mesma estrutura de DOM, mesmos
-nomes de classe (`ce-*`), mesma paleta, os mesmos ícones em SVG desenhados em código e a
-mesma ordem de montagem. Em volta do card há o que o Power BI resolveria com slicers —
-busca, abas de segmento e um painel de filtros — e a ficha completa de cada lugar num modal.
+Site público de quem está escolhendo o que fazer em Alfredo Chaves, publicado no GitHub Pages
+(<https://angeloalsf.github.io/Montanhas-Capixabas/>) pelo workflow `.github/workflows/pages.yml`
+a cada push na `main` que mexa nesta pasta.
 
-## A página
+É uma página só (`index.html`) em HTML, CSS e JavaScript puros, **sem build**, com os CSVs de
+`dados/tratados/` embutidos. Abre com duplo clique, sem servidor e sem internet: a página não faz
+nenhum pedido de rede.
 
-- **Cabeçalho** no verde do site da Prefeitura de Alfredo Chaves (`#005946`, a
-  `--cor-primaria` deles; o fundo da página é o `#F2F4F3` deles) com o título, a busca e o
-  botão **Filtros**. Não é fixo: rola junto com a página.
-- **Abas de segmento** (Todos, Onde comer, Onde dormir…) logo abaixo, com a contagem de cada
-  uma já considerando os outros filtros. Uma aba por vez.
-- **Painel de filtros** que abre pela direita (tela cheia no celular): distrito, zona
-  urbana/rural, dia de funcionamento e o que o lugar oferece. Os filtros ativos aparecem como
-  pílulas acima da grade, cada uma com um × para remover.
-- **Card como resumo de altura fixa.** Endereço, dias e horário têm uma linha cada (o texto
-  longo termina em "…"; vazio vira "não informado"), a tarja de via e os selos ocupam no
-  máximo duas linhas e o que não cabe vira um "+N", e os contatos ficam num rodapé: um número,
-  WhatsApp e ícones de Instagram e site. Assim os cards saem praticamente do mesmo tamanho
-  sem espaço vazio. Tudo o que o resumo corta está na ficha.
-- **Ficha do lugar**: clicar no card (ou no título) abre um modal com tudo organizado em
-  "Como chegar", "Quando abre" e "Estrutura e atendimento", e os botões de contato no rodapé.
-  A ficha muda o endereço da página para `index.html#E001`, então dá para mandar o link de
-  um lugar específico, e o botão "voltar" do navegador fecha a ficha.
+Redesenho de 11/10/2026: nova identidade visual, página inicial em seções e explorador com
+categorias, busca, filtros e ordenação. Os dados, a busca, os filtros, a ficha e o link
+`index.html#E001` continuam os mesmos. Um mapa interativo chegou a ser feito nessa versão e foi
+retirado a pedido; ver "Limitações conhecidas".
 
-Esta pasta é independente: **não altera nem depende de `site-visitante/`, de `powerbi/`
-ou do visual.** As duas entregas leem os mesmos CSVs de `dados/tratados/`.
+## A página, de cima para baixo
+
+1. **Topo**: marca "Montanhas Capixabas" e navegação (Categorias, Sobre os dados, Explorar
+   lugares). Um link "Pular para a lista de lugares" aparece no primeiro Tab.
+2. **Abertura (hero)**: título, busca, três números calculados dos dados (lugares, distritos,
+   lugares na zona rural) e a **carta dos distritos**: o contorno real dos 7 distritos
+   (ilustração, não interativa). Embaixo, a serra em SVG.
+3. **Categorias**: as 7 de `dim_segmento` (nome, ordem e contagem vêm dos dados) e "Todos os
+   lugares". Clicar filtra e leva ao explorador.
+4. **Explorador** (`#explorar`):
+   - barra fixa no alto com busca, botão **Filtros** e **Ordenar** (nome ou distrito);
+   - chips de categoria com contagem, pílulas removíveis para cada filtro ativo (categoria,
+     busca, distrito, zona, dia, conveniências) e "Limpar tudo";
+   - **grade de cards** em toda a largura, **9 por página** (`POR_PAGINA` no script), com
+     "Mostrando 1–9 de 93", números de página e Anterior/Próxima. Qualquer mudança de filtro,
+     busca ou ordem volta para a página 1; trocar de página sobe até o início dos resultados.
+     No celular a paginação mostra só primeira, atual e última (1 … 4 … 11). O link direto
+     `#E090` abre a ficha em qualquer página.
+5. **Sobre os dados** (`#sobre`): para que serve o guia e de onde vêm as informações.
+6. **Ficha do lugar**: modal com "Como chegar", "Quando abre",
+   "Estrutura e atendimento" e todos os contatos. Abre por `index.html#E001`; "voltar" fecha.
+
+## Uma regra de filtro só
+
+Toda contagem e todo resultado da página saem da mesma função, `passa(e, ignorar)`: os
+cards, as categorias do topo, os chips e os números do painel de filtros. `ignorar` só deixa a
+categoria de fora para os chips mostrarem quantos lugares teriam se fossem escolhidos. O estado
+também é um só (`estado`): o topo, os chips, o painel e as pílulas só leem e escrevem nele.
+
+## A carta dos distritos (`geo-distritos`)
+
+- Os 7 distritos do IBGE para o município 3200300 batem 1:1 com a coluna `distrito` dos dados.
+  Os nomes diferem em dois: **Sede** = "Alfredo Chaves" e **São Bento de Urânia** = "Urânia"
+  no IBGE.
+- O contorno vem das relações de limite administrativo do OpenStreetMap (ids 1902985 a
+  1902991), que trazem o código IBGE de cada distrito. Licença ODbL. Simplificado (~30 m) e
+  guardado como polilinha codificada (~3,7 KB). Os pontos são as vilas-sede (nós
+  `place=town/village` do OSM). Extraído em 11/10/2026.
+- O JavaScript desenha a carta em SVG na abertura (`heroCarta()`). Ela some em telas
+  estreitas. O bloco não é gerado pelo `gerar_site.py`, e rodar o script não o altera.
+
+## Identidade visual
+
+- **Direção**: guia de viagem editorial + carta topográfica. Nenhuma fotografia, nenhuma
+  imagem externa, nenhuma fonte web.
+- **Paleta** (variáveis no `:root`): verde-floresta `#1F3D2B` (marca, títulos, ações
+  principais), verdes de sálvia para superfícies, creme `#F6F1E7` de fundo,
+  terra `#9A4F2A` para sobretítulos, foco e destaques. Texto em `#1C211D`/`#4B534D`/`#646A64`
+  (contraste ≥ 4,4:1 sobre creme e papel). O verde do WhatsApp continua para o botão de contato.
+- **Tipografia**: títulos em serifa do sistema (Iowan Old Style / Palatino Linotype / Book
+  Antiqua / Noto Serif / Georgia), corpo em `system-ui`. O peso editorial vem do contraste
+  entre a serifa grande e os sobretítulos em caixa-alta espaçada.
+- **Grafismos** (`assets/`), gerados por código e não por ilustração livre:
+  - `relevo.svg`: linhas de nível de um relevo sintético, com curva mestra a cada cinco,
+    como numa carta topográfica. Fundo do hero e do cabeçalho da ficha.
+  - `serra.svg`: cinco cadeias de montanha em perspectiva atmosférica; a última tem o verde da
+    seção seguinte, para a transição ser contínua.
+  - A **carta dos distritos** do hero é desenhada em SVG pelo JavaScript a partir do bloco
+    `geo-distritos`. É geografia real, não ilustração livre.
+- **Ícones**: SVG 16×16 em traço de 1,3, desenhados no código (`ICONES`). Os do card vêm do
+  visual do Power BI; os de categoria (talheres, cama, cachoeira, pote, sacola, montanha com
+  bandeira, colunas) seguem o mesmo traço. Os de
+  WhatsApp, Instagram e site continuam genéricos (balão, câmera, globo), sem reproduzir marcas.
+- **Cor de categoria** (`APARENCIA_SEG`): só apresentação. Aparece no filete do card, no
+  ponto dos chips e no ícone das categorias. Lugar com mais de uma categoria usa a
+  primeira pela `ordem_chip`. Categoria nova sem entrada usa um verde neutro.
+
+## Acessibilidade e responsividade
+
+- Mobile-first na interação: os chips rolam na horizontal; ficha e painel de filtros ocupam a
+  tela inteira. Verificado sem rolagem horizontal de 320 px a 1920 px.
+- Alvos de toque de 36 a 46 px; foco visível (contorno terra de 3 px) em todo controle.
+- Tudo funciona por teclado: busca, categorias e chips (`aria-pressed`), painel, ficha (Esc
+  fecha).
+- Total de resultados em `aria-live`.
+- `prefers-reduced-motion`: sem animações de abertura e sem rolagem suave.
 
 ## Arquivos
 
 | Arquivo | O que é |
 |---|---|
-| `index.html` | O site. Abre com duplo clique, sem servidor e sem internet. |
-| `gerar_site.py` | Injeta os dados de `dados/tratados/` dentro do `index.html`. |
+| `index.html` | O site: estrutura, estilos, dados embutidos e o script. |
+| `gerar_site.py` | Injeta os CSVs de `dados/tratados/` no `index.html` (sem mudanças nesta versão). |
+| `assets/relevo.svg`, `assets/serra.svg` | Grafismos da identidade. |
 
 ## Como atualizar depois de mexer nos dados
 
@@ -45,103 +107,82 @@ python site-publico/gerar_site.py
 
 O `gerar_site.py` usa os **nomes atuais** das tabelas (`dim_` / `ponte_`, convenção da §7-8
 de `analise/diagnostico-modelo-dados.md`). Ele não tem a dívida de nomes antigos registrada
-na seção "Pendências" do `README.md` — aquela continua valendo só para
+na seção "Pendências" do `README.md`; aquela continua valendo só para
 `site-visitante/gerar_site.py` e `powerbi/mockup/v2/injetar_dados.py`.
+
+Rodar o script com os CSVs atuais deixa o `index.html` **idêntico byte a byte** (conferido em
+11/10/2026). Os dados embutidos hoje são exatamente os de
+`dados/tratados/`.
 
 O navegador bloqueia `fetch` de arquivo local quando a página é aberta do disco (`file://`).
 Por isso os CSVs ficam embutidos em blocos `<script type="text/plain" id="csv-...">` e são
-lidos por um parser de CSV em JavaScript na abertura — é o mesmo mecanismo do protótipo v2
-do painel.
+lidos por um parser de CSV em JavaScript na abertura. É o mesmo mecanismo do protótipo v2 do
+painel.
 
 ## O que vem de onde
 
 | Bloco embutido | Tabela | Para quê |
 |---|---|---|
-| `csv-dim_empreendimento` | `dim_empreendimento` (31 colunas) | tudo o que aparece no card |
-| `csv-dim_segmento` | `dim_segmento` | os chips, em linguagem de visitante e na ordem oficial |
-| `csv-dim_regiao` | `dim_regiao` | a lista de distritos |
+| `csv-dim_empreendimento` | `dim_empreendimento` (31 colunas) | tudo o que aparece no card e na ficha |
+| `csv-dim_segmento` | `dim_segmento` | categorias e chips, em linguagem de visitante e na ordem oficial |
+| `csv-dim_regiao` | `dim_regiao` | a lista de distritos do painel |
 | `csv-dim_dia` | `dim_dia` | a lista de dias |
 | `csv-dim_conveniencia` | `dim_conveniencia` | as 7 caixas de seleção |
-| `csv-ponte_empreendimento_segmento` | ponte | de quais segmentos cada lugar é |
+| `csv-ponte_empreendimento_segmento` | ponte | de quais categorias cada lugar é |
 | `csv-ponte_empreendimento_dia` | ponte | o filtro "aberto em" |
 | `csv-ponte_empreendimento_conveniencia` | ponte | o filtro de conveniências |
+| `geo-distritos` | OSM, extraído uma vez (não é gerado pelo script) | a carta dos distritos do topo |
 
-**O site não calcula nada.** Quem é "acessível", quem "aceita pet", o texto de cada selo, o
-resumo de dias e a faixa de grupos vêm prontos das colunas do `preparar_dados.py`. Para mudar
-uma dessas regras, mexa no Python e regere os CSVs — não no JavaScript, que só exibe. É a
-mesma disciplina do `site-visitante/` e do `.pbix`.
+**O site não calcula regra de negócio.** Quem é "acessível", quem "aceita pet", o texto de
+cada selo, o resumo de dias e a faixa de grupos vêm prontos das colunas do `preparar_dados.py`.
+Os números do topo e as contagens são só contagem de linhas. Para mudar uma regra, mexa no
+Python e regere os CSVs, não no JavaScript.
 
 ## O card, campo a campo
 
-A montagem segue `src/listaCards.ts` na mesma ordem, e os selos seguem a divisão de
-`capabilities.json`:
+Os nomes de classe (`ce-*`), os ícones, a regra de telefone e a divisão dos selos continuam os
+do visual `CardEmpreendimento`. A ordem visual mudou: as categorias viraram sobretítulo e o
+distrito ganhou linha própria.
 
 | Parte do card | Origem |
 |---|---|
+| Sobretítulo (categorias) | `segmentos_rotulo` |
 | Título | `nome_empreendimento` |
-| Segmentos · local | `segmentos_rotulo` · `distrito` · `localizacao_rotulo` |
-| 📍 endereço | `endereco_completo` |
-| 📅 dias | `dias_resumo` (+ "· abre em feriados" quando `abre_feriados`) |
-| 🕐 horário | `horario_atendimento` |
-| Referência | `ponto_referencia` |
-| Tarja âmbar de via | `condicao_via` |
+| Distrito · zona | `distrito` · `localizacao_rotulo` |
+| Endereço | `endereco_completo` |
+| Dias | `dias_resumo` (+ "· abre em feriados" quando `abre_feriados`) |
+| Horário | `horario_atendimento` (ou "24 horas" quando `atende_24h`) |
+| Tarja âmbar de via | `condicao_via` (só "Não pavimentada" e "Mista") |
 | Selos (Sim/Não) | `aceita_cartao`, `tem_estacionamento_proprio`, `espaco_infantil`, `atende_24h` |
 | Selos (texto) | `pet_texto`, `grupos_capacidade` |
 | Selos (texto pronto) | `badge_acessibilidade`, `badge_idiomas` |
 | Botões | `telefones`, `whatsapp`, `instagram`, `site` |
-| Ficha (modal) | o card inteiro + `dias_funcionamento`, `via_acesso`, `estacionamento`, `vagas_*`, `idiomas`, `sanitario_adaptado` |
+| Filete colorido | cor da primeira categoria (apresentação) |
 
 A regra de telefone é a mesma de `src/contato.ts`: o número que também é WhatsApp aparece
-uma vez, e o sufixo "· WhatsApp" só entra quando o card tem mais de um número — dos 93, três
-têm dois.
-
-## Diferenças assumidas em relação ao visual
-
-As três primeiras existem porque o visual roda num iframe restrito do Power BI e o site não:
-
-1. **"Ligar" disca.** No visual o clique copiava o número, porque o host só abre `http`/`https`
-   e `tel:` não chegava a lugar nenhum. Aqui o botão é um link `tel:`.
-2. **O ▼ virou a ficha.** No visual ele era só um marcador (a ficha vinha de outro grão).
-   Aqui o card inteiro abre um modal montado com colunas que já estão em
-   `dim_empreendimento` — nenhuma tabela nova.
-3. **`localizacao_rotulo` e `badge_idiomas`.** As duas colunas que faltavam quando o visual
-   foi escrito já existem no CSV; o site usa "zona rural"/"zona urbana" e "Atende em inglês"
-   em vez do texto cru. São as duas pendências da seção "Limitações conhecidas" do
-   `CardEmpreendimento/README.md`.
-
-E duas decisões de conteúdo:
-
-4. **A tarja âmbar só aparece quando é aviso.** O visual gerava selo para os três valores de
-   `condicao_via`, inclusive "Pavimentada". Aqui só "Não pavimentada" e "Mista" viram tarja —
-   é a regra do `site-visitante/LEIA-ME.md`: condição da via é aviso individual para quem vai
-   chegar, nunca estatística.
-5. **"Não recebe grupos" e "Não se aplica" saem sem prefixo**, porque "Recebe grupos: Não
-   recebe grupos" não é frase.
-
-Fora isso: a página rola normalmente (não há canvas fixo de 1280×720 como no `site-visitante/`),
-a grade é responsiva, e os cards de uma mesma linha têm a mesma altura — que é o efeito do
-`uniformizarAltura` do visual, aqui obtido só com CSS Grid.
-
-### Tamanho da letra
-
-O card herda tudo de `--base`, no `:root` do `index.html`. O valor entregue é **`13px`**,
-que lê melhor num site; `12px` reproduz o visual do Power BI pixel a pixel. Mude só essa
-linha, o resto do card acompanha.
+uma vez, e o sufixo "· WhatsApp" só entra quando o card tem mais de um número.
 
 ## O que nunca entra neste HTML
 
 Formalização (CNPJ/CPF), nº de funcionários, ano de início, público principal, canal de
 divulgação, necessidades do município e do negócio, capacidade total de hospedagem, preço e
-a autodeclaração `facilidade_pcd`/`capacitado_pcd`. Tudo isso é conteúdo do painel de gestão
-(`analise/relatorio-analise.md`), com acesso restrito — a lista de colunas está fixada em
-`COLS_EMP`, no topo do `gerar_site.py`.
+a autodeclaração `facilidade_pcd`/`capacitado_pcd`. Tudo isso é conteúdo do painel de gestão,
+com acesso restrito. A lista de colunas está fixada em `COLS_EMP`, no topo do `gerar_site.py`.
 
-Nome do proprietário, CPF/CNPJ, razão social e e-mail continuam fora dos CSVs — não estão nem
+Nome do proprietário, CPF/CNPJ, razão social e e-mail continuam fora dos CSVs: não estão nem
 nos dados tratados nem aqui.
 
-## Restrições técnicas
+## Limitações conhecidas
 
-Nenhum recurso externo: sem CDN, sem web font, sem imagem remota, sem `fetch`. Os ícones são
-SVG desenhado em código, portados de `src/icones.ts` — os de WhatsApp, Instagram e site são
-genéricos (balão, câmera e globo) e não reproduzem as marcas dessas empresas; quem identifica
-o serviço é o texto do botão.
+- **Sem mapa interativo.** Uma versão com mapa Leaflet (distritos coloridos pelos filtros e
+  pontos só para coordenadas verificadas) foi feita e retirada em 11/10/2026. Registro do que
+  pesa numa próxima tentativa: nenhum dos 93 lugares tem coordenada, já que o formulário
+  guardou só o endereço em texto livre e só 24 endereços têm número. Um mapa de pontos depende
+  de levantar coordenadas verificadas (GPS no local ou enviadas pelo estabelecimento), e não de
+  geocodificar os endereços.
+- **Base de 93 lugares.** O `dados/brutos/Dados tratados.xlsx` (92 lugares, categorias de via
+  mais detalhadas) ainda não foi incorporado ao `preparar_dados.py`. O site mostra o que está
+  em `dados/tratados/` hoje.
+- Endereços são texto livre declarado pelo estabelecimento; o site os mostra como vieram.
+- Não há testes automatizados nem lint no repositório. As verificações desta versão foram
+  feitas com Playwright fora do repositório (lista no resumo da entrega).
