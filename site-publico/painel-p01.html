@@ -6611,7 +6611,7 @@ function mapa(pos, cfg) {
   var medida = cfg.medida || function () { return 1; };
   var pessoas = cfg.unidade === "pessoas";
   var chave = atual.id + "|" + cfg.titulo;
-  var st = ESTADO_MAPA[chave] = ESTADO_MAPA[chave] || { modo: cfg.modo || "pontos", fundo: null, cam: { limites: true }, painel: false, num: !!cfg.numeros && !document.body.classList.contains("compacto"), off: {}, leg: null };
+  var st = ESTADO_MAPA[chave] = ESTADO_MAPA[chave] || { modo: cfg.modo || "pontos", fundo: cfg.fundo || null, cam: cfg.camadas ? Object.assign({}, cfg.camadas) : { limites: true }, painel: false, num: false, off: {}, leg: null };
   var fundo = st.fundo || (st.modo === "pontos" ? "ruas" : "branco");
   var cam = st.cam, limites = cam.limites || st.modo === "distritos";
   var area = el("div", "mp mp-" + st.modo + " mp-f-" + fundo + (fundo === "branco" ? " mp-branco" : "")); c._corpo.appendChild(area);
@@ -6774,7 +6774,6 @@ function mapa(pos, cfg) {
   ferramenta("minus", "Afastar", function () { m.zoomOut(); });
   ferramenta("corners-out", "Ver o município inteiro", function () { m.fitBounds(LIMITES, folga(true)); });
   zb.appendChild(el("div", "sep"));
-  if (st.modo !== "distritos") { ferramenta("hash", st.num ? "Esconder os números do folder" : "Mostrar os números do folder", function () { st.num = !st.num; renderizar(); }, st.num); }
   var bCam = ferramenta("stack", "Fundo e camadas do mapa", function () { st.painel = !st.painel; pn.classList.toggle("on", st.painel); bCam.classList.toggle("on", st.painel); bCam.setAttribute("aria-expanded", String(st.painel)); });
   bCam.setAttribute("aria-expanded", String(st.painel)); bCam.classList.toggle("on", st.painel);
   area.appendChild(zb);
@@ -6909,7 +6908,7 @@ function listaAtrativos(pos) {
 
 function pgMapa() {
   mapa([1, 9, 1, 2], { titulo: "Mapa turístico de Alfredo Chaves", sub: "Cada lugar no ponto do folder turístico · clique num ponto ou distrito para filtrar",
-    icone: "map-trifold", unidade: "lugares", legenda: "Lugares", numeros: true, altM: 470 });
+    icone: "map-trifold", unidade: "lugares", legenda: "Lugares", fundo: "satelite", camadas: { limites: true, rios: true, rodovias: true, nomes: true }, altM: 470 });
   listaAtrativos([10, 3, 1, 2]);
 }
 
