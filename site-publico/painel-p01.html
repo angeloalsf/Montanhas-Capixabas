@@ -6,7 +6,7 @@
 <title>Diagnóstico Turístico · Montanhas Capixabas</title>
 <meta name="description" content="Painel do diagnóstico da oferta turística de Alfredo Chaves (ES), no padrão visual do P01 do Power BI.">
 <!--
-  painel-p01.html — Diagnóstico turístico de Alfredo Chaves, 13 páginas, no padrão visual do
+  painel-p01.html — Diagnóstico turístico de Alfredo Chaves, 14 páginas, no padrão visual do
   "P01 - Montanhas Capixabas.pbix" (tema "Padrão BI": faixa de navegação verde-petróleo,
   título com pílula laranja, filtros laranja, tabelas em tom areia), refinado: canvas de
   1600x900, cartões com espaçamento de 16 px, KPIs com ícone, gaveta de filtros com
@@ -14,8 +14,10 @@
 
   Dados: os blocos <script type="text/plain"> são copiados do index.html pelo
   gerar_painel.py. Nada aqui é digitado à mão. A exceção é o bloco "pontos-folder": a
-  localização de cada lugar, tirada do folder turístico (PDF georreferenciado do QGIS). O
-  gerar_painel.py não o substitui; para atualizar, troque as linhas do bloco.
+  localização de cada lugar, tirada da camada de pontos do mapa turístico do QGIS. O
+  gerar_painel.py não o substitui; para atualizar, troque as linhas do bloco. O mesmo vale
+  para o bloco "atrativos-inventario": atrativos naturais e culturais da lista do município,
+  fora da base do formulário; preencha lat/lon quando houver localização.
 
   Mapas: Leaflet 1.9.4 (BSD-2-Clause) e leaflet.heat 0.2.0 (MIT), embutidos. Fundo:
   OpenStreetMap quando publicado; Esri World Street Map quando aberto como arquivo.
@@ -902,6 +904,8 @@ svg.i { width: 1em; height: 1em; fill: currentColor; flex: none; display: block;
 .g-sec:last-child { border-bottom: 0; }
 .g-sec-cab { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
 .g-sec-cab h3 { margin: 0; font-size: 13px; text-transform: uppercase; letter-spacing: .8px; color: var(--texto-2); font-weight: 600; }
+.opcoes .op .op-nome { display: inline-flex; align-items: center; gap: 6px; }
+.opcoes .op .op-nome .pino-mini svg { width: 12px; height: 15px; }
 .g-dica { margin: -4px 0 8px; font-size: 12px; color: var(--texto-3); line-height: 1.35; }
 .g-sec-cab button { border: 0; background: none; font-size: 12px; color: #C2410C; padding: 2px 4px; }
 .opcoes { display: flex; flex-direction: column; gap: 2px; }
@@ -1101,6 +1105,20 @@ body.compacto .d-rot div span { font-size: 11px; }
 .mp-f-satelite .pino-n { color: #fff; text-shadow: 0 0 2px #000, 0 0 3px #000, 0 0 4px rgba(0,0,0,.8); }
 .mp-f-satelite .mp-norte b { color: #fff; text-shadow: 0 0 3px #000; }
 body.compacto .mp-cam { right: 48px; width: min(252px, calc(100% - 64px)); }
+/* inventário de atrativos */
+.pino.inv .pino-s path { stroke-dasharray: none; }
+.at-it.inv .n { display: flex; justify-content: flex-end; align-items: flex-start; padding-top: 1px; }
+.at-it.inv .n .pino-mini .pino-s { width: 11px; height: 14px; }
+.at-it.inv.sem-ponto .n { opacity: .45; }
+.at-it .at-det { grid-column: 2; display: flex; flex-direction: column; gap: 3px; margin: 1px 0 3px; font-weight: 400; }
+.at-it .at-det .ds { font-size: 11.5px; color: var(--texto-3); line-height: 1.3; }
+.at-it .tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.at-it .tg { font-size: 10.5px; line-height: 1; padding: 3px 6px; border-radius: 99px; background: var(--trilho); color: var(--texto-2); }
+.at-it .tg.conf { background: transparent; box-shadow: inset 0 0 0 1px var(--borda); color: var(--texto-3); }
+.at-it .tg.lev { background: #E3F0EC; color: #1F5F52; }
+.hb-l.fixo { cursor: default; }
+/* sem camada de composição própria: o mapa acompanha a escala do painel sem borrar */
+svg.leaflet-zoom-animated { will-change: auto; }
 </style>
 </head>
 <body>
@@ -1123,6 +1141,7 @@ body.compacto .mp-cam { right: 48px; width: min(252px, calc(100% - 64px)); }
 id_empreendimento;nome_empreendimento;distrito;localizacao_rotulo;endereco_completo;ponto_referencia;segmentos_rotulo;condicao_via;via_acesso;via_texto;dias_resumo;dias_funcionamento;abre_feriados;horario_atendimento;atende_24h;telefones;whatsapp;instagram;site;aceita_cartao;tem_estacionamento_proprio;estacionamento;vagas_automoveis;vagas_onibus;espaco_infantil;pet_texto;grupos_capacidade;badge_acessibilidade;badge_idiomas;sanitario_adaptado;idiomas;descricao;foto;galeria;cores;capacidade_hospedagem_pessoas;capacidade_alimentacao_pessoas;busca
 E001;Açaí express;Sede;zona urbana;Rua Pedro Bianchi 39;Antes da premosul;Onde comer;Pavimentada;Calçada/calçamento;Calçada;Seg · Ter · Qua · Qui · Sex · Dom;Domingo a Sexta-feira;True;13h00 às 22h00;False;(27) 99625-4868;5527996254868;;;False;False;Estacionamento na rua;;;False;;Não recebe grupos;Rampa de acesso;;False;;;img/E001/capa;img/E001/01|img/E001/02|img/E001/03|img/E001/04|img/E001/05|img/E001/06|img/E001/07|img/E001/08;#a49892|#a49891|#94867f|#8f8780|#6e6760|#948876|#968f71|#908883|#948276;;;acai express rua pedro bianchi 39 antes da premosul sede alimentacao
 E002;Adega Família Pin;Matilde;zona rural;Comunidade de São Roque de maravilha, S/N, São Roque de maravilha/ Alfredo Chaves-ES;Um pouco mais à frente da pousada da Iza;Onde comer · Onde dormir;Mista;Mista;Trechos de asfalto, calçamento, revsol e terra;Todos os dias;Todos os dias da semana (Domingo a Domingo);True;07h00 às 20h00;False;(27) 99618-8313;5527996188313;Recantopin;;False;True;Gratuito, descoberto;50;4;True;Depende do porte do animal;De 50 a 75 visitantes;;;False;;Lugar confortável, tranquilo, aconchegante;img/E002/capa;img/E002/01|img/E002/02|img/E002/03|img/E002/04|img/E002/05|img/E002/06|img/E002/07|img/E002/08;#836e5b|#836d5b|#746253|#82726b|#634d41|#764e3c|#7b6143|#775d47|#8f7659;15;40;adega familia pin comunidade de sao roque de maravilha, s/n, sao roque de maravilha/ alfredo chaves-es um pouco mais a frente da pousada da iza matilde alimentacao hospedagem
+E003;Afrochaves;Sede;zona rural;Rua Dona Macrina, 245. Macrina. Alfredo Chaves - ES;Bar do Neguinho;Cultura;Pavimentada;Calçada/calçamento;Calçada;Todos os dias;Todos os dias da semana (Domingo a Domingo);False;Consultar;False;(27) 99892-4352;5527998924352;afrochaves18;;False;False;Não possui estacionamento;;;False;;De 25 a 50 visitantes;;;False;;;;;;;;afrochaves rua dona macrina, 245. macrina. alfredo chaves - es bar do neguinho sede cultural
 E004;Arte e Cultura;Matilde;zona rural;Comunidade São Roque de Maravilha, S/N, São Roque de Maravilha/ Alfredo Chaves-ES;Seguir as placas próximo ao campo de futebol;Produtos locais;Mista;Mista;Trechos de asfalto, calçamento, revsol e terra;Sex · Sáb · Dom;Sexta-feira a Domingo;True;07h00 às 18h00;False;"(27) 99878-1898; (28) 99943-2927";5527998781898;arteeculturamaravilha;;False;True;Gratuito, descoberto;10;1;False;;De 10 a 25 visitantes;;;False;;;;;;;;arte e cultura comunidade sao roque de maravilha, s/n, sao roque de maravilha/ alfredo chaves-es seguir as placas proximo ao campo de futebol matilde agroindustria
 E005;Ateliê Ana bonecas de pano;Sede;zona urbana;Rua Artur Orlandi número 236 Ipanema Alfredo Chaves;Ao lado da empresa Premosul;Compras e artesanato;Pavimentada;Calçada/calçamento;Calçada;Qua · Qui · Sex · Sáb · Dom;Quarta-feira a Domingo;True;De quarta a sábado das 9 as 17 HS Domingo o atendimento e com hora marcada;False;(27) 99794-0394;5527997940394;ana.bonecasdepano;;True;False;Estacionamento na rua;;;False;;Até 10 visitantes;Rampa de acesso;;False;;;img/E005/capa;img/E005/01|img/E005/02|img/E005/03|img/E005/04|img/E005/05|img/E005/06|img/E005/07|img/E005/08;#a09591|#9f9591|#c69579|#9a9287|#92776b|#8a705e|#966958|#c7977e|#c77162;;;atelie ana bonecas de pano rua artur orlandi numero 236 ipanema alfredo chaves ao lado da empresa premosul sede compras
 E006;Atelie Ipê;Sede;zona rural;Sitio São Januário, Barra do Batatal, Alfredo Chaves - ES;Casarão Rosalém;Compras e artesanato · Cultura;Não pavimentada;Revsol/Brita;Revsol/brita;Seg · Ter · Qua · Qui · Sex;Segunda-feira a Sexta-feira;True;10h00 às 19h00;False;(27) 99989-5118;5527999895118;atelieipe70;;True;False;Não possui estacionamento;;;False;;Não recebe grupos;;;False;;;img/E006/capa;img/E006/01|img/E006/02|img/E006/03|img/E006/04|img/E006/05|img/E006/06|img/E006/07|img/E006/08;#6d5d7c|#6d5d7c|#86919c|#7797ab|#6b7682|#9897a1|#7a869d|#64737f|#61718b;;;atelie ipe sitio sao januario, barra do batatal, alfredo chaves - es casarao rosalem sede compras cultural
@@ -1379,6 +1398,7 @@ E070;5
 E081;5
 E085;5
 E088;5
+E003;6
 E006;6
 E015;7
 E017;7
@@ -1780,6 +1800,7 @@ id_empreendimento;id_indicador;categoria;ordem_categoria
 E001;segmento;Alimentação;1
 E002;segmento;Alimentação;1
 E002;segmento;Hospedagem;2
+E003;segmento;Não informou;6
 E004;segmento;Agroindústria;4
 E005;segmento;Compras;5
 E006;segmento;Compras;5
@@ -1912,6 +1933,7 @@ E092;segmento;Entretenimento/Aventura;3
 E093;segmento;Hospedagem;2
 E001;distrito;Sede;2
 E002;distrito;Matilde;1
+E003;distrito;Sede;2
 E004;distrito;Matilde;1
 E005;distrito;Sede;2
 E006;distrito;Sede;2
@@ -2004,6 +2026,7 @@ E092;distrito;Sede;2
 E093;distrito;Matilde;1
 E001;localizacao;Urbana;2
 E002;localizacao;Rural;1
+E003;localizacao;Rural;1
 E004;localizacao;Rural;1
 E005;localizacao;Urbana;2
 E006;localizacao;Rural;1
@@ -2096,6 +2119,7 @@ E092;localizacao;Rural;1
 E093;localizacao;Rural;1
 E001;ano_inicio;2015–2019;4
 E002;ano_inicio;2010–2014;3
+E003;ano_inicio;2015–2019;4
 E004;ano_inicio;2015–2019;4
 E005;ano_inicio;2020 em diante;5
 E006;ano_inicio;2020 em diante;5
@@ -2188,6 +2212,7 @@ E092;ano_inicio;2000–2009;2
 E093;ano_inicio;2020 em diante;5
 E001;via;Calçada;2
 E002;via;Outras respostas;5
+E003;via;Calçada;2
 E004;via;Outras respostas;5
 E005;via;Calçada;2
 E006;via;Revsol/Brita;3
@@ -2280,6 +2305,7 @@ E092;via;Asfaltada;1
 E093;via;Terra;4
 E001;placa;Não tem placa;5
 E002;placa;Placa própria (sem padrão);4
+E003;placa;Placa própria (sem padrão);4
 E004;placa;Placa própria (sem padrão);4
 E005;placa;Placa própria (sem padrão);4
 E006;placa;Não tem placa;5
@@ -2372,6 +2398,7 @@ E092;placa;Não tem placa;5
 E093;placa;Não tem placa;5
 E001;faixas;Não;2
 E002;faixas;Não;2
+E003;faixas;Não;2
 E004;faixas;Não;2
 E005;faixas;Sim;1
 E006;faixas;Não;2
@@ -2464,6 +2491,7 @@ E092;faixas;Sim;1
 E093;faixas;Não;2
 E001;sinal_seguranca;Sim;1
 E002;sinal_seguranca;Não;2
+E003;sinal_seguranca;Não;2
 E004;sinal_seguranca;Não;2
 E005;sinal_seguranca;Sim;1
 E006;sinal_seguranca;Não;2
@@ -2567,6 +2595,13 @@ E002;dias;Qui;4
 E002;dias;Sex;5
 E002;dias;Sáb;6
 E002;dias;Dom;7
+E003;dias;Seg;1
+E003;dias;Ter;2
+E003;dias;Qua;3
+E003;dias;Qui;4
+E003;dias;Sex;5
+E003;dias;Sáb;6
+E003;dias;Dom;7
 E004;dias;Sex;5
 E004;dias;Sáb;6
 E004;dias;Dom;7
@@ -3037,6 +3072,7 @@ E093;dias;Sáb;6
 E093;dias;Dom;7
 E001;qtd_dias;6 dias;5
 E002;qtd_dias;7 dias;6
+E003;qtd_dias;7 dias;6
 E004;qtd_dias;3 dias;2
 E005;qtd_dias;5 dias;4
 E006;qtd_dias;5 dias;4
@@ -3129,6 +3165,7 @@ E092;qtd_dias;7 dias;6
 E093;qtd_dias;4 dias;3
 E001;feriados;Sim;1
 E002;feriados;Sim;1
+E003;feriados;Não;2
 E004;feriados;Sim;1
 E005;feriados;Sim;1
 E006;feriados;Sim;1
@@ -3221,6 +3258,7 @@ E092;feriados;Sim;1
 E093;feriados;Sim;1
 E001;h24;Não;2
 E002;h24;Não;2
+E003;h24;Não;2
 E004;h24;Não;2
 E005;h24;Não;2
 E006;h24;Não;2
@@ -3313,6 +3351,7 @@ E092;h24;Sim;1
 E093;h24;Não;2
 E001;grupos;Não recebe grupos;1
 E002;grupos;50 a 75 pessoas;5
+E003;grupos;25 a 50 pessoas;4
 E004;grupos;10 a 25 pessoas;3
 E005;grupos;Até 10 pessoas;2
 E006;grupos;Não recebe grupos;1
@@ -3405,6 +3444,7 @@ E092;grupos;10 a 25 pessoas;3
 E093;grupos;Não recebe grupos;1
 E001;publico;Moradores locais;2
 E002;publico;Visitantes do Espírito Santo;1
+E003;publico;Moradores locais;2
 E004;publico;Visitantes do Espírito Santo;1
 E005;publico;Visitantes do Espírito Santo;1
 E006;publico;Moradores locais;2
@@ -3499,6 +3539,8 @@ E001;pagamento;Dinheiro;2
 E001;pagamento;Pix;1
 E002;pagamento;Dinheiro;2
 E002;pagamento;Pix;1
+E003;pagamento;Dinheiro;2
+E003;pagamento;Pix;1
 E004;pagamento;Dinheiro;2
 E004;pagamento;Pix;1
 E005;pagamento;Dinheiro;2
@@ -3790,6 +3832,7 @@ E093;pagamento;Cartão de crédito;4
 E093;pagamento;Pix;1
 E001;idioma;Não atende;1
 E002;idioma;Não atende;1
+E003;idioma;Não atende;1
 E004;idioma;Não atende;1
 E005;idioma;Não atende;1
 E006;idioma;Não atende;1
@@ -3882,6 +3925,7 @@ E092;idioma;Espanhol;3
 E093;idioma;Não atende;1
 E001;estacionamento;Estacionamento na rua;5
 E002;estacionamento;Gratuito, descoberto;1
+E003;estacionamento;Não possui estacionamento;6
 E004;estacionamento;Gratuito, descoberto;1
 E005;estacionamento;Estacionamento na rua;5
 E006;estacionamento;Não possui estacionamento;6
@@ -4112,6 +4156,7 @@ E092;vagas_onibus;Nenhuma;1
 E093;vagas_onibus;Nenhuma;1
 E001;pcd;Não;2
 E002;pcd;Não;2
+E003;pcd;Não;2
 E004;pcd;Sim;1
 E005;pcd;Sim;1
 E006;pcd;Sim;1
@@ -4204,6 +4249,7 @@ E092;pcd;Não;2
 E093;pcd;Não;2
 E001;deficiencia;Nenhuma;6
 E002;deficiencia;Nenhuma;6
+E003;deficiencia;Nenhuma;6
 E004;deficiencia;Física;1
 E004;deficiencia;Visual;3
 E005;deficiencia;Física;1
@@ -4333,6 +4379,7 @@ E092;deficiencia;Visual;3
 E093;deficiencia;Nenhuma;6
 E001;recursos_acess;Rampa de acesso à calçada;3
 E002;recursos_acess;Estacionamento;1
+E003;recursos_acess;Nenhum recurso;8
 E004;recursos_acess;Estacionamento;1
 E005;recursos_acess;Rampa;2
 E005;recursos_acess;Rampa de acesso à calçada;3
@@ -4472,6 +4519,7 @@ E092;recursos_acess;Nenhum recurso;8
 E093;recursos_acess;Nenhum recurso;8
 E001;sanitario;Não tem sanitário adaptado;8
 E002;sanitario;Não tem sanitário adaptado;8
+E003;sanitario;Não tem sanitário adaptado;8
 E004;sanitario;Não tem sanitário adaptado;8
 E005;sanitario;Não tem sanitário adaptado;8
 E006;sanitario;Não tem sanitário adaptado;8
@@ -5805,103 +5853,141 @@ Ribeirão do Cristo;Ribeirão do Cristo;320030025;1902989;-20.4944;-40.7376;hgpK
 Sagrada Família;Sagrada Família;320030030;1902990;-20.5789;-40.6985;txpKhhzWi@CuAq@q@SeBS{DgBmFaBGe@JwBv@_B@a@Mo@T]ZmA`@c@?e@^sBT?\Rh@@\}@J?^d@X@n@VRRKPcAB?JV\Bd@LR^BXSCIH?f@p@vAn@vC@fA[PSF[My@g@c@C_A~Be@~@RbBAVQd@@HWF@Jl@CjAb@tAx@dBv@Pf@`@Vl@B`@K~@p@^C~JINBb@{AfBSJuANk@\aC^}@G_Ac@sAoBu@o@w@P
 São Bento de Urânia;Urânia;320030035;1902991;-20.4714;-40.9179;bzpKdl~WIKLm@CYHOMYHSUDWm@g@WAMLQ]i@?MOE?[UKUc@Cq@j@EH_A]?a@[OAg@RCKFSIIu`@aOiAeBEe@FgAW[g@Mg@?w@BcAToAiA[C}@h@MXYG_@N_@@k@t@U]QD_AOeBt@WAa@TSl@LTRdBOJIb@VZK^g@HGJBj@KVNZEn@^p@Ix@Wr@BLM\@n@e@P_@WeA~@DZGNe@DyAz@Vb@UxAcABYUYTM\FrAIZFTe@?gAp@Gz@DjAGRVVANl@TY`A@HZD?b@MPgANAbANR@VcA`Bs@RG`@LT`@F`@IVHGNJb@S^Zl@Jn@Cj@_@b@QhAVhCz@p@DNKZL\`@PNTP@RW?_AP]f@OPm@PSf@At@T|@Cl@JJL\@HIDa@Ka@k@aA[OE_@n@]Fg@ZSh@w@D[d@L`AQVD`@Z`@M\?@hAHDd@SvAGRi@VWIg@TUx@Px@WfAh@`AVREa@iA?g@Xs@JI^@@GVJb@AVVd@AfAs@j@Z@XTTb@a@tARFSp@YbAb@fA]dA`@b@Kn@T^A\n@l@LTZdAs@Vm@|@a@H[RWRCh@j@P@^o@REHWHAJZ`@@Ph@Oh@R^G^LXHA?WLIr@Yd@HJG^kAIe@Ru@We@VaBTUVADu@OS?UIO@OTOBMGS@o@HGJJNKVFF]YORi@q@E
 </script>
-<!-- Localização dos lugares: tirada do folder turístico (PDF do QGIS georreferenciado, EPSG:4674).
-     Bloco próprio do painel; o gerar_painel.py não o substitui. precisao=aprox: número escondido no folder. -->
+<!-- Localização dos lugares: camada alfredo_chaves_camada_unica do mapa turístico do QGIS (EPSG:4326).
+     numero_mapa e categoria_mapa como no mapa (Comércio e Artesanato = Compras). Bloco próprio do painel;
+     o gerar_painel.py não o substitui. -->
 <script type="text/plain" id="pontos-folder">
-id_empreendimento;numero_folder;categoria_folder;lat;lon;precisao
-E001;9;Gastronomia;-20.64621;-40.74412;aprox
-E002;31;Hospedagem;-20.56233;-40.86233;ok
-E004;61;Agroturismo;-20.55714;-40.87791;ok
-E005;26;Artesanato;-20.64659;-40.74383;ok
-E006;28;Comércio;-20.60948;-40.76619;ok
-E007;91;Agroturismo;-20.60625;-40.71216;ok
-E008;73;Gastronomia;-20.64580;-40.85944;ok
-E009;10;Gastronomia;-20.59124;-40.78840;ok
-E010;54;Gastronomia;-20.55222;-40.83404;ok
-E011;62;Agroturismo;-20.59930;-40.82355;ok
-E012;79;Gastronomia;-20.47789;-40.91832;ok
-E013;24;Agroturismo;-20.59795;-40.79999;ok
-E014;90;Gastronomia;-20.58227;-40.70126;ok
-E015;74;Gastronomia;-20.65356;-40.87411;ok
-E016;11;Gastronomia;-20.60036;-40.75810;ok
-E017;67;Hospedagem;-20.60559;-40.84852;ok
-E018;69;Hospedagem;-20.64320;-40.89432;ok
-E019;75;Gastronomia;-20.63882;-40.88178;ok
-E020;55;Gastronomia;-20.57777;-40.95330;ok
-E021;29;Comércio;-20.63985;-40.75068;ok
-E022;32;Hospedagem;-20.55809;-40.85278;ok
-E023;66;Comércio;-20.55908;-40.81536;ok
-E024;25;Agroturismo;-20.65653;-40.75111;ok
-E025;33;Hospedagem;-20.55831;-40.87899;ok
-E026;34;Hospedagem;-20.57391;-40.96361;ok
-E027;35;Hospedagem;-20.56543;-40.86005;ok
-E028;56;Gastronomia;-20.55665;-40.85332;ok
-E029;12;Gastronomia;-20.64186;-40.74946;aprox
-E030;57;Gastronomia;-20.55854;-40.87959;ok
-E031;13;Gastronomia;-20.57780;-40.73770;ok
-E032;63;Agroturismo;-20.59401;-40.78955;ok
-E033;36;Hospedagem;-20.55021;-40.86698;ok
-E034;80;Gastronomia;-20.45295;-40.95653;ok
-E035;58;Gastronomia;-20.56090;-40.81590;ok
-E036;27;Artesanato;-20.64457;-40.74798;ok
-E037;37;Hospedagem;-20.55335;-40.82605;ok
-E038;1;Hospedagem;-20.64354;-40.74485;ok
-E039;14;Gastronomia;-20.64002;-40.75097;ok
-E040;59;Gastronomia;-20.55910;-40.81538;ok
-E041;92;Agroturismo;-20.55913;-40.68855;ok
-E042;81;Gastronomia;-20.49827;-40.94480;ok
-E043;15;Gastronomia;-20.64448;-40.74609;aprox
-E044;16;Gastronomia;-20.64030;-40.75017;aprox
-E045;82;Gastronomia;-20.47760;-40.91703;ok
-E046;38;Hospedagem;-20.55275;-40.85580;ok
-E047;17;Gastronomia;-20.63859;-40.74779;ok
-E048;51;Hospedagem;-20.60041;-40.82345;ok
-E049;39;Hospedagem;-20.57391;-40.96361;ok
-E050;40;Hospedagem;-20.55782;-40.87898;ok
-E051;49;Hospedagem;-20.53537;-40.86191;ok
-E052;2;Hospedagem;-20.64130;-40.74801;ok
-E053;70;Hospedagem;-20.66629;-40.90103;ok
-E054;4;Hospedagem;-20.58872;-40.76196;ok
-E055;77;Hospedagem;-20.47811;-40.92413;ok
-E056;41;Hospedagem;-20.56105;-40.81663;ok
-E057;3;Hospedagem;-20.63976;-40.76156;ok
-E058;42;Hospedagem;-20.55796;-40.87908;ok
-E059;68;Hospedagem;-20.61041;-40.83689;ok
-E060;44;Hospedagem;-20.55806;-40.85566;ok
-E061;87;Hospedagem;-20.46595;-40.69247;ok
-E062;45;Hospedagem;-20.55820;-40.87748;ok
-E063;46;Hospedagem;-20.55418;-40.85533;ok
-E064;47;Hospedagem;-20.56163;-40.81756;ok
-E065;48;Hospedagem;-20.55932;-40.81511;ok
-E067;76;Agroturismo;-20.66983;-40.84496;ok
-E068;18;Gastronomia;-20.64107;-40.74646;aprox
-E069;83;Agroturismo;-20.50159;-40.91906;ok
-E070;64;Agroturismo;-20.55794;-40.84916;ok
-E071;71;Hospedagem;-20.62734;-40.81206;ok
-E072;43;Hospedagem;-20.56123;-40.86001;ok
-E073;60;Gastronomia;-20.56076;-40.81599;ok
-E074;19;Gastronomia;-20.64004;-40.75090;aprox
-E075;20;Gastronomia;-20.64321;-40.74726;aprox
-E076;50;Hospedagem;-20.55984;-40.82173;ok
-E077;21;Gastronomia;-20.65045;-40.74697;ok
-E078;93;Agroturismo;-20.58496;-40.69714;ok
-E079;5;Hospedagem;-20.60234;-40.75973;ok
-E080;88;Hospedagem;-20.48345;-40.73855;ok
-E081;84;Agroturismo;-20.49338;-40.91345;ok
-E082;52;Hospedagem;-20.55835;-40.85268;ok
-E083;6;Hospedagem;-20.60639;-40.76334;ok
-E084;7;Hospedagem;-20.58330;-40.79261;ok
-E085;85;Agroturismo;-20.49646;-40.92669;ok
-E086;72;Hospedagem;-20.64063;-40.83910;ok
-E087;78;Hospedagem;-20.48029;-40.88674;ok
-E088;65;Agroturismo;-20.53675;-40.78822;ok
-E089;89;Hospedagem;-20.48174;-40.72217;ok
-E090;22;Gastronomia;-20.64249;-40.74655;aprox
-E091;23;Gastronomia;-20.59339;-40.78906;ok
-E092;8;Hospedagem;-20.68432;-40.77220;ok
-E093;53;Hospedagem;-20.59625;-40.82579;ok
+id_empreendimento;numero_mapa;categoria_mapa;lat;lon
+E038;1;Hospedagem;-20.638215;-40.744957
+E052;2;Hospedagem;-20.635974;-40.748121
+E057;3;Hospedagem;-20.634442;-40.761660
+E054;4;Hospedagem;-20.583413;-40.762064
+E079;5;Hospedagem;-20.597035;-40.759828
+E083;6;Hospedagem;-20.601079;-40.763438
+E084;7;Hospedagem;-20.577994;-40.792697
+E092;8;Hospedagem;-20.678981;-40.772292
+E001;9;Gastronomia;-20.640893;-40.744233
+E009;10;Gastronomia;-20.588083;-40.789154
+E016;11;Gastronomia;-20.595050;-40.758202
+E029;12;Gastronomia;-20.636537;-40.749563
+E031;13;Gastronomia;-20.572501;-40.737809
+E039;14;Gastronomia;-20.634697;-40.751078
+E043;15;Gastronomia;-20.639159;-40.746199
+E044;16;Gastronomia;-20.634983;-40.750272
+E047;17;Gastronomia;-20.633272;-40.747895
+E068;18;Gastronomia;-20.635752;-40.746564
+E074;19;Gastronomia;-20.634715;-40.751004
+E075;20;Gastronomia;-20.637888;-40.747367
+E077;21;Gastronomia;-20.645131;-40.747077
+E090;22;Gastronomia;-20.637167;-40.746661
+E091;23;Gastronomia;-20.585940;-40.788488
+E013;24;Agroturismo;-20.588701;-40.789640
+E024;25;Agroturismo;-20.651203;-40.751219
+E005;26;Compras;-20.641272;-40.743940
+E036;27;Compras;-20.639249;-40.748081
+E006;28;Compras;-20.604165;-40.766290
+E021;29;Compras;-20.634534;-40.750784
+E003;30;Cultural;-20.636459;-40.751062
+E002;31;Hospedagem;-20.557033;-40.862391
+E022;32;Hospedagem;-20.552799;-40.852844
+E025;33;Hospedagem;-20.552667;-40.879133
+E026;34;Hospedagem;-20.568347;-40.963350
+E027;35;Hospedagem;-20.560129;-40.860115
+E033;36;Hospedagem;-20.544915;-40.867040
+E037;37;Hospedagem;-20.548054;-40.826123
+E046;38;Hospedagem;-20.568607;-40.963628
+E049;39;Hospedagem;-20.552528;-40.879031
+E050;40;Hospedagem;-20.556332;-40.817639
+E056;41;Hospedagem;-20.553020;-40.879045
+E058;42;Hospedagem;-20.555936;-40.860069
+E072;43;Hospedagem;-20.552770;-40.855728
+E060;44;Hospedagem;-20.552907;-40.877537
+E062;45;Hospedagem;-20.547455;-40.855863
+E063;46;Hospedagem;-20.555751;-40.816710
+E064;47;Hospedagem;-20.554029;-40.815192
+E065;48;Hospedagem;-20.530081;-40.861969
+E051;49;Hospedagem;-20.554546;-40.821812
+E076;50;Hospedagem;-20.595100;-40.823532
+E048;51;Hospedagem;-20.548885;-40.855393
+E082;52;Hospedagem;-20.553055;-40.852745
+E093;53;Hospedagem;-20.590946;-40.825868
+E010;54;Gastronomia;-20.546932;-40.834112
+E020;55;Gastronomia;-20.572467;-40.953327
+E028;56;Gastronomia;-20.551357;-40.853387
+E030;57;Gastronomia;-20.553246;-40.879649
+E035;58;Gastronomia;-20.555460;-40.816074
+E040;59;Gastronomia;-20.553808;-40.815457
+E073;60;Gastronomia;-20.555605;-40.815975
+E004;61;Agroturismo;-20.551847;-40.877969
+E011;62;Agroturismo;-20.593989;-40.823631
+E032;63;Agroturismo;-20.592643;-40.800073
+E070;64;Agroturismo;-20.552646;-40.849227
+E088;65;Agroturismo;-20.531459;-40.788307
+E023;66;Compras;-20.553790;-40.815444
+E017;67;Hospedagem;-20.600284;-40.848588
+E059;68;Hospedagem;-20.605103;-40.836966
+E018;69;Hospedagem;-20.637879;-40.894365
+E053;70;Hospedagem;-20.660963;-40.901081
+E071;71;Hospedagem;-20.622028;-40.812139
+E086;72;Hospedagem;-20.635307;-40.839171
+E008;73;Gastronomia;-20.640481;-40.859501
+E015;74;Gastronomia;-20.648239;-40.874171
+E019;75;Gastronomia;-20.633498;-40.881837
+E067;76;Agroturismo;-20.664502;-40.845030
+E055;77;Hospedagem;-20.472837;-40.924172
+E087;78;Hospedagem;-20.475024;-40.886796
+E012;79;Gastronomia;-20.472618;-40.918358
+E034;80;Gastronomia;-20.447688;-40.956551
+E042;81;Gastronomia;-20.492996;-40.944834
+E045;82;Gastronomia;-20.472333;-40.917071
+E069;83;Agroturismo;-20.496312;-40.919105
+E081;84;Agroturismo;-20.488108;-40.913493
+E085;85;Agroturismo;-20.491190;-40.926728
+E061;87;Hospedagem;-20.460682;-40.692600
+E080;88;Hospedagem;-20.478184;-40.738658
+E089;89;Hospedagem;-20.476469;-40.722283
+E014;90;Gastronomia;-20.576966;-40.701387
+E007;91;Agroturismo;-20.600939;-40.712285
+E041;92;Agroturismo;-20.553833;-40.688675
+E078;93;Agroturismo;-20.579658;-40.697265
+</script>
+<!-- Inventário de atrativos naturais e culturais do município (documento "ALFREDO CHAVES"); ponto e
+     número tirados da mesma camada do QGIS (números 94 a 113 e 30).
+     Não são estabelecimentos do formulário. Bloco próprio do painel; o gerar_painel.py não o substitui.
+     distrito e lat/lon vazios = ainda sem localização no mapa (preencha e o ponto aparece nos mapas).
+     fonte_distrito: mapa (polígono IBGE do ponto). fonte_local: mapa (ponto próprio) | lugar (ponto do lugar de mesmo nome). -->
+<script type="text/plain" id="atrativos-inventario">
+id_atrativo;nome;tipo;grupo;descricao;distrito;fonte_distrito;id_empreendimento;numero_mapa;lat;lon;fonte_local
+N01;Cachoeira Darós;Natural;Cachoeira;;Matilde;mapa;;98;-20.548339;-40.853627;mapa
+N04;Cachoeira de Matilde (Engenheiro Reeve);Natural;Cachoeira;;Matilde;mapa;;102;-20.558652;-40.814810;mapa
+N05;Cachoeira Maravilha;Natural;Cachoeira;;Matilde;mapa;;99;-20.552911;-40.868659;mapa
+N06;Cachoeira Pin;Natural;Cachoeira;;Matilde;mapa;;100;-20.557152;-40.862283;mapa
+N08;Cachoeira Tororoma;Natural;Cachoeira;;Sede;mapa;;94;-20.671944;-40.782651;mapa
+N10;Cachoeira Iracema;Natural;Cachoeira;;São Bento de Urânia;mapa;;110;-20.502494;-40.869339;mapa
+N11;Cachoeira Iraceminha;Natural;Cachoeira;;;;;;;;
+N12;Cachoeira da Neuza;Natural;Cachoeira;;;;;;;;
+N13;Cachoeira Menegussi;Natural;Cachoeira;;;;;;;;
+N15;Pedra do Gururu;Natural;Pedra, parque e reserva;;Sede;mapa;;96;-20.619016;-40.752685;mapa
+N16;Ecopark Alto Gururu;Natural;Pedra, parque e reserva;;Sede;mapa;;95;-20.618875;-40.752774;mapa
+N17;RPPN Alto Gururu;Natural;Pedra, parque e reserva;Reserva Particular do Patrimônio Natural;Sede;mapa;;95;-20.618875;-40.752774;mapa
+N18;Cerejeiras do Redentor;Natural;Paisagem;Atrativo paisagístico de floração sazonal · Sítio Monte Rá;São Bento de Urânia;mapa;;111;-20.452383;-40.979910;mapa
+N19;Rampa Natural de Voo Livre;Natural;Aventura;Atrativo natural associado ao turismo de aventura;Sede;mapa;;97;-20.671980;-40.780574;mapa
+C01;Estação Ferroviária de Ibitiruí;Cultural;Patrimônio histórico e arquitetônico;;Ibitiruí;mapa;;107;-20.599863;-40.857760;mapa
+C02;Estação Ferroviária de Matilde;Cultural;Patrimônio histórico e arquitetônico;;Matilde;mapa;;104;-20.557341;-40.813189;mapa
+C03;Túnel de Matilde;Cultural;Patrimônio histórico e arquitetônico;;Matilde;mapa;;106;-20.561847;-40.823984;mapa
+C04;Igreja da Sagrada Família;Cultural;Patrimônio religioso;;Sagrada Família;mapa;;113;-20.579828;-40.697658;mapa
+C05;Igreja de Aparecidinha;Cultural;Patrimônio religioso;;;;;;;;
+C06;Conventinho;Cultural;Patrimônio religioso;Conventinho da Penha, em Carolina;Matilde;mapa;;103;-20.546001;-40.861832;mapa
+C07;Capela de São Roque;Cultural;Patrimônio religioso;;Crubixá;mapa;;109;-20.655028;-40.855512;mapa
+C08;Capela de São Miguel Arcanjo;Cultural;Patrimônio religioso;;Sagrada Família;mapa;;112;-20.606649;-40.715073;mapa
+C09;Monte das Três Cruzes;Cultural;Patrimônio religioso;;Matilde;mapa;;105;-20.516422;-40.877552;mapa
+C10;Ruínas da Figueira;Cultural;Patrimônio religioso;Patrimônio histórico, arquitetônico e religioso;;;;;;;
+C11;Festa da Banana e do Leite;Cultural;Eventos e manifestações culturais;Evento tradicional associado à produção agrícola e à identidade local;;;;;;;
 </script>
 
+<script>
+window.L_DISABLE_3D = true;
+</script>
 <script>
 /* @preserve
  * Leaflet 1.9.4, a JS library for interactive maps. https://leafletjs.com
@@ -5927,7 +6013,7 @@ L.HeatLayer=(L.Layer?L.Layer:L.Class).extend({initialize:function(t,i){this._lat
 "use strict";
 /* Phosphor Icons 2.1 — MIT License, Copyright (c) 2023 Phosphor Icons. [regular, duotone] */
 var ICONES = {"lightbulb":["<path d=\"M176,232a8,8,0,0,1-8,8H88a8,8,0,0,1,0-16h80A8,8,0,0,1,176,232Zm40-128a87.55,87.55,0,0,1-33.64,69.21A16.24,16.24,0,0,0,176,186v6a16,16,0,0,1-16,16H96a16,16,0,0,1-16-16v-6a16,16,0,0,0-6.23-12.66A87.59,87.59,0,0,1,40,104.49C39.74,56.83,78.26,17.14,125.88,16A88,88,0,0,1,216,104Zm-16,0a72,72,0,0,0-73.74-72c-39,.92-70.47,33.39-70.26,72.39a71.65,71.65,0,0,0,27.64,56.3A32,32,0,0,1,96,186v6h64v-6a32.15,32.15,0,0,1,12.47-25.35A71.65,71.65,0,0,0,200,104Zm-16.11-9.34a57.6,57.6,0,0,0-46.56-46.55,8,8,0,0,0-2.66,15.78c16.57,2.79,30.63,16.85,33.44,33.45A8,8,0,0,0,176,104a9,9,0,0,0,1.35-.11A8,8,0,0,0,183.89,94.66Z\"/>","<path d=\"M208,104a79.86,79.86,0,0,1-30.59,62.92A24.29,24.29,0,0,0,168,186v6a8,8,0,0,1-8,8H96a8,8,0,0,1-8-8v-6a24.11,24.11,0,0,0-9.3-19A79.87,79.87,0,0,1,48,104.45C47.76,61.09,82.72,25,126.07,24A80,80,0,0,1,208,104Z\" opacity=\"0.2\"/><path d=\"M176,232a8,8,0,0,1-8,8H88a8,8,0,0,1,0-16h80A8,8,0,0,1,176,232Zm40-128a87.55,87.55,0,0,1-33.64,69.21A16.24,16.24,0,0,0,176,186v6a16,16,0,0,1-16,16H96a16,16,0,0,1-16-16v-6a16,16,0,0,0-6.23-12.66A87.59,87.59,0,0,1,40,104.49C39.74,56.83,78.26,17.14,125.88,16A88,88,0,0,1,216,104Zm-16,0a72,72,0,0,0-73.74-72c-39,.92-70.47,33.39-70.26,72.39a71.65,71.65,0,0,0,27.64,56.3A32,32,0,0,1,96,186v6h64v-6a32.15,32.15,0,0,1,12.47-25.35A71.65,71.65,0,0,0,200,104Zm-16.11-9.34a57.6,57.6,0,0,0-46.56-46.55,8,8,0,0,0-2.66,15.78c16.57,2.79,30.63,16.85,33.44,33.45A8,8,0,0,0,176,104a9,9,0,0,0,1.35-.11A8,8,0,0,0,183.89,94.66Z\"/>"],"house":["<path d=\"M219.31,108.68l-80-80a16,16,0,0,0-22.62,0l-80,80A15.87,15.87,0,0,0,32,120v96a8,8,0,0,0,8,8h64a8,8,0,0,0,8-8V160h32v56a8,8,0,0,0,8,8h64a8,8,0,0,0,8-8V120A15.87,15.87,0,0,0,219.31,108.68ZM208,208H160V152a8,8,0,0,0-8-8H104a8,8,0,0,0-8,8v56H48V120l80-80,80,80Z\"/>","<path d=\"M216,120v96H152V152H104v64H40V120a8,8,0,0,1,2.34-5.66l80-80a8,8,0,0,1,11.32,0l80,80A8,8,0,0,1,216,120Z\" opacity=\"0.2\"/><path d=\"M219.31,108.68l-80-80a16,16,0,0,0-22.62,0l-80,80A15.87,15.87,0,0,0,32,120v96a8,8,0,0,0,8,8h64a8,8,0,0,0,8-8V160h32v56a8,8,0,0,0,8,8h64a8,8,0,0,0,8-8V120A15.87,15.87,0,0,0,219.31,108.68ZM208,208H160V152a8,8,0,0,0-8-8H104a8,8,0,0,0-8,8v56H48V120l80-80,80,80Z\"/>"],"storefront":["<path d=\"M232,96a7.89,7.89,0,0,0-.3-2.2L217.35,43.6A16.07,16.07,0,0,0,202,32H54A16.07,16.07,0,0,0,38.65,43.6L24.31,93.8A7.89,7.89,0,0,0,24,96h0v16a40,40,0,0,0,16,32v72a8,8,0,0,0,8,8H208a8,8,0,0,0,8-8V144a40,40,0,0,0,16-32V96ZM54,48H202l11.42,40H42.61Zm50,56h48v8a24,24,0,0,1-48,0Zm-16,0v8a24,24,0,0,1-35.12,21.26,7.88,7.88,0,0,0-1.82-1.06A24,24,0,0,1,40,112v-8ZM200,208H56V151.2a40.57,40.57,0,0,0,8,.8,40,40,0,0,0,32-16,40,40,0,0,0,64,0,40,40,0,0,0,32,16,40.57,40.57,0,0,0,8-.8Zm4.93-75.8a8.08,8.08,0,0,0-1.8,1.05A24,24,0,0,1,168,112v-8h48v8A24,24,0,0,1,204.93,132.2Z\"/>","<path d=\"M224,96v16a32,32,0,0,1-64,0V96H96v16a32,32,0,0,1-64,0V96L46.34,45.8A8,8,0,0,1,54,40H202a8,8,0,0,1,7.69,5.8Z\" opacity=\"0.2\"/><path d=\"M231.69,93.81,217.35,43.6A16.07,16.07,0,0,0,202,32H54A16.07,16.07,0,0,0,38.65,43.6L24.31,93.81A7.94,7.94,0,0,0,24,96v16a40,40,0,0,0,16,32v72a8,8,0,0,0,8,8H208a8,8,0,0,0,8-8V144a40,40,0,0,0,16-32V96A7.94,7.94,0,0,0,231.69,93.81ZM54,48H202l11.42,40H42.61Zm98,56v8a24,24,0,0,1-48,0v-8ZM51.06,132.2A24,24,0,0,1,40,112v-8H88v8a24,24,0,0,1-35.12,21.26A7.88,7.88,0,0,0,51.06,132.2ZM200,208H56V151.2a40.57,40.57,0,0,0,8,.8,40,40,0,0,0,32-16,40,40,0,0,0,64,0,40,40,0,0,0,32,16,40.57,40.57,0,0,0,8-.8Zm16-96a24,24,0,0,1-11.07,20.2,8.08,8.08,0,0,0-1.8,1.05A24,24,0,0,1,168,112v-8h48Z\"/>"],"bed":["<path d=\"M216,72H32V48a8,8,0,0,0-16,0V208a8,8,0,0,0,16,0V176H240v32a8,8,0,0,0,16,0V112A40,40,0,0,0,216,72ZM32,88h72v72H32Zm88,72V88h96a24,24,0,0,1,24,24v48Z\"/>","<path d=\"M248,112v56H112V80H216A32,32,0,0,1,248,112Z\" opacity=\"0.2\"/><path d=\"M216,72H32V48a8,8,0,0,0-16,0V208a8,8,0,0,0,16,0V176H240v32a8,8,0,0,0,16,0V112A40,40,0,0,0,216,72ZM32,88h72v72H32Zm88,72V88h96a24,24,0,0,1,24,24v48Z\"/>"],"fork-knife":["<path d=\"M72,88V40a8,8,0,0,1,16,0V88a8,8,0,0,1-16,0ZM216,40V224a8,8,0,0,1-16,0V176H152a8,8,0,0,1-8-8,268.75,268.75,0,0,1,7.22-56.88c9.78-40.49,28.32-67.63,53.63-78.47A8,8,0,0,1,216,40ZM200,53.9c-32.17,24.57-38.47,84.42-39.7,106.1H200ZM119.89,38.69a8,8,0,1,0-15.78,2.63L112,88.63a32,32,0,0,1-64,0l7.88-47.31a8,8,0,1,0-15.78-2.63l-8,48A8.17,8.17,0,0,0,32,88a48.07,48.07,0,0,0,40,47.32V224a8,8,0,0,0,16,0V135.32A48.07,48.07,0,0,0,128,88a8.17,8.17,0,0,0-.11-1.31Z\"/>","<path d=\"M208,40V168H152S152,64,208,40Z\" opacity=\"0.2\"/><path d=\"M72,88V40a8,8,0,0,1,16,0V88a8,8,0,0,1-16,0ZM216,40V224a8,8,0,0,1-16,0V176H152a8,8,0,0,1-8-8,268.75,268.75,0,0,1,7.22-56.88c9.78-40.49,28.32-67.63,53.63-78.47A8,8,0,0,1,216,40ZM200,53.9c-32.17,24.57-38.47,84.42-39.7,106.1H200ZM119.89,38.69a8,8,0,1,0-15.78,2.63L112,88.63a32,32,0,0,1-64,0l7.88-47.31a8,8,0,1,0-15.78-2.63l-8,48A8.17,8.17,0,0,0,32,88a48.07,48.07,0,0,0,40,47.32V224a8,8,0,0,0,16,0V135.32A48.07,48.07,0,0,0,128,88a8.17,8.17,0,0,0-.11-1.31Z\"/>"],"mountains":["<path d=\"M164,80a28,28,0,1,0-28-28A28,28,0,0,0,164,80Zm0-40a12,12,0,1,1-12,12A12,12,0,0,1,164,40Zm90.88,155.92-54.56-92.08A15.87,15.87,0,0,0,186.55,96h0a15.85,15.85,0,0,0-13.76,7.84L146.63,148l-44.84-76.1a16,16,0,0,0-27.58,0L1.11,195.94A8,8,0,0,0,8,208H248a8,8,0,0,0,6.88-12.08ZM88,80l23.57,40H64.43ZM22,192l33-56h66l18.74,31.8,0,0L154,192Zm150.57,0-16.66-28.28L186.55,112,234,192Z\"/>","<path d=\"M144,52a20,20,0,1,1,20,20A20,20,0,0,1,144,52Zm49.44,55.92a8,8,0,0,0-13.77,0l-33,55.75-21-35.67H50.35L8,200H248Z\" opacity=\"0.2\"/><path d=\"M164,80a28,28,0,1,0-28-28A28,28,0,0,0,164,80Zm0-40a12,12,0,1,1-12,12A12,12,0,0,1,164,40Zm90.88,155.92-54.56-92.08A15.87,15.87,0,0,0,186.55,96h0a15.85,15.85,0,0,0-13.76,7.84L146.63,148l-44.84-76.1a16,16,0,0,0-27.58,0L1.11,195.94A8,8,0,0,0,8,208H248a8,8,0,0,0,6.88-12.08ZM88,80l23.57,40H64.43ZM22,192l33-56h66l33,56Zm150.57,0-16.66-28.28L186.55,112,234,192Z\"/>"],"basket":["<path d=\"M136,120v56a8,8,0,0,1-16,0V120a8,8,0,0,1,16,0Zm36.84-.8-5.6,56A8,8,0,0,0,174.4,184a7.32,7.32,0,0,0,.81,0,8,8,0,0,0,7.95-7.2l5.6-56a8,8,0,0,0-15.92-1.6Zm-89.68,0a8,8,0,0,0-15.92,1.6l5.6,56a8,8,0,0,0,8,7.2,7.32,7.32,0,0,0,.81,0,8,8,0,0,0,7.16-8.76ZM239.93,89.06,224.86,202.12A16.06,16.06,0,0,1,209,216H47a16.06,16.06,0,0,1-15.86-13.88L16.07,89.06A8,8,0,0,1,24,80H68.37L122,18.73a8,8,0,0,1,12,0L187.63,80H232a8,8,0,0,1,7.93,9.06ZM89.63,80h76.74L128,36.15ZM222.86,96H33.14L47,200H209Z\"/>","<path d=\"M232,88,216.93,201.06A8,8,0,0,1,209,208H47a8,8,0,0,1-7.93-6.94L24,88Z\" opacity=\"0.2\"/><path d=\"M136,120v56a8,8,0,0,1-16,0V120a8,8,0,0,1,16,0Zm36.84-.8-5.6,56A8,8,0,0,0,174.4,184a7.32,7.32,0,0,0,.81,0,8,8,0,0,0,7.95-7.2l5.6-56a8,8,0,0,0-15.92-1.6Zm-89.68,0a8,8,0,0,0-15.92,1.6l5.6,56a8,8,0,0,0,8,7.2,7.32,7.32,0,0,0,.81,0,8,8,0,0,0,7.16-8.76ZM239.93,89.06,224.86,202.12A16.06,16.06,0,0,1,209,216H47a16.06,16.06,0,0,1-15.86-13.88L16.07,89.06A8,8,0,0,1,24,80H68.37L122,18.73a8,8,0,0,1,12,0L187.63,80H232a8,8,0,0,1,7.93,9.06ZM89.63,80h76.74L128,36.15ZM222.86,96H33.14L47,200H209Z\"/>"],"credit-card":["<path d=\"M224,48H32A16,16,0,0,0,16,64V192a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48Zm0,16V88H32V64Zm0,128H32V104H224v88Zm-16-24a8,8,0,0,1-8,8H168a8,8,0,0,1,0-16h32A8,8,0,0,1,208,168Zm-64,0a8,8,0,0,1-8,8H120a8,8,0,0,1,0-16h16A8,8,0,0,1,144,168Z\"/>","<path d=\"M232,96v96a8,8,0,0,1-8,8H32a8,8,0,0,1-8-8V96Z\" opacity=\"0.2\"/><path d=\"M224,48H32A16,16,0,0,0,16,64V192a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48Zm0,16V88H32V64Zm0,128H32V104H224v88Zm-16-24a8,8,0,0,1-8,8H168a8,8,0,0,1,0-16h32A8,8,0,0,1,208,168Zm-64,0a8,8,0,0,1-8,8H120a8,8,0,0,1,0-16h16A8,8,0,0,1,144,168Z\"/>"],"wheelchair":["<path d=\"M255.59,189.47a8,8,0,0,0-10.12-5.06l-17.42,5.81-28.9-57.8A8,8,0,0,0,192,128H112V104h56a8,8,0,0,0,0-16H112V79a32,32,0,1,0-16,0V89.81A72,72,0,0,0,112,232c33.52,0,63.69-22.71,71.75-54a8,8,0,1,0-15.5-4C162.09,198,137.91,216,112,216A56,56,0,0,1,96,106.34V136a8,8,0,0,0,8,8h83.05l29.79,59.58a8,8,0,0,0,9.69,4l24-8A8,8,0,0,0,255.59,189.47ZM88,48a16,16,0,1,1,16,16A16,16,0,0,1,88,48Z\"/>","<path d=\"M128,48a24,24,0,1,1-24-24A24,24,0,0,1,128,48Z\" opacity=\"0.2\"/><path d=\"M255.59,189.47a8,8,0,0,0-10.12-5.06l-17.42,5.81-28.9-57.8A8,8,0,0,0,192,128H112V104h56a8,8,0,0,0,0-16H112V79a32,32,0,1,0-16,0V89.81A72,72,0,0,0,112,232c33.52,0,63.69-22.71,71.75-54a8,8,0,1,0-15.5-4C162.09,198,137.91,216,112,216A56,56,0,0,1,96,106.34V136a8,8,0,0,0,8,8h83.05l29.79,59.58a8,8,0,0,0,9.69,4l24-8A8,8,0,0,0,255.59,189.47ZM88,48a16,16,0,1,1,16,16A16,16,0,0,1,88,48Z\"/>"],"clock":["<path d=\"M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z\"/>","<path d=\"M224,128a96,96,0,1,1-96-96A96,96,0,0,1,224,128Z\" opacity=\"0.2\"/><path d=\"M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z\"/>"],"signpost":["<path d=\"M246,106.65,212.33,69.3A16,16,0,0,0,200.44,64H136V32a8,8,0,0,0-16,0V64H40A16,16,0,0,0,24,80v64a16,16,0,0,0,16,16h80v64a8,8,0,0,0,16,0V160h64.44a16,16,0,0,0,11.89-5.3L246,117.35A8,8,0,0,0,246,106.65ZM200.44,144H40V80H200.44l28.8,32Z\"/>","<path d=\"M240,112l-33.62,37.35a8,8,0,0,1-5.94,2.65H40a8,8,0,0,1-8-8V80a8,8,0,0,1,8-8H200.44a8,8,0,0,1,5.94,2.65Z\" opacity=\"0.2\"/><path d=\"M246,106.65,212.33,69.3A16,16,0,0,0,200.44,64H136V32a8,8,0,0,0-16,0V64H40A16,16,0,0,0,24,80v64a16,16,0,0,0,16,16h80v64a8,8,0,0,0,16,0V160h64.44a16,16,0,0,0,11.89-5.3L246,117.35A8,8,0,0,0,246,106.65ZM200.44,144H40V80H200.44l28.8,32Z\"/>"],"map-trifold":["<path d=\"M228.92,49.69a8,8,0,0,0-6.86-1.45L160.93,63.52,99.58,32.84a8,8,0,0,0-5.52-.6l-64,16A8,8,0,0,0,24,56V200a8,8,0,0,0,9.94,7.76l61.13-15.28,61.35,30.68A8.15,8.15,0,0,0,160,224a8,8,0,0,0,1.94-.24l64-16A8,8,0,0,0,232,200V56A8,8,0,0,0,228.92,49.69ZM104,52.94l48,24V203.06l-48-24ZM40,62.25l48-12v127.5l-48,12Zm176,131.5-48,12V78.25l48-12Z\"/>","<path d=\"M160,72V216L96,184V40Z\" opacity=\"0.2\"/><path d=\"M228.92,49.69a8,8,0,0,0-6.86-1.45L160.93,63.52,99.58,32.84a8,8,0,0,0-5.52-.6l-64,16A8,8,0,0,0,24,56V200a8,8,0,0,0,9.94,7.76l61.13-15.28,61.35,30.68A8.15,8.15,0,0,0,160,224a8,8,0,0,0,1.94-.24l64-16A8,8,0,0,0,232,200V56A8,8,0,0,0,228.92,49.69ZM104,52.94l48,24V203.06l-48-24ZM40,62.25l48-12v127.5l-48,12Zm176,131.5-48,12V78.25l48-12Z\"/>"],"funnel":["<path d=\"M230.6,49.53A15.81,15.81,0,0,0,216,40H40A16,16,0,0,0,28.19,66.76l.08.09L96,139.17V216a16,16,0,0,0,24.87,13.32l32-21.34A16,16,0,0,0,160,194.66V139.17l67.74-72.32.08-.09A15.8,15.8,0,0,0,230.6,49.53ZM40,56h0Zm106.18,74.58A8,8,0,0,0,144,136v58.66L112,216V136a8,8,0,0,0-2.16-5.47L40,56H216Z\"/>","<path d=\"M221.9,61.38,152,136v58.65a8,8,0,0,1-3.56,6.66l-32,21.33A8,8,0,0,1,104,216V136L34.1,61.38A8,8,0,0,1,40,48H216A8,8,0,0,1,221.9,61.38Z\" opacity=\"0.2\"/><path d=\"M230.6,49.53A15.81,15.81,0,0,0,216,40H40A16,16,0,0,0,28.19,66.76l.08.09L96,139.17V216a16,16,0,0,0,24.87,13.32l32-21.34A16,16,0,0,0,160,194.66V139.17l67.74-72.32.08-.09A15.8,15.8,0,0,0,230.6,49.53ZM40,56h0Zm106.18,74.58A8,8,0,0,0,144,136v58.66L112,216V136a8,8,0,0,0-2.16-5.47L40,56H216Z\"/>"],"funnel-x":["<path d=\"M227.82,66.76A16,16,0,0,0,216,40H40A16,16,0,0,0,28.19,66.76l.08.09L96,139.17V216a16,16,0,0,0,24.87,13.32l32-21.34A16,16,0,0,0,160,194.66V139.17l67.73-72.32ZM40,56h0Zm106.19,74.59A8,8,0,0,0,144,136v58.66L112,216V136a8,8,0,0,0-2.16-5.46L40,56H216Zm99.49,79.81a8,8,0,0,1-11.32,11.32L216,203.32l-18.34,18.35a8,8,0,0,1-11.31-11.32L204.69,192l-18.34-18.35a8,8,0,0,1,11.31-11.31L216,180.69l18.34-18.34a8,8,0,0,1,11.32,11.31L227.31,192Z\"/>","<path d=\"M221.9,61.38,152,136v58.65a8,8,0,0,1-3.56,6.66l-32,21.33A8,8,0,0,1,104,216V136L34.1,61.38A8,8,0,0,1,40,48H216A8,8,0,0,1,221.9,61.38Z\" opacity=\"0.2\"/><path d=\"M227.82,66.76A16,16,0,0,0,216,40H40A16,16,0,0,0,28.19,66.76l.08.09L96,139.17V216a16,16,0,0,0,24.87,13.32l32-21.34A16,16,0,0,0,160,194.66V139.17l67.73-72.32ZM40,56h0Zm106.19,74.59A8,8,0,0,0,144,136v58.66L112,216V136a8,8,0,0,0-2.16-5.46L40,56H216Zm99.49,79.81a8,8,0,0,1-11.32,11.32L216,203.32l-18.34,18.35a8,8,0,0,1-11.31-11.32L204.69,192l-18.34-18.35a8,8,0,0,1,11.31-11.31L216,180.69l18.34-18.34a8,8,0,0,1,11.32,11.31L227.31,192Z\"/>"],"x":["<path d=\"M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z\"/>","<path d=\"M216,56V200a16,16,0,0,1-16,16H56a16,16,0,0,1-16-16V56A16,16,0,0,1,56,40H200A16,16,0,0,1,216,56Z\" opacity=\"0.2\"/><path d=\"M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z\"/>"],"magnifying-glass":["<path d=\"M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z\"/>","<path d=\"M192,112a80,80,0,1,1-80-80A80,80,0,0,1,192,112Z\" opacity=\"0.2\"/><path d=\"M229.66,218.34,179.6,168.28a88.21,88.21,0,1,0-11.32,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z\"/>"],"info":["<path d=\"M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm16-40a8,8,0,0,1-8,8,16,16,0,0,1-16-16V128a8,8,0,0,1,0-16,16,16,0,0,1,16,16v40A8,8,0,0,1,144,176ZM112,84a12,12,0,1,1,12,12A12,12,0,0,1,112,84Z\"/>","<path d=\"M224,128a96,96,0,1,1-96-96A96,96,0,0,1,224,128Z\" opacity=\"0.2\"/><path d=\"M144,176a8,8,0,0,1-8,8,16,16,0,0,1-16-16V128a8,8,0,0,1,0-16,16,16,0,0,1,16,16v40A8,8,0,0,1,144,176Zm88-48A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128ZM124,96a12,12,0,1,0-12-12A12,12,0,0,0,124,96Z\"/>"],"check":["<path d=\"M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z\"/>","<path d=\"M232,56V200a16,16,0,0,1-16,16H40a16,16,0,0,1-16-16V56A16,16,0,0,1,40,40H216A16,16,0,0,1,232,56Z\" opacity=\"0.2\"/><path d=\"M205.66,85.66l-96,96a8,8,0,0,1-11.32,0l-40-40a8,8,0,0,1,11.32-11.32L104,164.69l90.34-90.35a8,8,0,0,1,11.32,11.32Z\"/>"],"users-three":["<path d=\"M244.8,150.4a8,8,0,0,1-11.2-1.6A51.6,51.6,0,0,0,192,128a8,8,0,0,1-7.37-4.89,8,8,0,0,1,0-6.22A8,8,0,0,1,192,112a24,24,0,1,0-23.24-30,8,8,0,1,1-15.5-4A40,40,0,1,1,219,117.51a67.94,67.94,0,0,1,27.43,21.68A8,8,0,0,1,244.8,150.4ZM190.92,212a8,8,0,1,1-13.84,8,57,57,0,0,0-98.16,0,8,8,0,1,1-13.84-8,72.06,72.06,0,0,1,33.74-29.92,48,48,0,1,1,58.36,0A72.06,72.06,0,0,1,190.92,212ZM128,176a32,32,0,1,0-32-32A32,32,0,0,0,128,176ZM72,120a8,8,0,0,0-8-8A24,24,0,1,1,87.24,82a8,8,0,1,0,15.5-4A40,40,0,1,0,37,117.51,67.94,67.94,0,0,0,9.6,139.19a8,8,0,1,0,12.8,9.61A51.6,51.6,0,0,1,64,128,8,8,0,0,0,72,120Z\"/>","<path d=\"M168,144a40,40,0,1,1-40-40A40,40,0,0,1,168,144ZM64,56A32,32,0,1,0,96,88,32,32,0,0,0,64,56Zm128,0a32,32,0,1,0,32,32A32,32,0,0,0,192,56Z\" opacity=\"0.2\"/><path d=\"M244.8,150.4a8,8,0,0,1-11.2-1.6A51.6,51.6,0,0,0,192,128a8,8,0,0,1,0-16,24,24,0,1,0-23.24-30,8,8,0,1,1-15.5-4A40,40,0,1,1,219,117.51a67.94,67.94,0,0,1,27.43,21.68A8,8,0,0,1,244.8,150.4ZM190.92,212a8,8,0,1,1-13.85,8,57,57,0,0,0-98.15,0,8,8,0,1,1-13.84-8,72.06,72.06,0,0,1,33.74-29.92,48,48,0,1,1,58.36,0A72.06,72.06,0,0,1,190.92,212ZM128,176a32,32,0,1,0-32-32A32,32,0,0,0,128,176ZM72,120a8,8,0,0,0-8-8A24,24,0,1,1,87.24,82a8,8,0,1,0,15.5-4A40,40,0,1,0,37,117.51,67.94,67.94,0,0,0,9.6,139.19a8,8,0,1,0,12.8,9.61A51.6,51.6,0,0,1,64,128,8,8,0,0,0,72,120Z\"/>"],"car":["<path d=\"M240,104H229.2L201.42,41.5A16,16,0,0,0,186.8,32H69.2a16,16,0,0,0-14.62,9.5L26.8,104H16a8,8,0,0,0,0,16h8v80a16,16,0,0,0,16,16H64a16,16,0,0,0,16-16V184h96v16a16,16,0,0,0,16,16h24a16,16,0,0,0,16-16V120h8a8,8,0,0,0,0-16ZM69.2,48H186.8l24.89,56H44.31ZM64,200H40V184H64Zm128,0V184h24v16Zm24-32H40V120H216ZM56,144a8,8,0,0,1,8-8H80a8,8,0,0,1,0,16H64A8,8,0,0,1,56,144Zm112,0a8,8,0,0,1,8-8h16a8,8,0,0,1,0,16H176A8,8,0,0,1,168,144Z\"/>","<path d=\"M184,176h40v24a8,8,0,0,1-8,8H192a8,8,0,0,1-8-8ZM32,200a8,8,0,0,0,8,8H64a8,8,0,0,0,8-8V176H32ZM194.11,44.75A8,8,0,0,0,186.8,40H69.2a8,8,0,0,0-7.31,4.75L32,112H224Z\" opacity=\"0.2\"/><path d=\"M240,104H229.2L201.42,41.5A16,16,0,0,0,186.8,32H69.2a16,16,0,0,0-14.62,9.5L26.8,104H16a8,8,0,0,0,0,16h8v80a16,16,0,0,0,16,16H64a16,16,0,0,0,16-16V184h96v16a16,16,0,0,0,16,16h24a16,16,0,0,0,16-16V120h8a8,8,0,0,0,0-16ZM69.2,48H186.8l24.89,56H44.31ZM64,200H40V184H64Zm128,0V184h24v16Zm24-32H40V120H216ZM56,144a8,8,0,0,1,8-8H80a8,8,0,0,1,0,16H64A8,8,0,0,1,56,144Zm112,0a8,8,0,0,1,8-8h16a8,8,0,0,1,0,16H176A8,8,0,0,1,168,144Z\"/>"],"paw-print":["<path d=\"M212,80a28,28,0,1,0,28,28A28,28,0,0,0,212,80Zm0,40a12,12,0,1,1,12-12A12,12,0,0,1,212,120ZM72,108a28,28,0,1,0-28,28A28,28,0,0,0,72,108ZM44,120a12,12,0,1,1,12-12A12,12,0,0,1,44,120ZM92,88A28,28,0,1,0,64,60,28,28,0,0,0,92,88Zm0-40A12,12,0,1,1,80,60,12,12,0,0,1,92,48Zm72,40a28,28,0,1,0-28-28A28,28,0,0,0,164,88Zm0-40a12,12,0,1,1-12,12A12,12,0,0,1,164,48Zm23.12,100.86a35.3,35.3,0,0,1-16.87-21.14,44,44,0,0,0-84.5,0A35.25,35.25,0,0,1,69,148.82,40,40,0,0,0,88,224a39.48,39.48,0,0,0,15.52-3.13,64.09,64.09,0,0,1,48.87,0,40,40,0,0,0,34.73-72ZM168,208a24,24,0,0,1-9.45-1.93,80.14,80.14,0,0,0-61.19,0,24,24,0,0,1-20.71-43.26,51.22,51.22,0,0,0,24.46-30.67,28,28,0,0,1,53.78,0,51.27,51.27,0,0,0,24.53,30.71A24,24,0,0,1,168,208Z\"/>","<path d=\"M232,108a20,20,0,1,1-20-20A20,20,0,0,1,232,108ZM64,108a20,20,0,1,0-20,20A20,20,0,0,0,64,108ZM92,80A20,20,0,1,0,72,60,20,20,0,0,0,92,80Zm72,0a20,20,0,1,0-20-20A20,20,0,0,0,164,80Zm19.24,75.85A43.46,43.46,0,0,1,162.57,130a36,36,0,0,0-69.14,0,43.49,43.49,0,0,1-20.67,25.9,32,32,0,0,0,27.73,57.62,72.49,72.49,0,0,1,55,0,32,32,0,0,0,27.73-57.62Z\" opacity=\"0.2\"/><path d=\"M212,80a28,28,0,1,0,28,28A28,28,0,0,0,212,80Zm0,40a12,12,0,1,1,12-12A12,12,0,0,1,212,120ZM72,108a28,28,0,1,0-28,28A28,28,0,0,0,72,108ZM44,120a12,12,0,1,1,12-12A12,12,0,0,1,44,120ZM92,88A28,28,0,1,0,64,60,28,28,0,0,0,92,88Zm0-40A12,12,0,1,1,80,60,12,12,0,0,1,92,48Zm72,40a28,28,0,1,0-28-28A28,28,0,0,0,164,88Zm0-40a12,12,0,1,1-12,12A12,12,0,0,1,164,48Zm23.12,100.86a35.3,35.3,0,0,1-16.87-21.14,44,44,0,0,0-84.5,0A35.25,35.25,0,0,1,69,148.82,40,40,0,0,0,88,224a39.48,39.48,0,0,0,15.52-3.13,64.09,64.09,0,0,1,48.87,0,40,40,0,0,0,34.73-72ZM168,208a24,24,0,0,1-9.45-1.93,80.14,80.14,0,0,0-61.19,0,24,24,0,0,1-20.71-43.26,51.22,51.22,0,0,0,24.46-30.67,28,28,0,0,1,53.78,0,51.27,51.27,0,0,0,24.53,30.71A24,24,0,0,1,168,208Z\"/>"],"baby":["<path d=\"M92,140a12,12,0,1,1,12-12A12,12,0,0,1,92,140Zm72-24a12,12,0,1,0,12,12A12,12,0,0,0,164,116Zm-12.27,45.23a45,45,0,0,1-47.46,0,8,8,0,0,0-8.54,13.54,61,61,0,0,0,64.54,0,8,8,0,0,0-8.54-13.54ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88.11,88.11,0,0,0-84.09-87.91C120.32,56.38,120,71.88,120,72a8,8,0,0,0,16,0,8,8,0,0,1,16,0,24,24,0,0,1-48,0c0-.73.13-14.3,8.46-30.63A88,88,0,1,0,216,128Z\"/>","<path d=\"M224,128a96,96,0,1,1-96-96A96,96,0,0,1,224,128Z\" opacity=\"0.2\"/><path d=\"M92,140a12,12,0,1,1,12-12A12,12,0,0,1,92,140Zm72-24a12,12,0,1,0,12,12A12,12,0,0,0,164,116Zm-12.27,45.23a45,45,0,0,1-47.46,0,8,8,0,0,0-8.54,13.54,61,61,0,0,0,64.54,0,8,8,0,0,0-8.54-13.54ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88.11,88.11,0,0,0-84.09-87.91C120.32,56.38,120,71.88,120,72a8,8,0,0,0,16,0,8,8,0,0,1,16,0,24,24,0,0,1-48,0c0-.73.13-14.3,8.46-30.63A88,88,0,1,0,216,128Z\"/>"],"translate":["<path d=\"M247.15,212.42l-56-112a8,8,0,0,0-14.31,0l-21.71,43.43A88,88,0,0,1,108,126.93,103.65,103.65,0,0,0,135.69,64H160a8,8,0,0,0,0-16H104V32a8,8,0,0,0-16,0V48H32a8,8,0,0,0,0,16h87.63A87.76,87.76,0,0,1,96,116.35a87.74,87.74,0,0,1-19-31,8,8,0,1,0-15.08,5.34A103.63,103.63,0,0,0,84,127a87.55,87.55,0,0,1-52,17,8,8,0,0,0,0,16,103.46,103.46,0,0,0,64-22.08,104.18,104.18,0,0,0,51.44,21.31l-26.6,53.19a8,8,0,0,0,14.31,7.16L148.94,192h70.11l13.79,27.58A8,8,0,0,0,240,224a8,8,0,0,0,7.15-11.58ZM156.94,176,184,121.89,211.05,176Z\"/>","<path d=\"M224,184H144l40-80ZM96,127.56h0A95.78,95.78,0,0,0,128,56H64A95.78,95.78,0,0,0,96,127.56Z\" opacity=\"0.2\"/><path d=\"M247.15,212.42l-56-112a8,8,0,0,0-14.31,0l-21.71,43.43A88,88,0,0,1,108,126.93,103.65,103.65,0,0,0,135.69,64H160a8,8,0,0,0,0-16H104V32a8,8,0,0,0-16,0V48H32a8,8,0,0,0,0,16h87.63A87.7,87.7,0,0,1,96,116.35a87.74,87.74,0,0,1-19-31,8,8,0,1,0-15.08,5.34A103.63,103.63,0,0,0,84,127a87.55,87.55,0,0,1-52,17,8,8,0,0,0,0,16,103.46,103.46,0,0,0,64-22.08,104.18,104.18,0,0,0,51.44,21.31l-26.6,53.19a8,8,0,0,0,14.31,7.16L148.94,192h70.11l13.79,27.58A8,8,0,0,0,240,224a8,8,0,0,0,7.15-11.58ZM156.94,176,184,121.89,211.05,176Z\"/>"],"plant":["<path d=\"M247.63,47.89a8,8,0,0,0-7.52-7.52c-51.76-3-93.32,12.74-111.18,42.22-11.8,19.49-11.78,43.16-.16,65.74a71.34,71.34,0,0,0-14.17,27L98.33,159c7.82-16.33,7.52-33.35-1-47.49-13.2-21.79-43.67-33.47-81.5-31.25a8,8,0,0,0-7.52,7.52c-2.23,37.83,9.46,68.3,31.25,81.5A45.82,45.82,0,0,0,63.44,176,54.58,54.58,0,0,0,87,170.33l25,25V224a8,8,0,0,0,16,0V194.51a55.61,55.61,0,0,1,12.27-35,73.91,73.91,0,0,0,33.31,8.4,60.9,60.9,0,0,0,31.83-8.86C234.89,141.21,250.67,99.65,247.63,47.89ZM47.81,155.6C32.47,146.31,23.79,124.32,24,96c28.32-.24,50.31,8.47,59.6,23.81,4.85,8,5.64,17.33,2.46,26.94L61.65,122.34a8,8,0,0,0-11.31,11.31l24.41,24.41C65.14,161.24,55.82,160.45,47.81,155.6Zm149.31-10.22c-13.4,8.11-29.15,8.73-45.15,2l53.69-53.7a8,8,0,0,0-11.31-11.31L140.65,136c-6.76-16-6.15-31.76,2-45.15,13.94-23,47-35.82,89.33-34.83C232.94,98.34,220.14,131.44,197.12,145.38Z\"/>","<path d=\"M138.54,149.46C106.62,96.25,149.18,43.05,239.63,48.37,245,138.82,191.75,181.39,138.54,149.46ZM16.26,88.26c-3.8,64.61,34.21,95,72.21,72.21C111.27,122.47,80.87,84.46,16.26,88.26Z\" opacity=\"0.2\"/><path d=\"M247.63,47.89a8,8,0,0,0-7.52-7.52c-51.76-3-93.32,12.74-111.18,42.22-11.8,19.48-11.78,43.16-.16,65.74a71.37,71.37,0,0,0-14.17,26.95L98.33,159c7.82-16.33,7.52-33.36-1-47.49C84.09,89.73,53.62,78,15.79,80.27a8,8,0,0,0-7.52,7.52c-2.23,37.83,9.46,68.3,31.25,81.5A45.82,45.82,0,0,0,63.44,176,54.58,54.58,0,0,0,87,170.33l25,25V224a8,8,0,0,0,16,0V194.51a55.61,55.61,0,0,1,12.27-35,73.91,73.91,0,0,0,33.31,8.4,60.9,60.9,0,0,0,31.83-8.86C234.89,141.21,250.67,99.65,247.63,47.89ZM86.06,146.74l-24.41-24.4a8,8,0,0,0-11.31,11.31l24.41,24.41c-9.61,3.18-18.93,2.39-26.94-2.46C32.47,146.31,23.79,124.32,24,96c28.31-.25,50.31,8.47,59.6,23.81C88.45,127.82,89.24,137.14,86.06,146.74Zm111.06-1.36c-13.4,8.11-29.15,8.73-45.15,2l53.69-53.7a8,8,0,0,0-11.31-11.32L140.65,136c-6.76-16-6.15-31.76,2-45.15,13.94-23,47-35.8,89.33-34.83C232.94,98.34,220.14,131.44,197.12,145.38Z\"/>"],"barn":["<path d=\"M240,192h-8V130.57l1.49,2.08a8,8,0,1,0,13-9.3l-40-56a8,8,0,0,0-2-1.94L137,18.77l-.1-.07a16,16,0,0,0-17.76,0l-.1.07L51.45,65.42a8,8,0,0,0-2,1.94l-40,56a8,8,0,1,0,13,9.3L24,130.57V192H16a8,8,0,0,0,0,16H240a8,8,0,0,0,0-16ZM40,108.17,61.7,77.79,128,32l66.3,45.78L216,108.17V192H192V120a8,8,0,0,0-8-8H72a8,8,0,0,0-8,8v72H40Zm88,42L97,128H159Zm48-14.62v48.91L141.76,160ZM114.24,160,80,184.46V135.55ZM128,169.83,159,192H97ZM104,88a8,8,0,0,1,8-8h32a8,8,0,1,1,0,16H112A8,8,0,0,1,104,88Z\"/>","<path d=\"M184,120v80H72V120Z\" opacity=\"0.2\"/><path d=\"M240,192h-8V130.57l1.49,2.08a8,8,0,1,0,13-9.3l-40-56a8,8,0,0,0-2-1.94L137,18.77l-.1-.07a16,16,0,0,0-17.76,0l-.1.07L51.45,65.42a8,8,0,0,0-2,1.94l-40,56a8,8,0,1,0,13,9.3L24,130.57V192H16a8,8,0,0,0,0,16H240a8,8,0,0,0,0-16ZM40,108.17,61.7,77.79,128,32l66.3,45.78L216,108.17V192H192V120a8,8,0,0,0-8-8H72a8,8,0,0,0-8,8v72H40Zm88,42L97,128H159Zm48-14.62v48.91L141.76,160ZM114.24,160,80,184.46V135.55ZM128,169.83,159,192H97ZM104,88a8,8,0,0,1,8-8h32a8,8,0,1,1,0,16H112A8,8,0,0,1,104,88Z\"/>"],"map-pin":["<path d=\"M128,64a40,40,0,1,0,40,40A40,40,0,0,0,128,64Zm0,64a24,24,0,1,1,24-24A24,24,0,0,1,128,128Zm0-112a88.1,88.1,0,0,0-88,88c0,31.4,14.51,64.68,42,96.25a254.19,254.19,0,0,0,41.45,38.3,8,8,0,0,0,9.18,0A254.19,254.19,0,0,0,174,200.25c27.45-31.57,42-64.85,42-96.25A88.1,88.1,0,0,0,128,16Zm0,206c-16.53-13-72-60.75-72-118a72,72,0,0,1,144,0C200,161.23,144.53,209,128,222Z\"/>","<path d=\"M128,24a80,80,0,0,0-80,80c0,72,80,128,80,128s80-56,80-128A80,80,0,0,0,128,24Zm0,112a32,32,0,1,1,32-32A32,32,0,0,1,128,136Z\" opacity=\"0.2\"/><path d=\"M128,64a40,40,0,1,0,40,40A40,40,0,0,0,128,64Zm0,64a24,24,0,1,1,24-24A24,24,0,0,1,128,128Zm0-112a88.1,88.1,0,0,0-88,88c0,31.4,14.51,64.68,42,96.25a254.19,254.19,0,0,0,41.45,38.3,8,8,0,0,0,9.18,0A254.19,254.19,0,0,0,174,200.25c27.45-31.57,42-64.85,42-96.25A88.1,88.1,0,0,0,128,16Zm0,206c-16.53-13-72-60.75-72-118a72,72,0,0,1,144,0C200,161.23,144.53,209,128,222Z\"/>"],"calendar-check":["<path d=\"M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM72,48v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80H48V48ZM208,208H48V96H208V208Zm-38.34-85.66a8,8,0,0,1,0,11.32l-48,48a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L116,164.69l42.34-42.35A8,8,0,0,1,169.66,122.34Z\"/>","<path d=\"M216,48V88H40V48a8,8,0,0,1,8-8H208A8,8,0,0,1,216,48Z\" opacity=\"0.2\"/><path d=\"M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM72,48v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80H48V48ZM208,208H48V96H208V208Zm-38.34-85.66a8,8,0,0,1,0,11.32l-48,48a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L116,164.69l42.34-42.35A8,8,0,0,1,169.66,122.34Z\"/>"],"sun":["<path d=\"M120,40V16a8,8,0,0,1,16,0V40a8,8,0,0,1-16,0Zm72,88a64,64,0,1,1-64-64A64.07,64.07,0,0,1,192,128Zm-16,0a48,48,0,1,0-48,48A48.05,48.05,0,0,0,176,128ZM58.34,69.66A8,8,0,0,0,69.66,58.34l-16-16A8,8,0,0,0,42.34,53.66Zm0,116.68-16,16a8,8,0,0,0,11.32,11.32l16-16a8,8,0,0,0-11.32-11.32ZM192,72a8,8,0,0,0,5.66-2.34l16-16a8,8,0,0,0-11.32-11.32l-16,16A8,8,0,0,0,192,72Zm5.66,114.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32-11.32ZM48,128a8,8,0,0,0-8-8H16a8,8,0,0,0,0,16H40A8,8,0,0,0,48,128Zm80,80a8,8,0,0,0-8,8v24a8,8,0,0,0,16,0V216A8,8,0,0,0,128,208Zm112-88H216a8,8,0,0,0,0,16h24a8,8,0,0,0,0-16Z\"/>","<path d=\"M184,128a56,56,0,1,1-56-56A56,56,0,0,1,184,128Z\" opacity=\"0.2\"/><path d=\"M120,40V16a8,8,0,0,1,16,0V40a8,8,0,0,1-16,0Zm72,88a64,64,0,1,1-64-64A64.07,64.07,0,0,1,192,128Zm-16,0a48,48,0,1,0-48,48A48.05,48.05,0,0,0,176,128ZM58.34,69.66A8,8,0,0,0,69.66,58.34l-16-16A8,8,0,0,0,42.34,53.66Zm0,116.68-16,16a8,8,0,0,0,11.32,11.32l16-16a8,8,0,0,0-11.32-11.32ZM192,72a8,8,0,0,0,5.66-2.34l16-16a8,8,0,0,0-11.32-11.32l-16,16A8,8,0,0,0,192,72Zm5.66,114.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32-11.32ZM48,128a8,8,0,0,0-8-8H16a8,8,0,0,0,0,16H40A8,8,0,0,0,48,128Zm80,80a8,8,0,0,0-8,8v24a8,8,0,0,0,16,0V216A8,8,0,0,0,128,208Zm112-88H216a8,8,0,0,0,0,16h24a8,8,0,0,0,0-16Z\"/>"],"road-horizon":["<path d=\"M235.92,199A8,8,0,0,1,225,195.92L155.32,72H136v8a8,8,0,0,1-16,0V72H100.68L31,195.92A8,8,0,0,1,17,188.08L82.32,72H24a8,8,0,0,1,0-16H232a8,8,0,0,1,0,16H173.68L239,188.08A8,8,0,0,1,235.92,199ZM128,112a8,8,0,0,0-8,8v16a8,8,0,0,0,16,0V120A8,8,0,0,0,128,112Zm0,56a8,8,0,0,0-8,8v16a8,8,0,0,0,16,0V176A8,8,0,0,0,128,168Z\"/>","<path d=\"M232,192H24L96,64h64Z\" opacity=\"0.2\"/><path d=\"M235.92,199A8,8,0,0,1,225,195.92L155.32,72H136v8a8,8,0,0,1-16,0V72H100.68L31,195.92A8,8,0,0,1,17,188.08L82.32,72H24a8,8,0,0,1,0-16H232a8,8,0,0,1,0,16H173.68L239,188.08A8,8,0,0,1,235.92,199ZM128,112a8,8,0,0,0-8,8v16a8,8,0,0,0,16,0V120A8,8,0,0,0,128,112Zm0,56a8,8,0,0,0-8,8v16a8,8,0,0,0,16,0V176A8,8,0,0,0,128,168Z\"/>"],"tree-evergreen":["<path d=\"M230.32,187.09l-46-59.09H208a8,8,0,0,0,6.34-12.88l-80-104a8,8,0,0,0-12.68,0l-80,104A8,8,0,0,0,48,128H71.64l-46,59.09A8,8,0,0,0,32,200h88v40a8,8,0,0,0,16,0V200h88a8,8,0,0,0,6.32-12.91ZM48.36,184l46-59.09A8,8,0,0,0,88,112H64.25L128,29.12,191.75,112H168a8,8,0,0,0-6.31,12.91L207.64,184Z\"/>","<path d=\"M32,192l56-72H48L128,16l80,104H168l56,72Z\" opacity=\"0.2\"/><path d=\"M230.31,187.09,184.36,128H208a8,8,0,0,0,6.34-12.88l-80-104a8,8,0,0,0-12.68,0l-80,104A8,8,0,0,0,48,128H71.64L25.69,187.09A8,8,0,0,0,32,200h88v40a8,8,0,0,0,16,0V200h88a8,8,0,0,0,6.31-12.91ZM48.36,184l46-59.09A8,8,0,0,0,88,112H64.25L128,29.12,191.75,112H168a8,8,0,0,0-6.31,12.91L207.64,184Z\"/>"],"toilet":["<path d=\"M120,64a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h16A8,8,0,0,1,120,64Zm52.32,133.14,3.52,24.6A16,16,0,0,1,160,240H96a16,16,0,0,1-15.84-18.26l3.52-24.6A96.09,96.09,0,0,1,32,112a8,8,0,0,1,8-8H56V40A16,16,0,0,1,72,24H184a16,16,0,0,1,16,16v64h16a8,8,0,0,1,8,8A96.09,96.09,0,0,1,172.32,197.14ZM72,104H184V40H72Zm85.07,99.5a96.15,96.15,0,0,1-58.14,0L96,224h64ZM207.6,120H48.4a80,80,0,0,0,159.2,0Z\"/>","<path d=\"M167.92,222.87A8,8,0,0,1,160,232H96a8,8,0,0,1-7.92-9.13l4.34-30.36h0a88.21,88.21,0,0,0,71.14,0h0ZM184,32H72a8,8,0,0,0-8,8v72H192V40A8,8,0,0,0,184,32Z\" opacity=\"0.2\"/><path d=\"M120,64a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h16A8,8,0,0,1,120,64Zm52.32,133.14,3.52,24.6A16,16,0,0,1,160,240H96a16,16,0,0,1-15.84-18.26l3.52-24.6A96.09,96.09,0,0,1,32,112a8,8,0,0,1,8-8H56V40A16,16,0,0,1,72,24H184a16,16,0,0,1,16,16v64h16a8,8,0,0,1,8,8A96.09,96.09,0,0,1,172.32,197.14ZM72,104H184V40H72Zm85.07,99.5a96.15,96.15,0,0,1-58.14,0L96,224h64ZM207.6,120H48.4a80,80,0,0,0,159.2,0Z\"/>"],"ticket":["<path d=\"M232,104a8,8,0,0,0,8-8V64a16,16,0,0,0-16-16H32A16,16,0,0,0,16,64V96a8,8,0,0,0,8,8,24,24,0,0,1,0,48,8,8,0,0,0-8,8v32a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V160a8,8,0,0,0-8-8,24,24,0,0,1,0-48ZM32,167.2a40,40,0,0,0,0-78.4V64H88V192H32Zm192,0V192H104V64H224V88.8a40,40,0,0,0,0,78.4Z\"/>","<path d=\"M200,128a32,32,0,0,0,32,32v32a8,8,0,0,1-8,8H96V56H224a8,8,0,0,1,8,8V96A32,32,0,0,0,200,128Z\" opacity=\"0.2\"/><path d=\"M232,104a8,8,0,0,0,8-8V64a16,16,0,0,0-16-16H32A16,16,0,0,0,16,64V96a8,8,0,0,0,8,8,24,24,0,0,1,0,48,8,8,0,0,0-8,8v32a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V160a8,8,0,0,0-8-8,24,24,0,0,1,0-48ZM32,167.2a40,40,0,0,0,0-78.4V64H88V192H32Zm192,0V192H104V64H224V88.8a40,40,0,0,0,0,78.4Z\"/>"],"compass":["<path d=\"M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216ZM172.42,72.84l-64,32a8.05,8.05,0,0,0-3.58,3.58l-32,64A8,8,0,0,0,80,184a8.1,8.1,0,0,0,3.58-.84l64-32a8.05,8.05,0,0,0,3.58-3.58l32-64a8,8,0,0,0-10.74-10.74ZM138,138,97.89,158.11,118,118l40.15-20.07Z\"/>","<path d=\"M128,32a96,96,0,1,0,96,96A96,96,0,0,0,128,32Zm16,112L80,176l32-64,64-32Z\" opacity=\"0.2\"/><path d=\"M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216ZM172.42,72.84l-64,32a8.05,8.05,0,0,0-3.58,3.58l-32,64A8,8,0,0,0,80,184a8.1,8.1,0,0,0,3.58-.84l64-32a8.05,8.05,0,0,0,3.58-3.58l32-64a8,8,0,0,0-10.74-10.74ZM138,138,97.89,158.11,118,118l40.15-20.07Z\"/>"],"cooking-pot":["<path d=\"M88,48V16a8,8,0,0,1,16,0V48a8,8,0,0,1-16,0Zm40,8a8,8,0,0,0,8-8V16a8,8,0,0,0-16,0V48A8,8,0,0,0,128,56Zm32,0a8,8,0,0,0,8-8V16a8,8,0,0,0-16,0V48A8,8,0,0,0,160,56Zm92.8,46.4L224,124v60a32,32,0,0,1-32,32H64a32,32,0,0,1-32-32V124L3.2,102.4a8,8,0,0,1,9.6-12.8L32,104V80a8,8,0,0,1,8-8H216a8,8,0,0,1,8,8v24l19.2-14.4a8,8,0,0,1,9.6,12.8ZM208,88H48v96a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16Z\"/>","<path d=\"M216,80V184a24,24,0,0,1-24,24H64a24,24,0,0,1-24-24V80Z\" opacity=\"0.2\"/><path d=\"M88,48V16a8,8,0,0,1,16,0V48a8,8,0,0,1-16,0Zm40,8a8,8,0,0,0,8-8V16a8,8,0,0,0-16,0V48A8,8,0,0,0,128,56Zm32,0a8,8,0,0,0,8-8V16a8,8,0,0,0-16,0V48A8,8,0,0,0,160,56Zm92.8,46.4L224,124v60a32,32,0,0,1-32,32H64a32,32,0,0,1-32-32V124L3.2,102.4a8,8,0,0,1,9.6-12.8L32,104V80a8,8,0,0,1,8-8H216a8,8,0,0,1,8,8v24l19.2-14.4a8,8,0,0,1,9.6,12.8ZM208,88H48v96a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16Z\"/>"],"coffee":["<path d=\"M80,56V24a8,8,0,0,1,16,0V56a8,8,0,0,1-16,0Zm40,8a8,8,0,0,0,8-8V24a8,8,0,0,0-16,0V56A8,8,0,0,0,120,64Zm32,0a8,8,0,0,0,8-8V24a8,8,0,0,0-16,0V56A8,8,0,0,0,152,64Zm96,56v8a40,40,0,0,1-37.51,39.91,96.59,96.59,0,0,1-27,40.09H208a8,8,0,0,1,0,16H32a8,8,0,0,1,0-16H56.54A96.3,96.3,0,0,1,24,136V88a8,8,0,0,1,8-8H208A40,40,0,0,1,248,120ZM200,96H40v40a80.27,80.27,0,0,0,45.12,72h69.76A80.27,80.27,0,0,0,200,136Zm32,24a24,24,0,0,0-16-22.62V136a95.78,95.78,0,0,1-1.2,15A24,24,0,0,0,232,128Z\"/>","<path d=\"M208,88v48a88,88,0,0,1-51.3,80H83.3A88,88,0,0,1,32,136V88Z\" opacity=\"0.2\"/><path d=\"M80,56V24a8,8,0,0,1,16,0V56a8,8,0,0,1-16,0Zm40,8a8,8,0,0,0,8-8V24a8,8,0,0,0-16,0V56A8,8,0,0,0,120,64Zm32,0a8,8,0,0,0,8-8V24a8,8,0,0,0-16,0V56A8,8,0,0,0,152,64Zm96,56v8a40,40,0,0,1-37.51,39.91,96.59,96.59,0,0,1-27,40.09H208a8,8,0,0,1,0,16H32a8,8,0,0,1,0-16H56.54A96.3,96.3,0,0,1,24,136V88a8,8,0,0,1,8-8H208A40,40,0,0,1,248,120ZM200,96H40v40a80.27,80.27,0,0,0,45.12,72h69.76A80.27,80.27,0,0,0,200,136Zm32,24a24,24,0,0,0-16-22.62V136a95.78,95.78,0,0,1-1.2,15A24,24,0,0,0,232,128Z\"/>"],"shopping-bag":["<path d=\"M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,160H40V56H216V200ZM176,88a48,48,0,0,1-96,0,8,8,0,0,1,16,0,32,32,0,0,0,64,0,8,8,0,0,1,16,0Z\"/>","<path d=\"M224,56V200a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V56a8,8,0,0,1,8-8H216A8,8,0,0,1,224,56Z\" opacity=\"0.2\"/><path d=\"M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,160H40V56H216V200ZM176,88a48,48,0,0,1-96,0,8,8,0,0,1,16,0,32,32,0,0,0,64,0,8,8,0,0,1,16,0Z\"/>"],"list":["<path d=\"M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z\"/>","<path d=\"M216,64V192H40V64Z\" opacity=\"0.2\"/><path d=\"M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z\"/>"],"arrows-out":["<path d=\"M216,48V96a8,8,0,0,1-16,0V67.31l-42.34,42.35a8,8,0,0,1-11.32-11.32L188.69,56H160a8,8,0,0,1,0-16h48A8,8,0,0,1,216,48ZM98.34,146.34,56,188.69V160a8,8,0,0,0-16,0v48a8,8,0,0,0,8,8H96a8,8,0,0,0,0-16H67.31l42.35-42.34a8,8,0,0,0-11.32-11.32ZM208,152a8,8,0,0,0-8,8v28.69l-42.34-42.35a8,8,0,0,0-11.32,11.32L188.69,200H160a8,8,0,0,0,0,16h48a8,8,0,0,0,8-8V160A8,8,0,0,0,208,152ZM67.31,56H96a8,8,0,0,0,0-16H48a8,8,0,0,0-8,8V96a8,8,0,0,0,16,0V67.31l42.34,42.35a8,8,0,0,0,11.32-11.32Z\"/>","<path d=\"M208,48V208H48V48Z\" opacity=\"0.2\"/><path d=\"M216,48V96a8,8,0,0,1-16,0V67.31l-42.34,42.35a8,8,0,0,1-11.32-11.32L188.69,56H160a8,8,0,0,1,0-16h48A8,8,0,0,1,216,48ZM98.34,146.34,56,188.69V160a8,8,0,0,0-16,0v48a8,8,0,0,0,8,8H96a8,8,0,0,0,0-16H67.31l42.35-42.34a8,8,0,0,0-11.32-11.32ZM208,152a8,8,0,0,0-8,8v28.69l-42.34-42.35a8,8,0,0,0-11.32,11.32L188.69,200H160a8,8,0,0,0,0,16h48a8,8,0,0,0,8-8V160A8,8,0,0,0,208,152ZM67.31,56H96a8,8,0,0,0,0-16H48a8,8,0,0,0-8,8V96a8,8,0,0,0,16,0V67.31l42.34,42.35a8,8,0,0,0,11.32-11.32Z\"/>"],"plus":["<path d=\"M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z\"/>","<path d=\"M216,56V200a16,16,0,0,1-16,16H56a16,16,0,0,1-16-16V56A16,16,0,0,1,56,40H200A16,16,0,0,1,216,56Z\" opacity=\"0.2\"/><path d=\"M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z\"/>"],"minus":["<path d=\"M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128Z\"/>","<path d=\"M216,56V200a16,16,0,0,1-16,16H56a16,16,0,0,1-16-16V56A16,16,0,0,1,56,40H200A16,16,0,0,1,216,56Z\" opacity=\"0.2\"/><path d=\"M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128Z\"/>"],"arrow-clockwise":["<path d=\"M240,56v48a8,8,0,0,1-8,8H184a8,8,0,0,1,0-16H211.4L184.81,71.64l-.25-.24a80,80,0,1,0-1.67,114.78,8,8,0,0,1,11,11.63A95.44,95.44,0,0,1,128,224h-1.32A96,96,0,1,1,195.75,60L224,85.8V56a8,8,0,1,1,16,0Z\"/>","<path d=\"M216,128a88,88,0,1,1-88-88A88,88,0,0,1,216,128Z\" opacity=\"0.2\"/><path d=\"M240,56v48a8,8,0,0,1-8,8H184a8,8,0,0,1,0-16H211.4L184.81,71.64l-.25-.24a80,80,0,1,0-1.67,114.78,8,8,0,0,1,11,11.63A95.44,95.44,0,0,1,128,224h-1.32A96,96,0,1,1,195.75,60L224,85.8V56a8,8,0,1,1,16,0Z\"/>"],"download-simple":["<path d=\"M224,144v64a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V144a8,8,0,0,1,16,0v56H208V144a8,8,0,0,1,16,0Zm-101.66,5.66a8,8,0,0,0,11.32,0l40-40a8,8,0,0,0-11.32-11.32L136,124.69V32a8,8,0,0,0-16,0v92.69L93.66,98.34a8,8,0,0,0-11.32,11.32Z\"/>","<path d=\"M216,48V208H40V48A16,16,0,0,1,56,32H200A16,16,0,0,1,216,48Z\" opacity=\"0.2\"/><path d=\"M224,144v64a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V144a8,8,0,0,1,16,0v56H208V144a8,8,0,0,1,16,0Zm-101.66,5.66a8,8,0,0,0,11.32,0l40-40a8,8,0,0,0-11.32-11.32L136,124.69V32a8,8,0,0,0-16,0v92.69L93.66,98.34a8,8,0,0,0-11.32,11.32Z\"/>"],"caret-down":["<path d=\"M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z\"/>","<path d=\"M208,96l-80,80L48,96Z\" opacity=\"0.2\"/><path d=\"M215.39,92.94A8,8,0,0,0,208,88H48a8,8,0,0,0-5.66,13.66l80,80a8,8,0,0,0,11.32,0l80-80A8,8,0,0,0,215.39,92.94ZM128,164.69,67.31,104H188.69Z\"/>"],"chart-bar":["<path d=\"M224,200h-8V40a8,8,0,0,0-8-8H152a8,8,0,0,0-8,8V80H96a8,8,0,0,0-8,8v40H48a8,8,0,0,0-8,8v64H32a8,8,0,0,0,0,16H224a8,8,0,0,0,0-16ZM160,48h40V200H160ZM104,96h40V200H104ZM56,144H88v56H56Z\"/>","<path d=\"M208,40V208H152V40Z\" opacity=\"0.2\"/><path d=\"M224,200h-8V40a8,8,0,0,0-8-8H152a8,8,0,0,0-8,8V80H96a8,8,0,0,0-8,8v40H48a8,8,0,0,0-8,8v64H32a8,8,0,0,0,0,16H224a8,8,0,0,0,0-16ZM160,48h40V200H160ZM104,96h40V200H104ZM56,144H88v56H56Z\"/>"],"cursor-click":["<path d=\"M88,24V16a8,8,0,0,1,16,0v8a8,8,0,0,1-16,0ZM16,104h8a8,8,0,0,0,0-16H16a8,8,0,0,0,0,16ZM124.42,39.16a8,8,0,0,0,10.74-3.58l8-16a8,8,0,0,0-14.31-7.16l-8,16A8,8,0,0,0,124.42,39.16Zm-96,81.69-16,8a8,8,0,0,0,7.16,14.31l16-8a8,8,0,1,0-7.16-14.31ZM219.31,184a16,16,0,0,1,0,22.63l-12.68,12.68a16,16,0,0,1-22.63,0L132.7,168,115,214.09c0,.1-.08.21-.13.32a15.83,15.83,0,0,1-14.6,9.59l-.79,0a15.83,15.83,0,0,1-14.41-11L32.8,52.92A16,16,0,0,1,52.92,32.8L213,85.07a16,16,0,0,1,1.41,29.8l-.32.13L168,132.69ZM208,195.31,156.69,144h0a16,16,0,0,1,4.93-26l.32-.14,45.95-17.64L48,48l52.2,159.86,17.65-46c0-.11.08-.22.13-.33a16,16,0,0,1,11.69-9.34,16.72,16.72,0,0,1,3-.28,16,16,0,0,1,11.3,4.69L195.31,208Z\"/>","<path d=\"M213.66,201,201,213.66a8,8,0,0,1-11.31,0l-51.31-51.31a8,8,0,0,0-13,2.46l-17.82,46.41a8,8,0,0,1-14.85-.71L40.41,50.44a8,8,0,0,1,10-10L210.51,92.68a8,8,0,0,1,.71,14.85l-46.41,17.82a8,8,0,0,0-2.46,13l51.31,51.31A8,8,0,0,1,213.66,201Z\" opacity=\"0.2\"/><path d=\"M88,24V16a8,8,0,0,1,16,0v8a8,8,0,0,1-16,0ZM16,104h8a8,8,0,0,0,0-16H16a8,8,0,0,0,0,16ZM124.42,39.16a8,8,0,0,0,10.74-3.58l8-16a8,8,0,0,0-14.31-7.16l-8,16A8,8,0,0,0,124.42,39.16Zm-96,81.69-16,8a8,8,0,0,0,7.16,14.31l16-8a8,8,0,1,0-7.16-14.31ZM219.31,184a16,16,0,0,1,0,22.63l-12.68,12.68a16,16,0,0,1-22.63,0L132.7,168,115,214.09c0,.1-.08.21-.13.32a15.83,15.83,0,0,1-14.6,9.59l-.79,0a15.83,15.83,0,0,1-14.41-11L32.8,52.92A16,16,0,0,1,52.92,32.8L213,85.07a16,16,0,0,1,1.41,29.8l-.32.13L168,132.69ZM208,195.31,156.69,144h0a16,16,0,0,1,4.93-26l.32-.14,45.95-17.64L48,48l52.2,159.86,17.65-46c0-.11.08-.22.13-.33a16,16,0,0,1,11.69-9.34,16.72,16.72,0,0,1,3-.28,16,16,0,0,1,11.3,4.69L195.31,208Z\"/>"],"sort-ascending":["<path d=\"M128,128a8,8,0,0,1-8,8H48a8,8,0,0,1,0-16h72A8,8,0,0,1,128,128ZM48,72H184a8,8,0,0,0,0-16H48a8,8,0,0,0,0,16Zm56,112H48a8,8,0,0,0,0,16h56a8,8,0,0,0,0-16Zm125.66-21.66a8,8,0,0,0-11.32,0L192,188.69V112a8,8,0,0,0-16,0v76.69l-26.34-26.35a8,8,0,0,0-11.32,11.32l40,40a8,8,0,0,0,11.32,0l40-40A8,8,0,0,0,229.66,162.34Z\"/>","<path d=\"M224,80v88l-24,24H48V64H208A16,16,0,0,1,224,80Z\" opacity=\"0.2\"/><path d=\"M128,128a8,8,0,0,1-8,8H48a8,8,0,0,1,0-16h72A8,8,0,0,1,128,128ZM48,72H184a8,8,0,0,0,0-16H48a8,8,0,0,0,0,16Zm56,112H48a8,8,0,0,0,0,16h56a8,8,0,0,0,0-16Zm125.66-21.66a8,8,0,0,0-11.32,0L192,188.69V112a8,8,0,0,0-16,0v76.69l-26.34-26.35a8,8,0,0,0-11.32,11.32l40,40a8,8,0,0,0,11.32,0l40-40A8,8,0,0,0,229.66,162.34Z\"/>"],"sliders-horizontal":["<path d=\"M40,88H73a32,32,0,0,0,62,0h81a8,8,0,0,0,0-16H135a32,32,0,0,0-62,0H40a8,8,0,0,0,0,16Zm64-24A16,16,0,1,1,88,80,16,16,0,0,1,104,64ZM216,168H199a32,32,0,0,0-62,0H40a8,8,0,0,0,0,16h97a32,32,0,0,0,62,0h17a8,8,0,0,0,0-16Zm-48,24a16,16,0,1,1,16-16A16,16,0,0,1,168,192Z\"/>","<path d=\"M128,80a24,24,0,1,1-24-24A24,24,0,0,1,128,80Zm40,72a24,24,0,1,0,24,24A24,24,0,0,0,168,152Z\" opacity=\"0.2\"/><path d=\"M40,88H73a32,32,0,0,0,62,0h81a8,8,0,0,0,0-16H135a32,32,0,0,0-62,0H40a8,8,0,0,0,0,16Zm64-24A16,16,0,1,1,88,80,16,16,0,0,1,104,64ZM216,168H199a32,32,0,0,0-62,0H40a8,8,0,0,0,0,16h97a32,32,0,0,0,62,0h17a8,8,0,0,0,0-16Zm-48,24a16,16,0,1,1,16-16A16,16,0,0,1,168,192Z\"/>"],"hand-coins":["<path d=\"M230.33,141.06a24.43,24.43,0,0,0-21.24-4.23l-41.84,9.62A28,28,0,0,0,140,112H89.94a31.82,31.82,0,0,0-22.63,9.37L44.69,144H16A16,16,0,0,0,0,160v40a16,16,0,0,0,16,16H120a7.93,7.93,0,0,0,1.94-.24l64-16a6.94,6.94,0,0,0,1.19-.4L226,182.82l.44-.2a24.6,24.6,0,0,0,3.93-41.56ZM16,160H40v40H16Zm203.43,8.21-38,16.18L119,200H56V155.31l22.63-22.62A15.86,15.86,0,0,1,89.94,128H140a12,12,0,0,1,0,24H112a8,8,0,0,0,0,16h32a8.32,8.32,0,0,0,1.79-.2l67-15.41.31-.08a8.6,8.6,0,0,1,6.3,15.9ZM164,96a36,36,0,0,0,5.9-.48,36,36,0,1,0,28.22-47A36,36,0,1,0,164,96Zm60-12a20,20,0,1,1-20-20A20,20,0,0,1,224,84ZM164,40a20,20,0,0,1,19.25,14.61,36,36,0,0,0-15,24.93A20.42,20.42,0,0,1,164,80a20,20,0,0,1,0-40Z\"/>","<path d=\"M16,152H48v56H16a8,8,0,0,1-8-8V160A8,8,0,0,1,16,152ZM204,56a28,28,0,0,0-12,2.71h0A28,28,0,1,0,176,85.29h0A28,28,0,1,0,204,56Z\" opacity=\"0.2\"/><path d=\"M230.33,141.06a24.43,24.43,0,0,0-21.24-4.23l-41.84,9.62A28,28,0,0,0,140,112H89.94a31.82,31.82,0,0,0-22.63,9.37L44.69,144H16A16,16,0,0,0,0,160v40a16,16,0,0,0,16,16H120a7.93,7.93,0,0,0,1.94-.24l64-16a6.94,6.94,0,0,0,1.19-.4L226,182.82l.44-.2a24.6,24.6,0,0,0,3.93-41.56ZM16,160H40v40H16Zm203.43,8.21-38,16.18L119,200H56V155.31l22.63-22.62A15.86,15.86,0,0,1,89.94,128H140a12,12,0,0,1,0,24H112a8,8,0,0,0,0,16h32a8.32,8.32,0,0,0,1.79-.2l67-15.41.31-.08a8.6,8.6,0,0,1,6.3,15.9ZM164,96a36,36,0,0,0,5.9-.48,36,36,0,1,0,28.22-47A36,36,0,1,0,164,96Zm60-12a20,20,0,1,1-20-20A20,20,0,0,1,224,84ZM164,40a20,20,0,0,1,19.25,14.61,36,36,0,0,0-15,24.93A20.42,20.42,0,0,1,164,80a20,20,0,0,1,0-40Z\"/>"],"calendar-dots":["<path d=\"M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM72,48v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80H48V48ZM208,208H48V96H208V208Zm-68-76a12,12,0,1,1-12-12A12,12,0,0,1,140,132Zm44,0a12,12,0,1,1-12-12A12,12,0,0,1,184,132ZM96,172a12,12,0,1,1-12-12A12,12,0,0,1,96,172Zm44,0a12,12,0,1,1-12-12A12,12,0,0,1,140,172Zm44,0a12,12,0,1,1-12-12A12,12,0,0,1,184,172Z\"/>","<path d=\"M216,48V88H40V48a8,8,0,0,1,8-8H208A8,8,0,0,1,216,48Z\" opacity=\"0.2\"/><path d=\"M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM72,48v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80H48V48ZM208,208H48V96H208V208Zm-68-76a12,12,0,1,1-12-12A12,12,0,0,1,140,132Zm44,0a12,12,0,1,1-12-12A12,12,0,0,1,184,132ZM96,172a12,12,0,1,1-12-12A12,12,0,0,1,96,172Zm44,0a12,12,0,1,1-12-12A12,12,0,0,1,140,172Zm44,0a12,12,0,1,1-12-12A12,12,0,0,1,184,172Z\"/>"],"person-simple-hike":["<path d=\"M152,80a32,32,0,1,0-32-32A32,32,0,0,0,152,80Zm0-48a16,16,0,1,1-16,16A16,16,0,0,1,152,32Zm48,112v88a8,8,0,0,1-16,0V151.66c-25.75-2.25-34.35-15.52-42-27.36-2.85-4.39-5.56-8.57-9.13-12.19l-13.4,30.81,37.2,26.57A8,8,0,0,1,160,176v56a8,8,0,0,1-16,0V180.12l-31.07-22.2L79.34,235.19A8,8,0,0,1,72,240a7.84,7.84,0,0,1-3.19-.67,8,8,0,0,1-4.14-10.52L122.19,96.5a8,8,0,0,1,11-3.92,40.92,40.92,0,0,1,8,5.47c6.37,5.52,10.51,11.91,14.16,17.55,7.68,11.84,13.22,20.4,36.6,20.4A8,8,0,0,1,200,144ZM72,152a8,8,0,0,0,7.35-4.85l24-56a8,8,0,0,0-4.2-10.5l-28-12a8,8,0,0,0-10.5,4.2l-24,56a8,8,0,0,0,4.2,10.5l28,12A8,8,0,0,0,72,152ZM54.51,127.8,72.2,86.5l13.3,5.7L67.8,133.49Z\"/>","<path d=\"M176,48a24,24,0,1,1-24-24A24,24,0,0,1,176,48ZM44,132l28,12L96,88,68,76Z\" opacity=\"0.2\"/><path d=\"M152,80a32,32,0,1,0-32-32A32,32,0,0,0,152,80Zm0-48a16,16,0,1,1-16,16A16,16,0,0,1,152,32Zm48,112v88a8,8,0,0,1-16,0V151.66c-25.75-2.25-34.35-15.52-42-27.36-2.85-4.39-5.56-8.57-9.13-12.19l-13.4,30.81,37.2,26.57A8,8,0,0,1,160,176v56a8,8,0,0,1-16,0V180.12l-31.07-22.2L79.34,235.19A8,8,0,0,1,72,240a7.84,7.84,0,0,1-3.19-.67,8,8,0,0,1-4.15-10.52L122.19,96.5a8,8,0,0,1,11-3.92,40.92,40.92,0,0,1,8,5.47c6.37,5.52,10.51,11.91,14.16,17.55,7.68,11.84,13.23,20.4,36.6,20.4A8,8,0,0,1,200,144ZM72,152a8,8,0,0,0,7.36-4.85l24-56a8,8,0,0,0-4.2-10.5l-28-12a8,8,0,0,0-10.5,4.2l-24,56a8,8,0,0,0,4.2,10.5l28,12A8,8,0,0,0,72,152ZM54.51,127.8,72.2,86.5l13.3,5.7L67.8,133.49Z\"/>"],"trend-up":["<path d=\"M240,56v64a8,8,0,0,1-16,0V75.31l-82.34,82.35a8,8,0,0,1-11.32,0L96,123.31,29.66,189.66a8,8,0,0,1-11.32-11.32l72-72a8,8,0,0,1,11.32,0L136,140.69,212.69,64H168a8,8,0,0,1,0-16h64A8,8,0,0,1,240,56Z\"/>","<path d=\"M232,56v64L168,56Z\" opacity=\"0.2\"/><path d=\"M232,48H168a8,8,0,0,0-5.66,13.66L188.69,88,136,140.69l-34.34-34.35a8,8,0,0,0-11.32,0l-72,72a8,8,0,0,0,11.32,11.32L96,123.31l34.34,34.35a8,8,0,0,0,11.32,0L200,99.31l26.34,26.35A8,8,0,0,0,240,120V56A8,8,0,0,0,232,48Zm-8,52.69L187.31,64H224Z\"/>"],"ranking":["<path d=\"M112.41,102.53a8,8,0,0,1,5.06-10.12l12-4A8,8,0,0,1,140,96v40a8,8,0,0,1-16,0V107.1l-1.47.49A8,8,0,0,1,112.41,102.53ZM248,208a8,8,0,0,1-8,8H16a8,8,0,0,1,0-16h8V104A16,16,0,0,1,40,88H80V56A16,16,0,0,1,96,40h64a16,16,0,0,1,16,16v72h40a16,16,0,0,1,16,16v56h8A8,8,0,0,1,248,208Zm-72-64v56h40V144ZM96,200h64V56H96Zm-56,0H80V104H40Z\"/>","<path d=\"M40,96H88V208H32V104A8,8,0,0,1,40,96Zm176,40H168v72h56V144A8,8,0,0,0,216,136Z\" opacity=\"0.2\"/><path d=\"M112.41,102.53a8,8,0,0,1,5.06-10.12l12-4A8,8,0,0,1,140,96v40a8,8,0,0,1-16,0V107.1l-1.47.49A8,8,0,0,1,112.41,102.53ZM248,208a8,8,0,0,1-8,8H16a8,8,0,0,1,0-16h8V104A16,16,0,0,1,40,88H80V56A16,16,0,0,1,96,40h64a16,16,0,0,1,16,16v72h40a16,16,0,0,1,16,16v56h8A8,8,0,0,1,248,208Zm-72-64v56h40V144ZM96,200h64V56H96Zm-56,0H80V104H40Z\"/>"],"squares-four":["<path d=\"M104,40H56A16,16,0,0,0,40,56v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,104,40Zm0,64H56V56h48v48Zm96-64H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,200,40Zm0,64H152V56h48v48Zm-96,32H56a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V152A16,16,0,0,0,104,136Zm0,64H56V152h48v48Zm96-64H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V152A16,16,0,0,0,200,136Zm0,64H152V152h48v48Z\"/>","<path d=\"M112,56v48a8,8,0,0,1-8,8H56a8,8,0,0,1-8-8V56a8,8,0,0,1,8-8h48A8,8,0,0,1,112,56Zm88-8H152a8,8,0,0,0-8,8v48a8,8,0,0,0,8,8h48a8,8,0,0,0,8-8V56A8,8,0,0,0,200,48Zm-96,96H56a8,8,0,0,0-8,8v48a8,8,0,0,0,8,8h48a8,8,0,0,0,8-8V152A8,8,0,0,0,104,144Zm96,0H152a8,8,0,0,0-8,8v48a8,8,0,0,0,8,8h48a8,8,0,0,0,8-8V152A8,8,0,0,0,200,144Z\" opacity=\"0.2\"/><path d=\"M200,136H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V152A16,16,0,0,0,200,136Zm0,64H152V152h48v48ZM104,40H56A16,16,0,0,0,40,56v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,104,40Zm0,64H56V56h48v48Zm96-64H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,200,40Zm0,64H152V56h48v48Zm-96,32H56a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V152A16,16,0,0,0,104,136Zm0,64H56V152h48v48Z\"/>"],"sign-out":["<path d=\"M120,216a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V40a8,8,0,0,1,8-8h64a8,8,0,0,1,0,16H56V208h56A8,8,0,0,1,120,216Zm109.66-93.66-40-40a8,8,0,0,0-11.32,11.32L204.69,120H112a8,8,0,0,0,0,16h92.69l-26.35,26.34a8,8,0,0,0,11.32,11.32l40-40A8,8,0,0,0,229.66,122.34Z\"/>","<path d=\"M224,56V200a16,16,0,0,1-16,16H48V40H208A16,16,0,0,1,224,56Z\" opacity=\"0.2\"/><path d=\"M120,216a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V40a8,8,0,0,1,8-8h64a8,8,0,0,1,0,16H56V208h56A8,8,0,0,1,120,216Zm109.66-93.66-40-40a8,8,0,0,0-11.32,11.32L204.69,120H112a8,8,0,0,0,0,16h92.69l-26.35,26.34a8,8,0,0,0,11.32,11.32l40-40A8,8,0,0,0,229.66,122.34Z\"/>"],"seal-check":["<path d=\"M225.86,102.82c-3.77-3.94-7.67-8-9.14-11.57-1.36-3.27-1.44-8.69-1.52-13.94-.15-9.76-.31-20.82-8-28.51s-18.75-7.85-28.51-8c-5.25-.08-10.67-.16-13.94-1.52-3.56-1.47-7.63-5.37-11.57-9.14C146.28,23.51,138.44,16,128,16s-18.27,7.51-25.18,14.14c-3.94,3.77-8,7.67-11.57,9.14C88,40.64,82.56,40.72,77.31,40.8c-9.76.15-20.82.31-28.51,8S41,67.55,40.8,77.31c-.08,5.25-.16,10.67-1.52,13.94-1.47,3.56-5.37,7.63-9.14,11.57C23.51,109.72,16,117.56,16,128s7.51,18.27,14.14,25.18c3.77,3.94,7.67,8,9.14,11.57,1.36,3.27,1.44,8.69,1.52,13.94.15,9.76.31,20.82,8,28.51s18.75,7.85,28.51,8c5.25.08,10.67.16,13.94,1.52,3.56,1.47,7.63,5.37,11.57,9.14C109.72,232.49,117.56,240,128,240s18.27-7.51,25.18-14.14c3.94-3.77,8-7.67,11.57-9.14,3.27-1.36,8.69-1.44,13.94-1.52,9.76-.15,20.82-.31,28.51-8s7.85-18.75,8-28.51c.08-5.25.16-10.67,1.52-13.94,1.47-3.56,5.37-7.63,9.14-11.57C232.49,146.28,240,138.44,240,128S232.49,109.73,225.86,102.82Zm-11.55,39.29c-4.79,5-9.75,10.17-12.38,16.52-2.52,6.1-2.63,13.07-2.73,19.82-.1,7-.21,14.33-3.32,17.43s-10.39,3.22-17.43,3.32c-6.75.1-13.72.21-19.82,2.73-6.35,2.63-11.52,7.59-16.52,12.38S132,224,128,224s-9.15-4.92-14.11-9.69-10.17-9.75-16.52-12.38c-6.1-2.52-13.07-2.63-19.82-2.73-7-.1-14.33-.21-17.43-3.32s-3.22-10.39-3.32-17.43c-.1-6.75-.21-13.72-2.73-19.82-2.63-6.35-7.59-11.52-12.38-16.52S32,132,32,128s4.92-9.15,9.69-14.11,9.75-10.17,12.38-16.52c2.52-6.1,2.63-13.07,2.73-19.82.1-7,.21-14.33,3.32-17.43S70.51,56.9,77.55,56.8c6.75-.1,13.72-.21,19.82-2.73,6.35-2.63,11.52-7.59,16.52-12.38S124,32,128,32s9.15,4.92,14.11,9.69,10.17,9.75,16.52,12.38c6.1,2.52,13.07,2.63,19.82,2.73,7,.1,14.33.21,17.43,3.32s3.22,10.39,3.32,17.43c.1,6.75.21,13.72,2.73,19.82,2.63,6.35,7.59,11.52,12.38,16.52S224,124,224,128,219.08,137.15,214.31,142.11ZM173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34Z\"/>","<path d=\"M232,128c0,12.51-17.82,21.95-22.68,33.69-4.68,11.32,1.42,30.65-7.78,39.85s-28.53,3.1-39.85,7.78C150,214.18,140.5,232,128,232s-22-17.82-33.69-22.68c-11.32-4.68-30.65,1.42-39.85-7.78s-3.1-28.53-7.78-39.85C41.82,150,24,140.5,24,128s17.82-22,22.68-33.69C51.36,83,45.26,63.66,54.46,54.46S83,51.36,94.31,46.68C106.05,41.82,115.5,24,128,24S150,41.82,161.69,46.68c11.32,4.68,30.65-1.42,39.85,7.78s3.1,28.53,7.78,39.85C214.18,106.05,232,115.5,232,128Z\" opacity=\"0.2\"/><path d=\"M225.86,102.82c-3.77-3.94-7.67-8-9.14-11.57-1.36-3.27-1.44-8.69-1.52-13.94-.15-9.76-.31-20.82-8-28.51s-18.75-7.85-28.51-8c-5.25-.08-10.67-.16-13.94-1.52-3.56-1.47-7.63-5.37-11.57-9.14C146.28,23.51,138.44,16,128,16s-18.27,7.51-25.18,14.14c-3.94,3.77-8,7.67-11.57,9.14C88,40.64,82.56,40.72,77.31,40.8c-9.76.15-20.82.31-28.51,8S41,67.55,40.8,77.31c-.08,5.25-.16,10.67-1.52,13.94-1.47,3.56-5.37,7.63-9.14,11.57C23.51,109.72,16,117.56,16,128s7.51,18.27,14.14,25.18c3.77,3.94,7.67,8,9.14,11.57,1.36,3.27,1.44,8.69,1.52,13.94.15,9.76.31,20.82,8,28.51s18.75,7.85,28.51,8c5.25.08,10.67.16,13.94,1.52,3.56,1.47,7.63,5.37,11.57,9.14C109.72,232.49,117.56,240,128,240s18.27-7.51,25.18-14.14c3.94-3.77,8-7.67,11.57-9.14,3.27-1.36,8.69-1.44,13.94-1.52,9.76-.15,20.82-.31,28.51-8s7.85-18.75,8-28.51c.08-5.25.16-10.67,1.52-13.94,1.47-3.56,5.37-7.63,9.14-11.57C232.49,146.28,240,138.44,240,128S232.49,109.73,225.86,102.82Zm-11.55,39.29c-4.79,5-9.75,10.17-12.38,16.52-2.52,6.1-2.63,13.07-2.73,19.82-.1,7-.21,14.33-3.32,17.43s-10.39,3.22-17.43,3.32c-6.75.1-13.72.21-19.82,2.73-6.35,2.63-11.52,7.59-16.52,12.38S132,224,128,224s-9.15-4.92-14.11-9.69-10.17-9.75-16.52-12.38c-6.1-2.52-13.07-2.63-19.82-2.73-7-.1-14.33-.21-17.43-3.32s-3.22-10.39-3.32-17.43c-.1-6.75-.21-13.72-2.73-19.82-2.63-6.35-7.59-11.52-12.38-16.52S32,132,32,128s4.92-9.15,9.69-14.11,9.75-10.17,12.38-16.52c2.52-6.1,2.63-13.07,2.73-19.82.1-7,.21-14.33,3.32-17.43S70.51,56.9,77.55,56.8c6.75-.1,13.72-.21,19.82-2.73,6.35-2.63,11.52-7.59,16.52-12.38S124,32,128,32s9.15,4.92,14.11,9.69,10.17,9.75,16.52,12.38c6.1,2.52,13.07,2.63,19.82,2.73,7,.1,14.33.21,17.43,3.32s3.22,10.39,3.32,17.43c.1,6.75.21,13.72,2.73,19.82,2.63,6.35,7.59,11.52,12.38,16.52S224,124,224,128,219.08,137.15,214.31,142.11ZM173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34Z\"/>"],"gift":["<path d=\"M216,72H180.92c.39-.33.79-.65,1.17-1A29.53,29.53,0,0,0,192,49.57,32.62,32.62,0,0,0,158.44,16,29.53,29.53,0,0,0,137,25.91a54.94,54.94,0,0,0-9,14.48,54.94,54.94,0,0,0-9-14.48A29.53,29.53,0,0,0,97.56,16,32.62,32.62,0,0,0,64,49.57,29.53,29.53,0,0,0,73.91,71c.38.33.78.65,1.17,1H40A16,16,0,0,0,24,88v32a16,16,0,0,0,16,16v64a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V136a16,16,0,0,0,16-16V88A16,16,0,0,0,216,72ZM149,36.51a13.69,13.69,0,0,1,10-4.5h.49A16.62,16.62,0,0,1,176,49.08a13.69,13.69,0,0,1-4.5,10c-9.49,8.4-25.24,11.36-35,12.4C137.7,60.89,141,45.5,149,36.51Zm-64.09.36A16.63,16.63,0,0,1,96.59,32h.49a13.69,13.69,0,0,1,10,4.5c8.39,9.48,11.35,25.2,12.39,34.92-9.72-1-25.44-4-34.92-12.39a13.69,13.69,0,0,1-4.5-10A16.6,16.6,0,0,1,84.87,36.87ZM40,88h80v32H40Zm16,48h64v64H56Zm144,64H136V136h64Zm16-80H136V88h80v32Z\"/>","<path d=\"M208,128v72a8,8,0,0,1-8,8H56a8,8,0,0,1-8-8V128Z\" opacity=\"0.2\"/><path d=\"M216,72H180.92c.39-.33.79-.65,1.17-1A29.53,29.53,0,0,0,192,49.57,32.62,32.62,0,0,0,158.44,16,29.53,29.53,0,0,0,137,25.91a54.94,54.94,0,0,0-9,14.48,54.94,54.94,0,0,0-9-14.48A29.53,29.53,0,0,0,97.56,16,32.62,32.62,0,0,0,64,49.57,29.53,29.53,0,0,0,73.91,71c.38.33.78.65,1.17,1H40A16,16,0,0,0,24,88v32a16,16,0,0,0,16,16v64a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V136a16,16,0,0,0,16-16V88A16,16,0,0,0,216,72ZM149,36.51a13.69,13.69,0,0,1,10-4.5h.49A16.62,16.62,0,0,1,176,49.08a13.69,13.69,0,0,1-4.5,10c-9.49,8.4-25.24,11.36-35,12.4C137.7,60.89,141,45.5,149,36.51Zm-64.09.36A16.63,16.63,0,0,1,96.59,32h.49a13.69,13.69,0,0,1,10,4.5c8.39,9.48,11.35,25.2,12.39,34.92-9.72-1-25.44-4-34.92-12.39a13.69,13.69,0,0,1-4.5-10A16.6,16.6,0,0,1,84.87,36.87ZM40,88h80v32H40Zm16,48h64v64H56Zm144,64H136V136h64Zm16-80H136V88h80v32Z\"/>"],"bus":["<path d=\"M184,32H72A32,32,0,0,0,40,64V208a16,16,0,0,0,16,16H80a16,16,0,0,0,16-16V192h64v16a16,16,0,0,0,16,16h24a16,16,0,0,0,16-16V64A32,32,0,0,0,184,32ZM56,176V120H200v56Zm0-96H200v24H56ZM72,48H184a16,16,0,0,1,16,16H56A16,16,0,0,1,72,48Zm8,160H56V192H80Zm96,0V192h24v16Zm-72-60a12,12,0,1,1-12-12A12,12,0,0,1,104,148Zm72,0a12,12,0,1,1-12-12A12,12,0,0,1,176,148Zm72-68v24a8,8,0,0,1-16,0V80a8,8,0,0,1,16,0ZM24,80v24a8,8,0,0,1-16,0V80a8,8,0,0,1,16,0Z\"/>","<path d=\"M48,184H88v24a8,8,0,0,1-8,8H56a8,8,0,0,1-8-8Zm120,24a8,8,0,0,0,8,8h24a8,8,0,0,0,8-8V184H168ZM48,72v40H208V72Z\" opacity=\"0.2\"/><path d=\"M184,32H72A32,32,0,0,0,40,64V208a16,16,0,0,0,16,16H80a16,16,0,0,0,16-16V192h64v16a16,16,0,0,0,16,16h24a16,16,0,0,0,16-16V64A32,32,0,0,0,184,32ZM56,176V120H200v56Zm0-96H200v24H56ZM72,48H184a16,16,0,0,1,16,16H56A16,16,0,0,1,72,48Zm8,160H56V192H80Zm96,0V192h24v16Zm-72-60a12,12,0,1,1-12-12A12,12,0,0,1,104,148Zm72,0a12,12,0,1,1-12-12A12,12,0,0,1,176,148Zm72-68v24a8,8,0,0,1-16,0V80a8,8,0,0,1,16,0ZM24,80v24a8,8,0,0,1-16,0V80a8,8,0,0,1,16,0Z\"/>"],"flag":["<path d=\"M42.76,50A8,8,0,0,0,40,56V224a8,8,0,0,0,16,0V179.77c26.79-21.16,49.87-9.75,76.45,3.41,16.4,8.11,34.06,16.85,53,16.85,13.93,0,28.54-4.75,43.82-18a8,8,0,0,0,2.76-6V56A8,8,0,0,0,218.76,50c-28,24.23-51.72,12.49-79.21-1.12C111.07,34.76,78.78,18.79,42.76,50ZM216,172.25c-26.79,21.16-49.87,9.74-76.45-3.41-25-12.35-52.81-26.13-83.55-8.4V59.79c26.79-21.16,49.87-9.75,76.45,3.4,25,12.35,52.82,26.13,83.55,8.4Z\"/>","<path d=\"M224,56V176c-64,55.43-112-55.43-176,0V56C112,.57,160,111.43,224,56Z\" opacity=\"0.2\"/><path d=\"M42.76,50A8,8,0,0,0,40,56V224a8,8,0,0,0,16,0V179.77c26.79-21.16,49.87-9.75,76.45,3.41,16.4,8.11,34.06,16.85,53,16.85,13.93,0,28.54-4.75,43.82-18a8,8,0,0,0,2.76-6V56A8,8,0,0,0,218.76,50c-28,24.23-51.72,12.49-79.21-1.12C111.07,34.76,78.78,18.79,42.76,50ZM216,172.25c-26.79,21.16-49.87,9.74-76.45-3.41-25-12.35-52.81-26.13-83.55-8.4V59.79c26.79-21.16,49.87-9.75,76.45,3.4,25,12.35,52.82,26.13,83.55,8.4Z\"/>"],"stack":["<path d=\"M230.91,172A8,8,0,0,1,228,182.91l-96,56a8,8,0,0,1-8.06,0l-96-56A8,8,0,0,1,36,169.09l92,53.65,92-53.65A8,8,0,0,1,230.91,172ZM220,121.09l-92,53.65L36,121.09A8,8,0,0,0,28,134.91l96,56a8,8,0,0,0,8.06,0l96-56A8,8,0,1,0,220,121.09ZM24,80a8,8,0,0,1,4-6.91l96-56a8,8,0,0,1,8.06,0l96,56a8,8,0,0,1,0,13.82l-96,56a8,8,0,0,1-8.06,0l-96-56A8,8,0,0,1,24,80Zm23.88,0L128,126.74,208.12,80,128,33.26Z\"/>","<path d=\"M224,80l-96,56L32,80l96-56Z\" opacity=\"0.2\"/><path d=\"M230.91,172A8,8,0,0,1,228,182.91l-96,56a8,8,0,0,1-8.06,0l-96-56A8,8,0,0,1,36,169.09l92,53.65,92-53.65A8,8,0,0,1,230.91,172ZM220,121.09l-92,53.65L36,121.09A8,8,0,0,0,28,134.91l96,56a8,8,0,0,0,8.06,0l96-56A8,8,0,1,0,220,121.09ZM24,80a8,8,0,0,1,4-6.91l96-56a8,8,0,0,1,8.06,0l96,56a8,8,0,0,1,0,13.82l-96,56a8,8,0,0,1-8.06,0l-96-56A8,8,0,0,1,24,80Zm23.88,0L128,126.74,208.12,80,128,33.26Z\"/>"]};
-Object.assign(ICONES, {"shopping-cart":["<path d=\"M230.14,58.87A8,8,0,0,0,224,56H62.68L56.6,22.57A8,8,0,0,0,48.73,16H24a8,8,0,0,0,0,16h18L67.56,172.29a24,24,0,0,0,5.33,11.27,28,28,0,1,0,44.4,8.44h45.42A27.75,27.75,0,0,0,160,204a28,28,0,1,0,28-28H91.17a8,8,0,0,1-7.87-6.57L80.13,152h116a24,24,0,0,0,23.61-19.71l12.16-66.86A8,8,0,0,0,230.14,58.87ZM104,204a12,12,0,1,1-12-12A12,12,0,0,1,104,204Zm96,0a12,12,0,1,1-12-12A12,12,0,0,1,200,204Zm4-74.57A8,8,0,0,1,196.1,136H77.22L65.59,72H214.41Z\"/>","<path d=\"M224,64l-12.16,66.86A16,16,0,0,1,196.1,144H70.55L56,64Z\" opacity=\"0.2\"/><path d=\"M230.14,58.87A8,8,0,0,0,224,56H62.68L56.6,22.57A8,8,0,0,0,48.73,16H24a8,8,0,0,0,0,16h18L67.56,172.29a24,24,0,0,0,5.33,11.27,28,28,0,1,0,44.4,8.44h45.42A27.75,27.75,0,0,0,160,204a28,28,0,1,0,28-28H91.17a8,8,0,0,1-7.87-6.57L80.13,152h116a24,24,0,0,0,23.61-19.71l12.16-66.86A8,8,0,0,0,230.14,58.87ZM104,204a12,12,0,1,1-12-12A12,12,0,0,1,104,204Zm96,0a12,12,0,1,1-12-12A12,12,0,0,1,200,204Zm4-74.57A8,8,0,0,1,196.1,136H77.22L65.59,72H214.41Z\"/>"],"scissors":["<path d=\"M157.73,113.13A8,8,0,0,1,159.82,102L227.48,55.7a8,8,0,0,1,9,13.21l-67.67,46.3a7.92,7.92,0,0,1-4.51,1.4A8,8,0,0,1,157.73,113.13Zm80.87,85.09a8,8,0,0,1-11.12,2.08L136,137.7,93.49,166.78a36,36,0,1,1-9-13.19L121.83,128,84.44,102.41a35.86,35.86,0,1,1,9-13.19l143,97.87A8,8,0,0,1,238.6,198.22ZM80,180a20,20,0,1,0-5.86,14.14A19.85,19.85,0,0,0,80,180ZM74.14,90.13a20,20,0,1,0-28.28,0A19.85,19.85,0,0,0,74.14,90.13Z\"/>","<path d=\"M40.2,95.8a28,28,0,1,1,39.6,0A28,28,0,0,1,40.2,95.8Zm0,64.4a28,28,0,1,0,39.6,0A28,28,0,0,0,40.2,160.2Z\" opacity=\"0.2\"/><path d=\"M157.73,113.13A8,8,0,0,1,159.82,102L227.48,55.7a8,8,0,0,1,9,13.21l-67.67,46.3a7.92,7.92,0,0,1-4.51,1.4A8,8,0,0,1,157.73,113.13Zm80.87,85.09a8,8,0,0,1-11.12,2.08L136,137.7,93.49,166.78a36,36,0,1,1-9-13.19L121.83,128,84.44,102.41a35.86,35.86,0,1,1,9-13.19l143,97.87A8,8,0,0,1,238.6,198.22ZM80,180a20,20,0,1,0-5.86,14.14A19.85,19.85,0,0,0,80,180ZM74.14,90.13a20,20,0,1,0-28.28,0A19.85,19.85,0,0,0,74.14,90.13Z\"/>"],"bank":["<path d=\"M24,104H48v64H32a8,8,0,0,0,0,16H224a8,8,0,0,0,0-16H208V104h24a8,8,0,0,0,4.19-14.81l-104-64a8,8,0,0,0-8.38,0l-104,64A8,8,0,0,0,24,104Zm40,0H96v64H64Zm80,0v64H112V104Zm48,64H160V104h32ZM128,41.39,203.74,88H52.26ZM248,208a8,8,0,0,1-8,8H16a8,8,0,0,1,0-16H240A8,8,0,0,1,248,208Z\"/>","<path d=\"M232,96H24L128,32Z\" opacity=\"0.2\"/><path d=\"M24,104H48v64H32a8,8,0,0,0,0,16H224a8,8,0,0,0,0-16H208V104h24a8,8,0,0,0,4.19-14.81l-104-64a8,8,0,0,0-8.38,0l-104,64A8,8,0,0,0,24,104Zm40,0H96v64H64Zm80,0v64H112V104Zm48,64H160V104h32ZM128,41.39,203.74,88H52.26ZM248,208a8,8,0,0,1-8,8H16a8,8,0,0,1,0-16H240A8,8,0,0,1,248,208Z\"/>"],"fire":["<path d=\"M183.89,153.34a57.6,57.6,0,0,1-46.56,46.55A8.75,8.75,0,0,1,136,200a8,8,0,0,1-1.32-15.89c16.57-2.79,30.63-16.85,33.44-33.45a8,8,0,0,1,15.78,2.68ZM216,144a88,88,0,0,1-176,0c0-27.92,11-56.47,32.66-84.85a8,8,0,0,1,11.93-.89l24.12,23.41,22-60.41a8,8,0,0,1,12.63-3.41C165.21,36,216,84.55,216,144Zm-16,0c0-46.09-35.79-85.92-58.21-106.33L119.52,98.74a8,8,0,0,1-13.09,3L80.06,76.16C64.09,99.21,56,122,56,144a72,72,0,0,0,144,0Z\"/>","<path d=\"M208,144a80,80,0,0,1-160,0c0-30.57,14.42-58.26,31-80l33,32,26.27-72C159.86,41.92,208,88.15,208,144Z\" opacity=\"0.2\"/><path d=\"M183.89,153.34a57.6,57.6,0,0,1-46.56,46.55A8.75,8.75,0,0,1,136,200a8,8,0,0,1-1.32-15.89c16.57-2.79,30.63-16.85,33.44-33.45a8,8,0,0,1,15.78,2.68ZM216,144a88,88,0,0,1-176,0c0-27.92,11-56.47,32.66-84.85a8,8,0,0,1,11.93-.89l24.12,23.41,22-60.41a8,8,0,0,1,12.63-3.41C165.21,36,216,84.55,216,144Zm-16,0c0-46.09-35.79-85.92-58.21-106.33L119.52,98.74a8,8,0,0,1-13.09,3L80.06,76.16C64.09,99.21,56,122,56,144a72,72,0,0,0,144,0Z\"/>"],"polygon":["<path d=\"M230.64,49.36a32,32,0,0,0-45.26,0h0a31.9,31.9,0,0,0-5.16,6.76L152,48.42A32,32,0,0,0,97.37,25.36h0a32.06,32.06,0,0,0-5.76,37.41L57.67,93.32a32.05,32.05,0,0,0-40.31,4.05h0a32,32,0,0,0,42.89,47.41l70,51.36a32,32,0,1,0,47.57-14.69l27.39-77.59q1.38.12,2.76.12a32,32,0,0,0,22.63-54.62Zm-122-12.69h0a16,16,0,1,1,0,22.64A16,16,0,0,1,108.68,36.67Zm-80,94.65a16,16,0,0,1,0-22.64h0a16,16,0,1,1,0,22.64Zm142.65,88a16,16,0,0,1-22.63-22.63h0a16,16,0,1,1,22.63,22.63Zm-8.55-43.18a32,32,0,0,0-23,7.08l-70-51.36a32.17,32.17,0,0,0-1.34-26.65l33.95-30.55a32,32,0,0,0,45.47-10.81L176,71.56a32,32,0,0,0,14.12,27Zm56.56-92.84A16,16,0,1,1,196.7,60.68h0a16,16,0,0,1,22.63,22.63Z\"/>","<path d=\"M137,65A24,24,0,1,1,137,31,24,24,0,0,1,137,65ZM23,103A24,24,0,1,0,57,103,24,24,0,0,0,23,103Zm120,88A24,24,0,1,0,177,191,24,24,0,0,0,143,191ZM225,55A24,24,0,1,0,225,89,24,24,0,0,0,225,55Z\" opacity=\"0.2\"/><path d=\"M230.64,49.36a32,32,0,0,0-45.26,0h0a31.9,31.9,0,0,0-5.16,6.76L152,48.42A32,32,0,0,0,97.37,25.36h0a32.06,32.06,0,0,0-5.76,37.41L57.67,93.32a32.05,32.05,0,0,0-40.31,4.05h0a32,32,0,0,0,42.89,47.41l70,51.36a32,32,0,1,0,47.57-14.69l27.39-77.59q1.38.12,2.76.12a32,32,0,0,0,22.63-54.62Zm-122-12.69h0a16,16,0,1,1,0,22.64A16,16,0,0,1,108.68,36.67Zm-80,94.65a16,16,0,0,1,0-22.64h0a16,16,0,1,1,0,22.64Zm142.65,88a16,16,0,0,1-22.63-22.63h0a16,16,0,1,1,22.63,22.63Zm-8.55-43.18a32,32,0,0,0-23,7.08l-70-51.36a32.17,32.17,0,0,0-1.34-26.65l33.95-30.55a32,32,0,0,0,45.47-10.81L176,71.56a32,32,0,0,0,14.12,27Zm56.56-92.84A16,16,0,1,1,196.7,60.68h0a16,16,0,0,1,22.63,22.63Z\"/>"],"hash":["<path d=\"M224,88H175.4l8.47-46.57a8,8,0,0,0-15.74-2.86l-9,49.43H111.4l8.47-46.57a8,8,0,0,0-15.74-2.86L95.14,88H48a8,8,0,0,0,0,16H92.23L83.5,152H32a8,8,0,0,0,0,16H80.6l-8.47,46.57a8,8,0,0,0,6.44,9.3A7.79,7.79,0,0,0,80,224a8,8,0,0,0,7.86-6.57l9-49.43H144.6l-8.47,46.57a8,8,0,0,0,6.44,9.3A7.79,7.79,0,0,0,144,224a8,8,0,0,0,7.86-6.57l9-49.43H208a8,8,0,0,0,0-16H163.77l8.73-48H224a8,8,0,0,0,0-16Zm-76.5,64H99.77l8.73-48h47.73Z\"/>","<path d=\"M165.82,96l-11.64,64h-64l11.64-64Z\" opacity=\"0.2\"/><path d=\"M224,88H175.4l8.47-46.57a8,8,0,0,0-15.74-2.86l-9,49.43H111.4l8.47-46.57a8,8,0,0,0-15.74-2.86L95.14,88H48a8,8,0,0,0,0,16H92.23L83.5,152H32a8,8,0,0,0,0,16H80.6l-8.47,46.57a8,8,0,0,0,6.44,9.3A7.79,7.79,0,0,0,80,224a8,8,0,0,0,7.86-6.57l9-49.43H144.6l-8.47,46.57a8,8,0,0,0,6.44,9.3A7.79,7.79,0,0,0,144,224a8,8,0,0,0,7.86-6.57l9-49.43H208a8,8,0,0,0,0-16H163.77l8.73-48H224a8,8,0,0,0,0-16Zm-76.5,64H99.77l8.73-48h47.73Z\"/>"],"corners-out":["<path d=\"M216,48V88a8,8,0,0,1-16,0V56H168a8,8,0,0,1,0-16h40A8,8,0,0,1,216,48ZM88,200H56V168a8,8,0,0,0-16,0v40a8,8,0,0,0,8,8H88a8,8,0,0,0,0-16Zm120-40a8,8,0,0,0-8,8v32H168a8,8,0,0,0,0,16h40a8,8,0,0,0,8-8V168A8,8,0,0,0,208,160ZM88,40H48a8,8,0,0,0-8,8V88a8,8,0,0,0,16,0V56H88a8,8,0,0,0,0-16Z\"/>","<path d=\"M208,48V208H48V48Z\" opacity=\"0.2\"/><path d=\"M216,48V88a8,8,0,0,1-16,0V56H168a8,8,0,0,1,0-16h40A8,8,0,0,1,216,48ZM88,200H56V168a8,8,0,0,0-16,0v40a8,8,0,0,0,8,8H88a8,8,0,0,0,0-16Zm120-40a8,8,0,0,0-8,8v32H168a8,8,0,0,0,0,16h40a8,8,0,0,0,8-8V168A8,8,0,0,0,208,160ZM88,40H48a8,8,0,0,0-8,8V88a8,8,0,0,0,16,0V56H88a8,8,0,0,0,0-16Z\"/>"],"navigation-arrow":["<path d=\"M237.33,106.21,61.41,41l-.16-.05A16,16,0,0,0,40.9,61.25a1,1,0,0,0,.05.16l65.26,175.92A15.77,15.77,0,0,0,121.28,248h.3a15.77,15.77,0,0,0,15-11.29l.06-.2,21.84-78,78-21.84.2-.06a16,16,0,0,0,.62-30.38ZM149.84,144.3a8,8,0,0,0-5.54,5.54L121.3,232l-.06-.17L56,56l175.82,65.22.16.06Z\"/>","<path d=\"M234.35,129,152,152,129,234.35a8,8,0,0,1-15.21.27l-65.28-176A8,8,0,0,1,58.63,48.46l176,65.28A8,8,0,0,1,234.35,129Z\" opacity=\"0.2\"/><path d=\"M237.33,106.21,61.41,41l-.16-.05A16,16,0,0,0,40.9,61.25a1,1,0,0,0,.05.16l65.26,175.92A15.77,15.77,0,0,0,121.28,248h.3a15.77,15.77,0,0,0,15-11.29l.06-.2,21.84-78,78-21.84.2-.06a16,16,0,0,0,.62-30.38ZM149.84,144.3a8,8,0,0,0-5.54,5.54L121.3,232l-.06-.17L56,56l175.82,65.22.16.06Z\"/>"],"image":["<path d=\"M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,16V158.75l-26.07-26.06a16,16,0,0,0-22.63,0l-20,20-44-44a16,16,0,0,0-22.62,0L40,149.37V56ZM40,172l52-52,80,80H40Zm176,28H194.63l-36-36,20-20L216,181.38V200ZM144,100a12,12,0,1,1,12,12A12,12,0,0,1,144,100Z\"/>","<path d=\"M224,56V178.06l-39.72-39.72a8,8,0,0,0-11.31,0L147.31,164,97.66,114.34a8,8,0,0,0-11.32,0L32,168.69V56a8,8,0,0,1,8-8H216A8,8,0,0,1,224,56Z\" opacity=\"0.2\"/><path d=\"M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,16V158.75l-26.07-26.06a16,16,0,0,0-22.63,0l-20,20-44-44a16,16,0,0,0-22.62,0L40,149.37V56ZM40,172l52-52,80,80H40Zm176,28H194.63l-36-36,20-20L216,181.38V200ZM144,100a12,12,0,1,1,12,12A12,12,0,0,1,144,100Z\"/>"],"list-numbers":["<path d=\"M224,128a8,8,0,0,1-8,8H104a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM104,72H216a8,8,0,0,0,0-16H104a8,8,0,0,0,0,16ZM216,184H104a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16ZM43.58,55.16,48,52.94V104a8,8,0,0,0,16,0V40a8,8,0,0,0-11.58-7.16l-16,8a8,8,0,0,0,7.16,14.32ZM79.77,156.72a23.73,23.73,0,0,0-9.6-15.95,24.86,24.86,0,0,0-34.11,4.7,23.63,23.63,0,0,0-3.57,6.46,8,8,0,1,0,15,5.47,7.84,7.84,0,0,1,1.18-2.13,8.76,8.76,0,0,1,12-1.59A7.91,7.91,0,0,1,63.93,159a7.64,7.64,0,0,1-1.57,5.78,1,1,0,0,0-.08.11L33.59,203.21A8,8,0,0,0,40,216H72a8,8,0,0,0,0-16H56l19.08-25.53A23.47,23.47,0,0,0,79.77,156.72Z\"/>","<path d=\"M216,64V192H104V64Z\" opacity=\"0.2\"/><path d=\"M224,128a8,8,0,0,1-8,8H104a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM104,72H216a8,8,0,0,0,0-16H104a8,8,0,0,0,0,16ZM216,184H104a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16ZM43.58,55.16,48,52.94V104a8,8,0,0,0,16,0V40a8,8,0,0,0-11.58-7.16l-16,8a8,8,0,0,0,7.16,14.32ZM79.77,156.72a23.73,23.73,0,0,0-9.6-15.95,24.86,24.86,0,0,0-34.11,4.7,23.63,23.63,0,0,0-3.57,6.46,8,8,0,1,0,15,5.47,7.84,7.84,0,0,1,1.18-2.13,8.76,8.76,0,0,1,12-1.59A7.91,7.91,0,0,1,63.93,159a7.64,7.64,0,0,1-1.57,5.78,1,1,0,0,0-.08.11L33.59,203.21A8,8,0,0,0,40,216H72a8,8,0,0,0,0-16H56l19.08-25.53A23.47,23.47,0,0,0,79.77,156.72Z\"/>"],"map-pin-area":["<path d=\"M112,80a16,16,0,1,1,16,16A16,16,0,0,1,112,80ZM64,80a64,64,0,0,1,128,0c0,59.95-57.58,93.54-60,94.95a8,8,0,0,1-7.94,0C121.58,173.54,64,140,64,80Zm16,0c0,42.2,35.84,70.21,48,78.5,12.15-8.28,48-36.3,48-78.5a48,48,0,0,0-96,0Zm122.77,67.63a8,8,0,0,0-5.54,15C213.74,168.74,224,176.92,224,184c0,13.36-36.52,32-96,32s-96-18.64-96-32c0-7.08,10.26-15.26,26.77-21.36a8,8,0,0,0-5.54-15C29.22,156.49,16,169.41,16,184c0,31.18,57.71,48,112,48s112-16.82,112-48C240,169.41,226.78,156.49,202.77,147.63Z\"/>","<path d=\"M184,80c0,56-56,88-56,88S72,136,72,80a56,56,0,0,1,112,0Z\" opacity=\"0.2\"/><path d=\"M112,80a16,16,0,1,1,16,16A16,16,0,0,1,112,80ZM64,80a64,64,0,0,1,128,0c0,59.95-57.58,93.54-60,94.95a8,8,0,0,1-7.94,0C121.58,173.54,64,140,64,80Zm16,0c0,42.2,35.84,70.21,48,78.5,12.15-8.28,48-36.3,48-78.5a48,48,0,0,0-96,0Zm122.77,67.63a8,8,0,0,0-5.54,15C213.74,168.74,224,176.92,224,184c0,13.36-36.52,32-96,32s-96-18.64-96-32c0-7.08,10.26-15.26,26.77-21.36a8,8,0,0,0-5.54-15C29.22,156.49,16,169.41,16,184c0,31.18,57.71,48,112,48s112-16.82,112-48C240,169.41,226.78,156.49,202.77,147.63Z\"/>"],"drop":["<path d=\"M174,47.75a254.19,254.19,0,0,0-41.45-38.3,8,8,0,0,0-9.18,0A254.19,254.19,0,0,0,82,47.75C54.51,79.32,40,112.6,40,144a88,88,0,0,0,176,0C216,112.6,201.49,79.32,174,47.75ZM128,216a72.08,72.08,0,0,1-72-72c0-57.23,55.47-105,72-118,16.53,13,72,60.75,72,118A72.08,72.08,0,0,1,128,216Zm55.89-62.66a57.6,57.6,0,0,1-46.56,46.55A8.75,8.75,0,0,1,136,200a8,8,0,0,1-1.32-15.89c16.57-2.79,30.63-16.85,33.44-33.45a8,8,0,0,1,15.78,2.68Z\"/>","<path d=\"M208,144a80,80,0,0,1-160,0c0-72,80-128,80-128S208,72,208,144Z\" opacity=\"0.2\"/><path d=\"M174,47.75a254.19,254.19,0,0,0-41.45-38.3,8,8,0,0,0-9.18,0A254.19,254.19,0,0,0,82,47.75C54.51,79.32,40,112.6,40,144a88,88,0,0,0,176,0C216,112.6,201.49,79.32,174,47.75ZM128,216a72.08,72.08,0,0,1-72-72c0-57.23,55.47-105,72-118,16.53,13,72,60.75,72,118A72.08,72.08,0,0,1,128,216Zm55.89-62.66a57.6,57.6,0,0,1-46.56,46.55A8.75,8.75,0,0,1,136,200a8,8,0,0,1-1.32-15.89c16.57-2.79,30.63-16.85,33.44-33.45a8,8,0,0,1,15.78,2.68Z\"/>"],"globe-hemisphere-west":["<path d=\"M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm88,104a87.62,87.62,0,0,1-6.4,32.94l-44.7-27.49a15.92,15.92,0,0,0-6.24-2.23l-22.82-3.08a16.11,16.11,0,0,0-16,7.86h-8.72l-3.8-7.86a15.91,15.91,0,0,0-11-8.67l-8-1.73L96.14,104h16.71a16.06,16.06,0,0,0,7.73-2l12.25-6.76a16.62,16.62,0,0,0,3-2.14l26.91-24.34A15.93,15.93,0,0,0,166,49.1l-.36-.65A88.11,88.11,0,0,1,216,128ZM143.31,41.34,152,56.9,125.09,81.24,112.85,88H96.14a16,16,0,0,0-13.88,8l-8.73,15.23L63.38,84.19,74.32,58.32a87.87,87.87,0,0,1,69-17ZM40,128a87.53,87.53,0,0,1,8.54-37.8l11.34,30.27a16,16,0,0,0,11.62,10l21.43,4.61L96.74,143a16.09,16.09,0,0,0,14.4,9h1.48l-7.23,16.23a16,16,0,0,0,2.86,17.37l.14.14L128,205.94l-1.94,10A88.11,88.11,0,0,1,40,128Zm102.58,86.78,1.13-5.81a16.09,16.09,0,0,0-4-13.9,1.85,1.85,0,0,1-.14-.14L120,174.74,133.7,144l22.82,3.08,45.72,28.12A88.18,88.18,0,0,1,142.58,214.78Z\"/>","<path d=\"M213.09,172.48a96,96,0,0,1-80.41,51.41l3.17-16.44a8,8,0,0,0-2-6.95l-19.74-20.33a8,8,0,0,1-1.44-8.69l13.7-30.74a8,8,0,0,1,8.38-4.67l22.82,3.08a8.11,8.11,0,0,1,3.12,1.11ZM116.71,95,129,88.24a7.46,7.46,0,0,0,1.5-1.07l26.91-24.33A8,8,0,0,0,159,53l-10.5-18.81A96.62,96.62,0,0,0,128,32,95.61,95.61,0,0,0,67.78,53.23L56,81.08A8,8,0,0,0,55.88,87l11.5,30.67a8,8,0,0,0,5.81,5l2.69.58L89.2,100a8,8,0,0,1,6.94-4h16.71A7.9,7.9,0,0,0,116.71,95Z\" opacity=\"0.2\"/><path d=\"M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm88,104a87.62,87.62,0,0,1-6.4,32.94l-44.7-27.49a15.92,15.92,0,0,0-6.24-2.23l-22.82-3.08a16.11,16.11,0,0,0-16,7.86h-8.72l-3.8-7.86a15.91,15.91,0,0,0-11-8.67l-8-1.73L96.14,104h16.71a16.06,16.06,0,0,0,7.73-2l12.25-6.76a16.62,16.62,0,0,0,3-2.14l26.91-24.34A15.93,15.93,0,0,0,166,49.1l-.36-.65A88.11,88.11,0,0,1,216,128ZM143.31,41.34,152,56.9,125.09,81.24,112.85,88H96.14a16,16,0,0,0-13.88,8l-8.73,15.23L63.38,84.19,74.32,58.32a87.87,87.87,0,0,1,69-17ZM40,128a87.53,87.53,0,0,1,8.54-37.8l11.34,30.27a16,16,0,0,0,11.62,10l21.43,4.61L96.74,143a16.09,16.09,0,0,0,14.4,9h1.48l-7.23,16.23a16,16,0,0,0,2.86,17.37l.14.14L128,205.94l-1.94,10A88.11,88.11,0,0,1,40,128Zm102.58,86.78,1.13-5.81a16.09,16.09,0,0,0-4-13.9,1.85,1.85,0,0,1-.14-.14L120,174.74,133.7,144l22.82,3.08,45.72,28.12A88.18,88.18,0,0,1,142.58,214.78Z\"/>"],"square":["<path d=\"M208,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32Zm0,176H48V48H208V208Z\"/>","<path d=\"M216,48V208a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V48a8,8,0,0,1,8-8H208A8,8,0,0,1,216,48Z\" opacity=\"0.2\"/><path d=\"M208,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32Zm0,176H48V48H208V208Z\"/>"]});
+Object.assign(ICONES, {"shopping-cart":["<path d=\"M230.14,58.87A8,8,0,0,0,224,56H62.68L56.6,22.57A8,8,0,0,0,48.73,16H24a8,8,0,0,0,0,16h18L67.56,172.29a24,24,0,0,0,5.33,11.27,28,28,0,1,0,44.4,8.44h45.42A27.75,27.75,0,0,0,160,204a28,28,0,1,0,28-28H91.17a8,8,0,0,1-7.87-6.57L80.13,152h116a24,24,0,0,0,23.61-19.71l12.16-66.86A8,8,0,0,0,230.14,58.87ZM104,204a12,12,0,1,1-12-12A12,12,0,0,1,104,204Zm96,0a12,12,0,1,1-12-12A12,12,0,0,1,200,204Zm4-74.57A8,8,0,0,1,196.1,136H77.22L65.59,72H214.41Z\"/>","<path d=\"M224,64l-12.16,66.86A16,16,0,0,1,196.1,144H70.55L56,64Z\" opacity=\"0.2\"/><path d=\"M230.14,58.87A8,8,0,0,0,224,56H62.68L56.6,22.57A8,8,0,0,0,48.73,16H24a8,8,0,0,0,0,16h18L67.56,172.29a24,24,0,0,0,5.33,11.27,28,28,0,1,0,44.4,8.44h45.42A27.75,27.75,0,0,0,160,204a28,28,0,1,0,28-28H91.17a8,8,0,0,1-7.87-6.57L80.13,152h116a24,24,0,0,0,23.61-19.71l12.16-66.86A8,8,0,0,0,230.14,58.87ZM104,204a12,12,0,1,1-12-12A12,12,0,0,1,104,204Zm96,0a12,12,0,1,1-12-12A12,12,0,0,1,200,204Zm4-74.57A8,8,0,0,1,196.1,136H77.22L65.59,72H214.41Z\"/>"],"scissors":["<path d=\"M157.73,113.13A8,8,0,0,1,159.82,102L227.48,55.7a8,8,0,0,1,9,13.21l-67.67,46.3a7.92,7.92,0,0,1-4.51,1.4A8,8,0,0,1,157.73,113.13Zm80.87,85.09a8,8,0,0,1-11.12,2.08L136,137.7,93.49,166.78a36,36,0,1,1-9-13.19L121.83,128,84.44,102.41a35.86,35.86,0,1,1,9-13.19l143,97.87A8,8,0,0,1,238.6,198.22ZM80,180a20,20,0,1,0-5.86,14.14A19.85,19.85,0,0,0,80,180ZM74.14,90.13a20,20,0,1,0-28.28,0A19.85,19.85,0,0,0,74.14,90.13Z\"/>","<path d=\"M40.2,95.8a28,28,0,1,1,39.6,0A28,28,0,0,1,40.2,95.8Zm0,64.4a28,28,0,1,0,39.6,0A28,28,0,0,0,40.2,160.2Z\" opacity=\"0.2\"/><path d=\"M157.73,113.13A8,8,0,0,1,159.82,102L227.48,55.7a8,8,0,0,1,9,13.21l-67.67,46.3a7.92,7.92,0,0,1-4.51,1.4A8,8,0,0,1,157.73,113.13Zm80.87,85.09a8,8,0,0,1-11.12,2.08L136,137.7,93.49,166.78a36,36,0,1,1-9-13.19L121.83,128,84.44,102.41a35.86,35.86,0,1,1,9-13.19l143,97.87A8,8,0,0,1,238.6,198.22ZM80,180a20,20,0,1,0-5.86,14.14A19.85,19.85,0,0,0,80,180ZM74.14,90.13a20,20,0,1,0-28.28,0A19.85,19.85,0,0,0,74.14,90.13Z\"/>"],"bank":["<path d=\"M24,104H48v64H32a8,8,0,0,0,0,16H224a8,8,0,0,0,0-16H208V104h24a8,8,0,0,0,4.19-14.81l-104-64a8,8,0,0,0-8.38,0l-104,64A8,8,0,0,0,24,104Zm40,0H96v64H64Zm80,0v64H112V104Zm48,64H160V104h32ZM128,41.39,203.74,88H52.26ZM248,208a8,8,0,0,1-8,8H16a8,8,0,0,1,0-16H240A8,8,0,0,1,248,208Z\"/>","<path d=\"M232,96H24L128,32Z\" opacity=\"0.2\"/><path d=\"M24,104H48v64H32a8,8,0,0,0,0,16H224a8,8,0,0,0,0-16H208V104h24a8,8,0,0,0,4.19-14.81l-104-64a8,8,0,0,0-8.38,0l-104,64A8,8,0,0,0,24,104Zm40,0H96v64H64Zm80,0v64H112V104Zm48,64H160V104h32ZM128,41.39,203.74,88H52.26ZM248,208a8,8,0,0,1-8,8H16a8,8,0,0,1,0-16H240A8,8,0,0,1,248,208Z\"/>"],"fire":["<path d=\"M183.89,153.34a57.6,57.6,0,0,1-46.56,46.55A8.75,8.75,0,0,1,136,200a8,8,0,0,1-1.32-15.89c16.57-2.79,30.63-16.85,33.44-33.45a8,8,0,0,1,15.78,2.68ZM216,144a88,88,0,0,1-176,0c0-27.92,11-56.47,32.66-84.85a8,8,0,0,1,11.93-.89l24.12,23.41,22-60.41a8,8,0,0,1,12.63-3.41C165.21,36,216,84.55,216,144Zm-16,0c0-46.09-35.79-85.92-58.21-106.33L119.52,98.74a8,8,0,0,1-13.09,3L80.06,76.16C64.09,99.21,56,122,56,144a72,72,0,0,0,144,0Z\"/>","<path d=\"M208,144a80,80,0,0,1-160,0c0-30.57,14.42-58.26,31-80l33,32,26.27-72C159.86,41.92,208,88.15,208,144Z\" opacity=\"0.2\"/><path d=\"M183.89,153.34a57.6,57.6,0,0,1-46.56,46.55A8.75,8.75,0,0,1,136,200a8,8,0,0,1-1.32-15.89c16.57-2.79,30.63-16.85,33.44-33.45a8,8,0,0,1,15.78,2.68ZM216,144a88,88,0,0,1-176,0c0-27.92,11-56.47,32.66-84.85a8,8,0,0,1,11.93-.89l24.12,23.41,22-60.41a8,8,0,0,1,12.63-3.41C165.21,36,216,84.55,216,144Zm-16,0c0-46.09-35.79-85.92-58.21-106.33L119.52,98.74a8,8,0,0,1-13.09,3L80.06,76.16C64.09,99.21,56,122,56,144a72,72,0,0,0,144,0Z\"/>"],"polygon":["<path d=\"M230.64,49.36a32,32,0,0,0-45.26,0h0a31.9,31.9,0,0,0-5.16,6.76L152,48.42A32,32,0,0,0,97.37,25.36h0a32.06,32.06,0,0,0-5.76,37.41L57.67,93.32a32.05,32.05,0,0,0-40.31,4.05h0a32,32,0,0,0,42.89,47.41l70,51.36a32,32,0,1,0,47.57-14.69l27.39-77.59q1.38.12,2.76.12a32,32,0,0,0,22.63-54.62Zm-122-12.69h0a16,16,0,1,1,0,22.64A16,16,0,0,1,108.68,36.67Zm-80,94.65a16,16,0,0,1,0-22.64h0a16,16,0,1,1,0,22.64Zm142.65,88a16,16,0,0,1-22.63-22.63h0a16,16,0,1,1,22.63,22.63Zm-8.55-43.18a32,32,0,0,0-23,7.08l-70-51.36a32.17,32.17,0,0,0-1.34-26.65l33.95-30.55a32,32,0,0,0,45.47-10.81L176,71.56a32,32,0,0,0,14.12,27Zm56.56-92.84A16,16,0,1,1,196.7,60.68h0a16,16,0,0,1,22.63,22.63Z\"/>","<path d=\"M137,65A24,24,0,1,1,137,31,24,24,0,0,1,137,65ZM23,103A24,24,0,1,0,57,103,24,24,0,0,0,23,103Zm120,88A24,24,0,1,0,177,191,24,24,0,0,0,143,191ZM225,55A24,24,0,1,0,225,89,24,24,0,0,0,225,55Z\" opacity=\"0.2\"/><path d=\"M230.64,49.36a32,32,0,0,0-45.26,0h0a31.9,31.9,0,0,0-5.16,6.76L152,48.42A32,32,0,0,0,97.37,25.36h0a32.06,32.06,0,0,0-5.76,37.41L57.67,93.32a32.05,32.05,0,0,0-40.31,4.05h0a32,32,0,0,0,42.89,47.41l70,51.36a32,32,0,1,0,47.57-14.69l27.39-77.59q1.38.12,2.76.12a32,32,0,0,0,22.63-54.62Zm-122-12.69h0a16,16,0,1,1,0,22.64A16,16,0,0,1,108.68,36.67Zm-80,94.65a16,16,0,0,1,0-22.64h0a16,16,0,1,1,0,22.64Zm142.65,88a16,16,0,0,1-22.63-22.63h0a16,16,0,1,1,22.63,22.63Zm-8.55-43.18a32,32,0,0,0-23,7.08l-70-51.36a32.17,32.17,0,0,0-1.34-26.65l33.95-30.55a32,32,0,0,0,45.47-10.81L176,71.56a32,32,0,0,0,14.12,27Zm56.56-92.84A16,16,0,1,1,196.7,60.68h0a16,16,0,0,1,22.63,22.63Z\"/>"],"hash":["<path d=\"M224,88H175.4l8.47-46.57a8,8,0,0,0-15.74-2.86l-9,49.43H111.4l8.47-46.57a8,8,0,0,0-15.74-2.86L95.14,88H48a8,8,0,0,0,0,16H92.23L83.5,152H32a8,8,0,0,0,0,16H80.6l-8.47,46.57a8,8,0,0,0,6.44,9.3A7.79,7.79,0,0,0,80,224a8,8,0,0,0,7.86-6.57l9-49.43H144.6l-8.47,46.57a8,8,0,0,0,6.44,9.3A7.79,7.79,0,0,0,144,224a8,8,0,0,0,7.86-6.57l9-49.43H208a8,8,0,0,0,0-16H163.77l8.73-48H224a8,8,0,0,0,0-16Zm-76.5,64H99.77l8.73-48h47.73Z\"/>","<path d=\"M165.82,96l-11.64,64h-64l11.64-64Z\" opacity=\"0.2\"/><path d=\"M224,88H175.4l8.47-46.57a8,8,0,0,0-15.74-2.86l-9,49.43H111.4l8.47-46.57a8,8,0,0,0-15.74-2.86L95.14,88H48a8,8,0,0,0,0,16H92.23L83.5,152H32a8,8,0,0,0,0,16H80.6l-8.47,46.57a8,8,0,0,0,6.44,9.3A7.79,7.79,0,0,0,80,224a8,8,0,0,0,7.86-6.57l9-49.43H144.6l-8.47,46.57a8,8,0,0,0,6.44,9.3A7.79,7.79,0,0,0,144,224a8,8,0,0,0,7.86-6.57l9-49.43H208a8,8,0,0,0,0-16H163.77l8.73-48H224a8,8,0,0,0,0-16Zm-76.5,64H99.77l8.73-48h47.73Z\"/>"],"corners-out":["<path d=\"M216,48V88a8,8,0,0,1-16,0V56H168a8,8,0,0,1,0-16h40A8,8,0,0,1,216,48ZM88,200H56V168a8,8,0,0,0-16,0v40a8,8,0,0,0,8,8H88a8,8,0,0,0,0-16Zm120-40a8,8,0,0,0-8,8v32H168a8,8,0,0,0,0,16h40a8,8,0,0,0,8-8V168A8,8,0,0,0,208,160ZM88,40H48a8,8,0,0,0-8,8V88a8,8,0,0,0,16,0V56H88a8,8,0,0,0,0-16Z\"/>","<path d=\"M208,48V208H48V48Z\" opacity=\"0.2\"/><path d=\"M216,48V88a8,8,0,0,1-16,0V56H168a8,8,0,0,1,0-16h40A8,8,0,0,1,216,48ZM88,200H56V168a8,8,0,0,0-16,0v40a8,8,0,0,0,8,8H88a8,8,0,0,0,0-16Zm120-40a8,8,0,0,0-8,8v32H168a8,8,0,0,0,0,16h40a8,8,0,0,0,8-8V168A8,8,0,0,0,208,160ZM88,40H48a8,8,0,0,0-8,8V88a8,8,0,0,0,16,0V56H88a8,8,0,0,0,0-16Z\"/>"],"navigation-arrow":["<path d=\"M237.33,106.21,61.41,41l-.16-.05A16,16,0,0,0,40.9,61.25a1,1,0,0,0,.05.16l65.26,175.92A15.77,15.77,0,0,0,121.28,248h.3a15.77,15.77,0,0,0,15-11.29l.06-.2,21.84-78,78-21.84.2-.06a16,16,0,0,0,.62-30.38ZM149.84,144.3a8,8,0,0,0-5.54,5.54L121.3,232l-.06-.17L56,56l175.82,65.22.16.06Z\"/>","<path d=\"M234.35,129,152,152,129,234.35a8,8,0,0,1-15.21.27l-65.28-176A8,8,0,0,1,58.63,48.46l176,65.28A8,8,0,0,1,234.35,129Z\" opacity=\"0.2\"/><path d=\"M237.33,106.21,61.41,41l-.16-.05A16,16,0,0,0,40.9,61.25a1,1,0,0,0,.05.16l65.26,175.92A15.77,15.77,0,0,0,121.28,248h.3a15.77,15.77,0,0,0,15-11.29l.06-.2,21.84-78,78-21.84.2-.06a16,16,0,0,0,.62-30.38ZM149.84,144.3a8,8,0,0,0-5.54,5.54L121.3,232l-.06-.17L56,56l175.82,65.22.16.06Z\"/>"],"image":["<path d=\"M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,16V158.75l-26.07-26.06a16,16,0,0,0-22.63,0l-20,20-44-44a16,16,0,0,0-22.62,0L40,149.37V56ZM40,172l52-52,80,80H40Zm176,28H194.63l-36-36,20-20L216,181.38V200ZM144,100a12,12,0,1,1,12,12A12,12,0,0,1,144,100Z\"/>","<path d=\"M224,56V178.06l-39.72-39.72a8,8,0,0,0-11.31,0L147.31,164,97.66,114.34a8,8,0,0,0-11.32,0L32,168.69V56a8,8,0,0,1,8-8H216A8,8,0,0,1,224,56Z\" opacity=\"0.2\"/><path d=\"M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,16V158.75l-26.07-26.06a16,16,0,0,0-22.63,0l-20,20-44-44a16,16,0,0,0-22.62,0L40,149.37V56ZM40,172l52-52,80,80H40Zm176,28H194.63l-36-36,20-20L216,181.38V200ZM144,100a12,12,0,1,1,12,12A12,12,0,0,1,144,100Z\"/>"],"list-numbers":["<path d=\"M224,128a8,8,0,0,1-8,8H104a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM104,72H216a8,8,0,0,0,0-16H104a8,8,0,0,0,0,16ZM216,184H104a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16ZM43.58,55.16,48,52.94V104a8,8,0,0,0,16,0V40a8,8,0,0,0-11.58-7.16l-16,8a8,8,0,0,0,7.16,14.32ZM79.77,156.72a23.73,23.73,0,0,0-9.6-15.95,24.86,24.86,0,0,0-34.11,4.7,23.63,23.63,0,0,0-3.57,6.46,8,8,0,1,0,15,5.47,7.84,7.84,0,0,1,1.18-2.13,8.76,8.76,0,0,1,12-1.59A7.91,7.91,0,0,1,63.93,159a7.64,7.64,0,0,1-1.57,5.78,1,1,0,0,0-.08.11L33.59,203.21A8,8,0,0,0,40,216H72a8,8,0,0,0,0-16H56l19.08-25.53A23.47,23.47,0,0,0,79.77,156.72Z\"/>","<path d=\"M216,64V192H104V64Z\" opacity=\"0.2\"/><path d=\"M224,128a8,8,0,0,1-8,8H104a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM104,72H216a8,8,0,0,0,0-16H104a8,8,0,0,0,0,16ZM216,184H104a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16ZM43.58,55.16,48,52.94V104a8,8,0,0,0,16,0V40a8,8,0,0,0-11.58-7.16l-16,8a8,8,0,0,0,7.16,14.32ZM79.77,156.72a23.73,23.73,0,0,0-9.6-15.95,24.86,24.86,0,0,0-34.11,4.7,23.63,23.63,0,0,0-3.57,6.46,8,8,0,1,0,15,5.47,7.84,7.84,0,0,1,1.18-2.13,8.76,8.76,0,0,1,12-1.59A7.91,7.91,0,0,1,63.93,159a7.64,7.64,0,0,1-1.57,5.78,1,1,0,0,0-.08.11L33.59,203.21A8,8,0,0,0,40,216H72a8,8,0,0,0,0-16H56l19.08-25.53A23.47,23.47,0,0,0,79.77,156.72Z\"/>"],"map-pin-area":["<path d=\"M112,80a16,16,0,1,1,16,16A16,16,0,0,1,112,80ZM64,80a64,64,0,0,1,128,0c0,59.95-57.58,93.54-60,94.95a8,8,0,0,1-7.94,0C121.58,173.54,64,140,64,80Zm16,0c0,42.2,35.84,70.21,48,78.5,12.15-8.28,48-36.3,48-78.5a48,48,0,0,0-96,0Zm122.77,67.63a8,8,0,0,0-5.54,15C213.74,168.74,224,176.92,224,184c0,13.36-36.52,32-96,32s-96-18.64-96-32c0-7.08,10.26-15.26,26.77-21.36a8,8,0,0,0-5.54-15C29.22,156.49,16,169.41,16,184c0,31.18,57.71,48,112,48s112-16.82,112-48C240,169.41,226.78,156.49,202.77,147.63Z\"/>","<path d=\"M184,80c0,56-56,88-56,88S72,136,72,80a56,56,0,0,1,112,0Z\" opacity=\"0.2\"/><path d=\"M112,80a16,16,0,1,1,16,16A16,16,0,0,1,112,80ZM64,80a64,64,0,0,1,128,0c0,59.95-57.58,93.54-60,94.95a8,8,0,0,1-7.94,0C121.58,173.54,64,140,64,80Zm16,0c0,42.2,35.84,70.21,48,78.5,12.15-8.28,48-36.3,48-78.5a48,48,0,0,0-96,0Zm122.77,67.63a8,8,0,0,0-5.54,15C213.74,168.74,224,176.92,224,184c0,13.36-36.52,32-96,32s-96-18.64-96-32c0-7.08,10.26-15.26,26.77-21.36a8,8,0,0,0-5.54-15C29.22,156.49,16,169.41,16,184c0,31.18,57.71,48,112,48s112-16.82,112-48C240,169.41,226.78,156.49,202.77,147.63Z\"/>"],"drop":["<path d=\"M174,47.75a254.19,254.19,0,0,0-41.45-38.3,8,8,0,0,0-9.18,0A254.19,254.19,0,0,0,82,47.75C54.51,79.32,40,112.6,40,144a88,88,0,0,0,176,0C216,112.6,201.49,79.32,174,47.75ZM128,216a72.08,72.08,0,0,1-72-72c0-57.23,55.47-105,72-118,16.53,13,72,60.75,72,118A72.08,72.08,0,0,1,128,216Zm55.89-62.66a57.6,57.6,0,0,1-46.56,46.55A8.75,8.75,0,0,1,136,200a8,8,0,0,1-1.32-15.89c16.57-2.79,30.63-16.85,33.44-33.45a8,8,0,0,1,15.78,2.68Z\"/>","<path d=\"M208,144a80,80,0,0,1-160,0c0-72,80-128,80-128S208,72,208,144Z\" opacity=\"0.2\"/><path d=\"M174,47.75a254.19,254.19,0,0,0-41.45-38.3,8,8,0,0,0-9.18,0A254.19,254.19,0,0,0,82,47.75C54.51,79.32,40,112.6,40,144a88,88,0,0,0,176,0C216,112.6,201.49,79.32,174,47.75ZM128,216a72.08,72.08,0,0,1-72-72c0-57.23,55.47-105,72-118,16.53,13,72,60.75,72,118A72.08,72.08,0,0,1,128,216Zm55.89-62.66a57.6,57.6,0,0,1-46.56,46.55A8.75,8.75,0,0,1,136,200a8,8,0,0,1-1.32-15.89c16.57-2.79,30.63-16.85,33.44-33.45a8,8,0,0,1,15.78,2.68Z\"/>"],"globe-hemisphere-west":["<path d=\"M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm88,104a87.62,87.62,0,0,1-6.4,32.94l-44.7-27.49a15.92,15.92,0,0,0-6.24-2.23l-22.82-3.08a16.11,16.11,0,0,0-16,7.86h-8.72l-3.8-7.86a15.91,15.91,0,0,0-11-8.67l-8-1.73L96.14,104h16.71a16.06,16.06,0,0,0,7.73-2l12.25-6.76a16.62,16.62,0,0,0,3-2.14l26.91-24.34A15.93,15.93,0,0,0,166,49.1l-.36-.65A88.11,88.11,0,0,1,216,128ZM143.31,41.34,152,56.9,125.09,81.24,112.85,88H96.14a16,16,0,0,0-13.88,8l-8.73,15.23L63.38,84.19,74.32,58.32a87.87,87.87,0,0,1,69-17ZM40,128a87.53,87.53,0,0,1,8.54-37.8l11.34,30.27a16,16,0,0,0,11.62,10l21.43,4.61L96.74,143a16.09,16.09,0,0,0,14.4,9h1.48l-7.23,16.23a16,16,0,0,0,2.86,17.37l.14.14L128,205.94l-1.94,10A88.11,88.11,0,0,1,40,128Zm102.58,86.78,1.13-5.81a16.09,16.09,0,0,0-4-13.9,1.85,1.85,0,0,1-.14-.14L120,174.74,133.7,144l22.82,3.08,45.72,28.12A88.18,88.18,0,0,1,142.58,214.78Z\"/>","<path d=\"M213.09,172.48a96,96,0,0,1-80.41,51.41l3.17-16.44a8,8,0,0,0-2-6.95l-19.74-20.33a8,8,0,0,1-1.44-8.69l13.7-30.74a8,8,0,0,1,8.38-4.67l22.82,3.08a8.11,8.11,0,0,1,3.12,1.11ZM116.71,95,129,88.24a7.46,7.46,0,0,0,1.5-1.07l26.91-24.33A8,8,0,0,0,159,53l-10.5-18.81A96.62,96.62,0,0,0,128,32,95.61,95.61,0,0,0,67.78,53.23L56,81.08A8,8,0,0,0,55.88,87l11.5,30.67a8,8,0,0,0,5.81,5l2.69.58L89.2,100a8,8,0,0,1,6.94-4h16.71A7.9,7.9,0,0,0,116.71,95Z\" opacity=\"0.2\"/><path d=\"M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm88,104a87.62,87.62,0,0,1-6.4,32.94l-44.7-27.49a15.92,15.92,0,0,0-6.24-2.23l-22.82-3.08a16.11,16.11,0,0,0-16,7.86h-8.72l-3.8-7.86a15.91,15.91,0,0,0-11-8.67l-8-1.73L96.14,104h16.71a16.06,16.06,0,0,0,7.73-2l12.25-6.76a16.62,16.62,0,0,0,3-2.14l26.91-24.34A15.93,15.93,0,0,0,166,49.1l-.36-.65A88.11,88.11,0,0,1,216,128ZM143.31,41.34,152,56.9,125.09,81.24,112.85,88H96.14a16,16,0,0,0-13.88,8l-8.73,15.23L63.38,84.19,74.32,58.32a87.87,87.87,0,0,1,69-17ZM40,128a87.53,87.53,0,0,1,8.54-37.8l11.34,30.27a16,16,0,0,0,11.62,10l21.43,4.61L96.74,143a16.09,16.09,0,0,0,14.4,9h1.48l-7.23,16.23a16,16,0,0,0,2.86,17.37l.14.14L128,205.94l-1.94,10A88.11,88.11,0,0,1,40,128Zm102.58,86.78,1.13-5.81a16.09,16.09,0,0,0-4-13.9,1.85,1.85,0,0,1-.14-.14L120,174.74,133.7,144l22.82,3.08,45.72,28.12A88.18,88.18,0,0,1,142.58,214.78Z\"/>"],"square":["<path d=\"M208,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32Zm0,176H48V48H208V208Z\"/>","<path d=\"M216,48V208a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V48a8,8,0,0,1,8-8H208A8,8,0,0,1,216,48Z\" opacity=\"0.2\"/><path d=\"M208,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32Zm0,176H48V48H208V208Z\"/>"],"waves":["<path d=\"M222.16,177.25a8,8,0,0,1-1,11.25c-17.36,14.39-32.86,19.5-47,19.5-18.58,0-34.82-8.82-49.93-17-25.35-13.76-47.24-25.64-79.07.74a8,8,0,1,1-10.22-12.31c40.17-33.28,70.32-16.92,96.93-2.48,25.35,13.75,47.24,25.63,79.07-.74A8,8,0,0,1,222.16,177.25Zm-11.27-57c-31.83,26.38-53.72,14.5-79.07.74-26.61-14.43-56.76-30.79-96.93,2.49a8,8,0,0,0,10.22,12.31c31.83-26.38,53.72-14.5,79.07-.74,15.11,8.19,31.35,17,49.93,17,14.14,0,29.64-5.11,47-19.5a8,8,0,1,0-10.22-12.31ZM45.11,79.8c31.83-26.37,53.72-14.49,79.07-.74,15.11,8.2,31.35,17,49.93,17,14.14,0,29.64-5.12,47-19.5a8,8,0,1,0-10.22-12.31c-31.83,26.38-53.72,14.5-79.07.74C105.21,50.58,75.06,34.22,34.89,67.5A8,8,0,1,0,45.11,79.8Z\"/>","<path d=\"M216,70.39v112c-72,59.69-104-56.47-176,3.22v-112C112,13.92,144,130.08,216,70.39Z\" opacity=\"0.2\"/><path d=\"M222.16,177.25a8,8,0,0,1-1,11.25c-17.36,14.39-32.86,19.5-47,19.5-18.58,0-34.82-8.82-49.93-17-25.35-13.76-47.24-25.64-79.07.74a8,8,0,1,1-10.22-12.31c40.17-33.28,70.32-16.92,96.93-2.48,25.35,13.75,47.24,25.63,79.07-.74A8,8,0,0,1,222.16,177.25Zm-11.27-57c-31.83,26.38-53.72,14.5-79.07.74-26.61-14.43-56.76-30.79-96.93,2.49a8,8,0,0,0,10.22,12.31c31.83-26.38,53.72-14.5,79.07-.74,15.11,8.19,31.35,17,49.93,17,14.14,0,29.64-5.11,47-19.5a8,8,0,1,0-10.22-12.31ZM45.11,79.8c31.83-26.37,53.72-14.49,79.07-.74,15.11,8.2,31.35,17,49.93,17,14.14,0,29.64-5.12,47-19.5a8,8,0,1,0-10.22-12.31c-31.83,26.38-53.72,14.5-79.07.74C105.21,50.58,75.06,34.22,34.89,67.5A8,8,0,1,0,45.11,79.8Z\"/>"],"church":["<path d=\"M228.12,145.14,192,123.47V104a8,8,0,0,0-4-7L136,67.36V48h16a8,8,0,0,0,0-16H136V16a8,8,0,0,0-16,0V32H104a8,8,0,0,0,0,16h16V67.36L68,97.05a8,8,0,0,0-4,7v19.47L27.88,145.14A8,8,0,0,0,24,152v64a8,8,0,0,0,8,8h80a8,8,0,0,0,8-8V168a8,8,0,0,1,16,0v48a8,8,0,0,0,8,8h80a8,8,0,0,0,8-8V152A8,8,0,0,0,228.12,145.14ZM40,156.53l24-14.4V208H40ZM128,144a24,24,0,0,0-24,24v40H80V108.64l48-27.43,48,27.43V208H152V168A24,24,0,0,0,128,144Zm88,64H192V142.13l24,14.4Z\"/>","<path d=\"M224,152v64H184V128ZM32,216H72V128L32,152Z\" opacity=\"0.2\"/><path d=\"M228.12,145.14,192,123.47V104a8,8,0,0,0-4-7L136,67.36V48h16a8,8,0,0,0,0-16H136V16a8,8,0,0,0-16,0V32H104a8,8,0,0,0,0,16h16V67.36L68,97.05a8,8,0,0,0-4,7v19.47L27.88,145.14A8,8,0,0,0,24,152v64a8,8,0,0,0,8,8h80a8,8,0,0,0,8-8V168a8,8,0,0,1,16,0v48a8,8,0,0,0,8,8h80a8,8,0,0,0,8-8V152A8,8,0,0,0,228.12,145.14ZM40,156.53l24-14.4V208H40ZM128,144a24,24,0,0,0-24,24v40H80V108.64l48-27.43,48,27.43V208H152V168A24,24,0,0,0,128,144Zm88,64H192V142.13l24,14.4Z\"/>"],"train":["<path d=\"M184,24H72A32,32,0,0,0,40,56V184a32,32,0,0,0,32,32h8L65.6,235.2a8,8,0,1,0,12.8,9.6L100,216h56l21.6,28.8a8,8,0,1,0,12.8-9.6L176,216h8a32,32,0,0,0,32-32V56A32,32,0,0,0,184,24ZM56,120V80h64v40Zm80-40h64v40H136ZM72,40H184a16,16,0,0,1,16,16v8H56V56A16,16,0,0,1,72,40ZM184,200H72a16,16,0,0,1-16-16V136H200v48A16,16,0,0,1,184,200ZM96,172a12,12,0,1,1-12-12A12,12,0,0,1,96,172Zm88,0a12,12,0,1,1-12-12A12,12,0,0,1,184,172Z\"/>","<path d=\"M208,72v56H48V72Z\" opacity=\"0.2\"/><path d=\"M184,24H72A32,32,0,0,0,40,56V184a32,32,0,0,0,32,32h8L65.6,235.2a8,8,0,1,0,12.8,9.6L100,216h56l21.6,28.8a8,8,0,1,0,12.8-9.6L176,216h8a32,32,0,0,0,32-32V56A32,32,0,0,0,184,24ZM56,120V80h64v40Zm80-40h64v40H136ZM72,40H184a16,16,0,0,1,16,16v8H56V56A16,16,0,0,1,72,40ZM184,200H72a16,16,0,0,1-16-16V136H200v48A16,16,0,0,1,184,200ZM96,172a12,12,0,1,1-12-12A12,12,0,0,1,96,172Zm88,0a12,12,0,1,1-12-12A12,12,0,0,1,184,172Z\"/>"],"confetti":["<path d=\"M111.49,52.63a15.8,15.8,0,0,0-26,5.77L33,202.78A15.83,15.83,0,0,0,47.76,224a16,16,0,0,0,5.46-1l144.37-52.5a15.8,15.8,0,0,0,5.78-26Zm-8.33,135.21-35-35,13.16-36.21,58.05,58.05Zm-55,20,14-38.41,24.45,24.45ZM156,168.64,87.36,100l13-35.87,91.43,91.43ZM160,72a37.8,37.8,0,0,1,3.84-15.58C169.14,45.83,179.14,40,192,40c6.7,0,11-2.29,13.65-7.21A22,22,0,0,0,208,23.94,8,8,0,0,1,224,24c0,12.86-8.52,32-32,32-6.7,0-11,2.29-13.65,7.21A22,22,0,0,0,176,72.06,8,8,0,0,1,160,72ZM136,40V16a8,8,0,0,1,16,0V40a8,8,0,0,1-16,0Zm101.66,82.34a8,8,0,1,1-11.32,11.31l-16-16a8,8,0,0,1,11.32-11.32Zm4.87-42.75-24,8a8,8,0,0,1-5.06-15.18l24-8a8,8,0,0,1,5.06,15.18Z\"/>","<path d=\"M58.89,154.89l42.22,42.22-50.63,18.4a7.79,7.79,0,0,1-10-10Zm138.82-4.72L105.83,58.29A7.79,7.79,0,0,0,93,61.14l-14.9,41,75.82,75.82,41-14.9A7.79,7.79,0,0,0,197.71,150.17Z\" opacity=\"0.2\"/><path d=\"M111.49,52.63a15.8,15.8,0,0,0-26,5.77L33,202.78A15.83,15.83,0,0,0,47.76,224a16,16,0,0,0,5.46-1l144.37-52.5a15.8,15.8,0,0,0,5.78-26Zm-8.33,135.21-35-35,13.16-36.21,58.05,58.05Zm-55,20,14-38.41,24.45,24.45ZM156,168.64,87.36,100l13-35.87,91.43,91.43ZM160,72a37.8,37.8,0,0,1,3.84-15.58C169.14,45.83,179.14,40,192,40c6.7,0,11-2.29,13.65-7.21A22,22,0,0,0,208,23.94,8,8,0,0,1,224,24c0,12.86-8.52,32-32,32-6.7,0-11,2.29-13.65,7.21A22,22,0,0,0,176,72.06,8,8,0,0,1,160,72ZM136,40V16a8,8,0,0,1,16,0V40a8,8,0,0,1-16,0Zm101.66,82.34a8,8,0,1,1-11.32,11.31l-16-16a8,8,0,0,1,11.32-11.32Zm4.87-42.75-24,8a8,8,0,0,1-5.06-15.18l24-8a8,8,0,0,1,5.06,15.18Z\"/>"],"binoculars":["<path d=\"M237.2,151.87v0a47.1,47.1,0,0,0-2.35-5.45L193.26,51.8a7.82,7.82,0,0,0-1.66-2.44,32,32,0,0,0-45.26,0A8,8,0,0,0,144,55V80H112V55a8,8,0,0,0-2.34-5.66,32,32,0,0,0-45.26,0,7.82,7.82,0,0,0-1.66,2.44L21.15,146.4a47.1,47.1,0,0,0-2.35,5.45v0A48,48,0,1,0,112,168V96h32v72a48,48,0,1,0,93.2-16.13ZM76.71,59.75a16,16,0,0,1,19.29-1v73.51a47.9,47.9,0,0,0-46.79-9.92ZM64,200a32,32,0,1,1,32-32A32,32,0,0,1,64,200ZM160,58.74a16,16,0,0,1,19.29,1l27.5,62.58A47.9,47.9,0,0,0,160,132.25ZM192,200a32,32,0,1,1,32-32A32,32,0,0,1,192,200Z\"/>","<path d=\"M104,168a40,40,0,1,1-40-40A40,40,0,0,1,104,168Zm88-40a40,40,0,1,0,40,40A40,40,0,0,0,192,128Z\" opacity=\"0.2\"/><path d=\"M237.2,151.87v0a47.1,47.1,0,0,0-2.35-5.45L193.26,51.8a7.82,7.82,0,0,0-1.66-2.44,32,32,0,0,0-45.26,0A8,8,0,0,0,144,55V80H112V55a8,8,0,0,0-2.34-5.66,32,32,0,0,0-45.26,0,7.82,7.82,0,0,0-1.66,2.44L21.15,146.4a47.1,47.1,0,0,0-2.35,5.45v0A48,48,0,1,0,112,168V96h32v72a48,48,0,1,0,93.2-16.13ZM76.71,59.75a16,16,0,0,1,19.29-1v73.51a47.9,47.9,0,0,0-46.79-9.92ZM64,200a32,32,0,1,1,32-32A32,32,0,0,1,64,200ZM160,58.74a16,16,0,0,1,19.29,1l27.5,62.58A47.9,47.9,0,0,0,160,132.25ZM192,200a32,32,0,1,1,32-32A32,32,0,0,1,192,200Z\"/>"],"flower":["<path d=\"M210.35,129.36c-.81-.47-1.7-.92-2.62-1.36.92-.44,1.81-.89,2.62-1.36a40,40,0,1,0-40-69.28c-.81.47-1.65,1-2.48,1.59.08-1,.13-2,.13-3a40,40,0,0,0-80,0c0,.94,0,1.94.13,3-.83-.57-1.67-1.12-2.48-1.59a40,40,0,1,0-40,69.28c.81.47,1.7.92,2.62,1.36-.92.44-1.81.89-2.62,1.36a40,40,0,1,0,40,69.28c.81-.47,1.65-1,2.48-1.59-.08,1-.13,2-.13,2.95a40,40,0,0,0,80,0c0-.94-.05-1.94-.13-2.95.83.57,1.67,1.12,2.48,1.59A39.79,39.79,0,0,0,190.29,204a40.43,40.43,0,0,0,10.42-1.38,40,40,0,0,0,9.64-73.28ZM104,128a24,24,0,1,1,24,24A24,24,0,0,1,104,128Zm74.35-56.79a24,24,0,1,1,24,41.57c-6.27,3.63-18.61,6.13-35.16,7.19A40,40,0,0,0,154.53,98.1C163.73,84.28,172.08,74.84,178.35,71.21ZM128,32a24,24,0,0,1,24,24c0,7.24-4,19.19-11.36,34.06a39.81,39.81,0,0,0-25.28,0C108,75.19,104,63.24,104,56A24,24,0,0,1,128,32ZM44.86,80a24,24,0,0,1,32.79-8.79c6.27,3.63,14.62,13.07,23.82,26.89A40,40,0,0,0,88.81,120c-16.55-1.06-28.89-3.56-35.16-7.18A24,24,0,0,1,44.86,80ZM77.65,184.79a24,24,0,1,1-24-41.57c6.27-3.63,18.61-6.13,35.16-7.19a40,40,0,0,0,12.66,21.87C92.27,171.72,83.92,181.16,77.65,184.79ZM128,224a24,24,0,0,1-24-24c0-7.24,4-19.19,11.36-34.06a39.81,39.81,0,0,0,25.28,0C148,180.81,152,192.76,152,200A24,24,0,0,1,128,224Zm83.14-48a24,24,0,0,1-32.79,8.79c-6.27-3.63-14.62-13.07-23.82-26.89A40,40,0,0,0,167.19,136c16.55,1.06,28.89,3.56,35.16,7.18A24,24,0,0,1,211.14,176Z\"/>","<path d=\"M206.35,136.29c-8.87-5.13-24.46-7.38-39.4-8.29,14.94-.91,30.53-3.16,39.4-8.29a32,32,0,1,0-32-55.42c-8.87,5.12-18.61,17.48-26.87,30C154.17,80.87,160,66.25,160,56a32,32,0,0,0-64,0c0,10.25,5.83,24.87,12.52,38.26-8.26-12.49-18-24.85-26.87-30a32,32,0,1,0-32,55.42c8.87,5.13,24.46,7.38,39.4,8.29-14.94.91-30.53,3.16-39.4,8.29a32,32,0,1,0,32,55.42c8.87-5.12,18.61-17.48,26.87-30C101.83,175.13,96,189.75,96,200a32,32,0,0,0,64,0c0-10.25-5.83-24.87-12.52-38.26,8.26,12.49,18,24.85,26.87,30a32,32,0,1,0,32-55.42ZM155.71,144A32,32,0,1,1,160,128,31.74,31.74,0,0,1,155.71,144Z\" opacity=\"0.2\"/><path d=\"M210.35,129.36c-.81-.47-1.7-.92-2.62-1.36.92-.44,1.81-.89,2.62-1.36a40,40,0,1,0-40-69.28c-.81.47-1.65,1-2.48,1.59.08-1,.13-2,.13-3a40,40,0,0,0-80,0c0,.94,0,1.94.13,3-.83-.57-1.67-1.12-2.48-1.59a40,40,0,1,0-40,69.28c.81.47,1.7.92,2.62,1.36-.92.44-1.81.89-2.62,1.36a40,40,0,1,0,40,69.28c.81-.47,1.65-1,2.48-1.59-.08,1-.13,2-.13,2.95a40,40,0,0,0,80,0c0-.94-.05-1.94-.13-2.95.83.57,1.67,1.12,2.48,1.59A39.79,39.79,0,0,0,190.29,204a40.43,40.43,0,0,0,10.42-1.38,40,40,0,0,0,9.64-73.28ZM104,128a24,24,0,1,1,24,24A24,24,0,0,1,104,128Zm74.35-56.79a24,24,0,1,1,24,41.57c-6.27,3.63-18.61,6.13-35.16,7.19A40,40,0,0,0,154.53,98.1C163.73,84.28,172.08,74.84,178.35,71.21ZM128,32a24,24,0,0,1,24,24c0,7.24-4,19.19-11.36,34.06a39.81,39.81,0,0,0-25.28,0C108,75.19,104,63.24,104,56A24,24,0,0,1,128,32ZM44.86,80a24,24,0,0,1,32.79-8.79c6.27,3.63,14.62,13.07,23.82,26.89A40,40,0,0,0,88.81,120c-16.55-1.06-28.89-3.56-35.16-7.18A24,24,0,0,1,44.86,80ZM77.65,184.79a24,24,0,1,1-24-41.57c6.27-3.63,18.61-6.13,35.16-7.19a40,40,0,0,0,12.66,21.87C92.27,171.72,83.92,181.16,77.65,184.79ZM128,224a24,24,0,0,1-24-24c0-7.24,4-19.19,11.36-34.06a39.81,39.81,0,0,0,25.28,0C148,180.81,152,192.76,152,200A24,24,0,0,1,128,224Zm83.14-48a24,24,0,0,1-32.79,8.79c-6.27-3.63-14.62-13.07-23.82-26.89A40,40,0,0,0,167.19,136c16.55,1.06,28.89,3.56,35.16,7.18A24,24,0,0,1,211.14,176Z\"/>"],"warning-circle":["<path d=\"M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm-8-80V80a8,8,0,0,1,16,0v56a8,8,0,0,1-16,0Zm20,36a12,12,0,1,1-12-12A12,12,0,0,1,140,172Z\"/>","<path d=\"M224,128a96,96,0,1,1-96-96A96,96,0,0,1,224,128Z\" opacity=\"0.2\"/><path d=\"M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm-8-80V80a8,8,0,0,1,16,0v56a8,8,0,0,1-16,0Zm20,36a12,12,0,1,1-12-12A12,12,0,0,1,140,172Z\"/>"]});
 
 /* ==================================================================
    1. Dados
@@ -5955,7 +6041,19 @@ function parseCSV(texto) {
   });
 }
 function bloco(id) { var el = document.getElementById(id); return el ? el.textContent.trim() : ""; }
-function tabela(nome) { return parseCSV(bloco("csv-" + nome)); }
+/* Nomes de distrito como no mapa turístico do QGIS e no IBGE (decisão de 10/11/2026). Os CSVs continuam
+   com os nomes do formulário ("Sede", "São Bento de Urânia"); a troca é feita aqui, na leitura. */
+var NOME_DISTRITO = { "Sede": "Alfredo Chaves", "São Bento de Urânia": "Urânia" };
+function nomeDistrito(v) { return NOME_DISTRITO[v] || v; }
+function tabela(nome) {
+  var t = parseCSV(bloco("csv-" + nome));
+  t.forEach(function (r) {
+    if (r.distrito != null) { r.distrito = nomeDistrito(r.distrito); }
+    if (r.regiao != null) { r.regiao = nomeDistrito(r.regiao); }
+    if (nome === "fato_indicador" && r.id_indicador === "distrito") { r.categoria = nomeDistrito(r.categoria); }
+  });
+  return t;
+}
 function num(v) { var n = parseFloat(String(v || "").replace(",", ".")); return isNaN(n) ? 0 : n; }
 function fmt(n) { return Math.round(n).toLocaleString("pt-BR"); }
 function pct(a, b) { return b ? Math.round(100 * a / b) : 0; }
@@ -6013,7 +6111,7 @@ function decodificar(s) {
   return pts;
 }
 var DISTRITOS = parseCSV(bloco("geo-distritos")).map(function (l) {
-  return { distrito: l.distrito, oficial: l.nome_oficial, sede: [num(l.sede_lat), num(l.sede_lon)], anel: decodificar(l.contorno) };
+  return { distrito: nomeDistrito(l.distrito), oficial: l.nome_oficial, sede: [num(l.sede_lat), num(l.sede_lon)], anel: decodificar(l.contorno) };
 }).filter(function (d) { return d.anel.length > 3; });
 var LIM = { s: 90, n: -90, o: 180, l: -180 };
 DISTRITOS.forEach(function (d) { d.anel.forEach(function (p) { LIM.s = Math.min(LIM.s, p[0]); LIM.n = Math.max(LIM.n, p[0]); LIM.o = Math.min(LIM.o, p[1]); LIM.l = Math.max(LIM.l, p[1]); }); });
@@ -6503,38 +6601,98 @@ function mapaSVG(pos, cfg) {
 
 /* ------------------------------------------------------------------
    Mapa turístico (Leaflet 1.9 + leaflet.heat, embutidos acima)
-   Pontos: localização de cada lugar tirada do folder turístico do município
-   (PDF georreferenciado exportado do QGIS), no bloco "pontos-folder".
+   Pontos: camada "alfredo_chaves_camada_unica" do mapa turístico do QGIS
+   (número, categoria e coordenada), no bloco "pontos-folder". Os atrativos
+   naturais e culturais do mesmo mapa ficam no bloco "atrativos-inventario".
    Fundo: OpenStreetMap. Contornos: carta dos distritos (OSM/IBGE).
-   Três modos: pontos (como o folder), calor (densidade, como o mapa de
-   calor do folder) e distritos (o total pintado em cada distrito).
+   Três modos: pontos (como o mapa do QGIS), calor (densidade) e distritos
+   (o total pintado em cada distrito).
    ------------------------------------------------------------------ */
 var CATS_F = [
   { k: "Hospedagem", cor: "#2E86C1", ic: "bed" },
   { k: "Gastronomia", cor: "#C0392B", ic: "fork-knife" },
   { k: "Agroturismo", cor: "#8E44AD", ic: "plant" },
-  { k: "Comércio", cor: "#5D6D7E", ic: "shopping-cart" },
-  { k: "Artesanato", cor: "#E91E63", ic: "scissors" },
-  { k: "Cultural", cor: "#935116", ic: "bank" }
+  { k: "Compras", cor: "#E67E22", ic: "shopping-cart" },
+  { k: "Cultural", cor: "#935116", ic: "bank", rot: "Cultura" },
+  { k: "Natural", cor: "#27AE60", ic: "mountains", rot: "Natureza" }
 ];
+/* categorias do inventário de atrativos (naturais e culturais) */
+var CATS_INV = ["Natural", "Cultural"];
 var CAT_F = {}; CATS_F.forEach(function (c) { CAT_F[c.k] = c; });
 var PONTO = {};
 parseCSV(bloco("pontos-folder")).forEach(function (l) {
   var la = num(l.lat), lo = num(l.lon);
   if (EMP[l.id_empreendimento] && la && lo) {
-    PONTO[l.id_empreendimento] = { n: num(l.numero_folder), cat: CAT_F[l.categoria_folder] ? l.categoria_folder : "Hospedagem", ll: [la, lo], aprox: l.precisao === "aprox" };
+    PONTO[l.id_empreendimento] = { n: num(l.numero_mapa), cat: CAT_F[l.categoria_mapa] ? l.categoria_mapa : "Hospedagem", ll: [la, lo] };
   }
 });
+/* inventário de atrativos naturais e culturais do município (documento "ALFREDO CHAVES"),
+   no bloco "atrativos-inventario". Não são estabelecimentos do formulário: não entram nas
+   contagens do diagnóstico. Nas outras páginas seguem o filtro de distrito e a busca; na aba
+   Atrativos naturais e culturais seguem só os filtros próprios da aba (filtroAtr: categoria
+   Natural/Cultural e tipo de atrativo). */
+var INV = parseCSV(bloco("atrativos-inventario")).map(function (l) {
+  var la = num(l.lat), lo = num(l.lon), tipo = l.tipo === "Cultural" ? "Cultural" : "Natural";
+  return { id: l.id_atrativo, nome: l.nome, tipo: tipo, cat: tipo, grupo: l.grupo || "Outros", desc: l.descricao || "",
+    distrito: nomeDistrito(l.distrito || ""), fonteD: l.fonte_distrito || "", emp: EMP[l.id_empreendimento] ? l.id_empreendimento : "",
+    ll: la && lo ? [la, lo] : null, fonteL: l.fonte_local || "", n: num(l.numero_mapa) };
+});
+var INV_ID = {}; INV.forEach(function (a) { INV_ID[a.id] = a; });
+var INV_GRUPOS = [];
+INV.forEach(function (a) { if (INV_GRUPOS.indexOf(a.grupo) < 0) { INV_GRUPOS.push(a.grupo); } });
+var selAtr = "";
+var filtroAtr = { tipo: [], grupo: [] };
+var TIPOS_ATR = ["Natural", "Cultural"];
+function naAbaAtr() { return atual && atual.id === "atrativos"; }
+/* semTipo: na aba Atrativos, ignora um grupo do filtro da aba ("tipo" ou "grupo"), para as contagens da gaveta */
+function invVisiveis(semSel, semTipo) {
+  var s = selecao[atual.id];
+  if (naAbaAtr()) {
+    return INV.filter(function (a) {
+      if (semTipo !== "tipo" && filtroAtr.tipo.length && filtroAtr.tipo.indexOf(a.tipo) < 0) { return false; }
+      if (semTipo !== "grupo" && filtroAtr.grupo.length && filtroAtr.grupo.indexOf(a.grupo) < 0) { return false; }
+      if (!semSel && s && s.k === "distrito" && a.distrito !== s.v) { return false; }
+      return true;
+    });
+  }
+  var q = normalizar(filtro.busca);
+  var ds = filtro.distrito.length ? filtro.distrito : (!semSel && s && s.k === "distrito" ? [s.v] : []);
+  return INV.filter(function (a) {
+    if (ds.length && ds.indexOf(a.distrito) < 0) { return false; }
+    if (q && normalizar(a.nome + " " + a.grupo + " " + a.distrito + " " + a.desc).indexOf(q) < 0) { return false; }
+    return true;
+  });
+}
+function rotCat(k) { return (CAT_F[k] && CAT_F[k].rot) || k; }
+/* textos de origem do distrito e do ponto de cada atrativo do inventário */
+function origemDistrito(a) {
+  return { mapa: "pelo ponto no mapa turístico", nome: "pelo nome do atrativo" }[a.fonteD] || "";
+}
+function origemPonto(a) {
+  if (!a.ll) { return "Ainda sem localização"; }
+  if (a.fonteL === "lugar") { return "Ponto do lugar de mesmo nome no mapa turístico"; }
+  if (a.fonteL === "mapa") { return "Ponto do mapa turístico (QGIS)"; }
+  return "";
+}
+function dicaInv(a, acao) {
+  var out = [{ t: (a.tipo === "Cultural" ? "Atrativo cultural" : "Atrativo natural") + " · inventário" }, el("b", null, a.nome), ["Tipo", a.grupo]];
+  if (a.desc) { out.push(a.desc); }
+  if (a.distrito) { out.push(["Distrito", a.distrito + (origemDistrito(a) ? " · " + origemDistrito(a) : "")]); }
+  out.push(origemPonto(a));
+  if (acao) { out.push({ h: acao }); }
+  return out;
+}
+
 var TEM_LEAFLET = typeof L !== "undefined" && !!L.map;
 var ESTADO_MAPA = {}, MAPAS_VIVOS = [];
 var SEQ_HEX = ["#EEF2F1", "#D2E9E4", "#A3D2C8", "#62AD9F", "#24806F", "#004E4C"];
 function corSeqHex(v, max) { return v ? SEQ_HEX[1 + Math.min(4, Math.floor(5 * v / (max + 1e-9)))] : SEQ_HEX[0]; }
 var CALOR_GRAD = { 0.12: "#FFF6CF", 0.3: "#FFDF8C", 0.5: "#FDB863", 0.7: "#F47A45", 0.88: "#E04A4A", 1: "#C8304F" };
 var PINO_D = "M32 3C16.5 3 5 14.5 5 30c0 19.5 27 50 27 50s27-30.5 27-50C59 14.5 47.5 3 32 3Z";
-/* nome de cada distrito na mesma posição do folder (fora dos aglomerados de pontos) */
-var ROTULO_POS = { "São Bento de Urânia": [-20.5120, -40.9316], "Matilde": [-20.5438, -40.8423], "Ibitiruí": [-20.5915, -40.8525],
-  "Crubixá": [-20.6486, -40.8403], "Ribeirão do Cristo": [-20.5140, -40.7442], "Sede": [-20.6134, -40.7455], "Sagrada Família": [-20.5935, -40.6862] };
-var ROTULO_NOME = { "São Bento de Urânia": "São Bento<br>de Urânia", "Ribeirão do Cristo": "Ribeirão<br>do Cristo", "Sagrada Família": "Sagrada<br>Família" };
+/* nome de cada distrito (fora dos aglomerados de pontos (fora dos aglomerados de pontos) */
+var ROTULO_POS = { "Urânia": [-20.5120, -40.9316], "Matilde": [-20.5080, -40.8393], "Ibitiruí": [-20.6017, -40.8795],
+  "Crubixá": [-20.6454, -40.8236], "Ribeirão do Cristo": [-20.5140, -40.7442], "Alfredo Chaves": [-20.6754, -40.8047], "Sagrada Família": [-20.5935, -40.6862] };
+var ROTULO_NOME = { "Alfredo Chaves": "Alfredo<br>Chaves", "Ribeirão do Cristo": "Ribeirão<br>do Cristo", "Sagrada Família": "Sagrada<br>Família" };
 
 /* fundos e camadas: serviços públicos de mapa, chamados pelo navegador de quem abre a página */
 var ESRI = "https://server.arcgisonline.com/ArcGIS/rest/services/";
@@ -6554,7 +6712,7 @@ var CAMADAS = [
 function camadaFundo(k) {
   var esri = function (serv, atr, extra) { return L.tileLayer(ESRI + serv + "/MapServer/tile/{z}/{y}/{x}", L.extend({ maxZoom: 19, attribution: atr }, extra || {})); };
   if (k === "ruas") {
-    /* publicado: OpenStreetMap, o fundo do folder. O OSM recusa pedidos sem Referer ("Access blocked"),
+    /* publicado: OpenStreetMap, o mesmo fundo do projeto do QGIS. O OSM recusa pedidos sem Referer ("Access blocked"),
        o que acontece com a página aberta como arquivo; nesse caso vem o Esri World Street Map */
     return location.protocol === "file:" ? esri("World_Street_Map", "Fundo: © Esri")
       : L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19, referrerPolicy: "strict-origin-when-cross-origin",
@@ -6600,7 +6758,7 @@ function centroDe(anel) {
 }
 function limitesMunicipio() { return L.latLngBounds([LIM.s, LIM.o], [LIM.n, LIM.l]); }
 function clicarDistrito(d) {
-  if (filtro.distrito.length) { filtro.distrito = filtro.distrito.length === 1 && filtro.distrito[0] === d ? [] : [d]; aposFiltro(); }
+  if (filtro.distrito.length && !naAbaAtr()) { filtro.distrito = filtro.distrito.length === 1 && filtro.distrito[0] === d ? [] : [d]; aposFiltro(); }
   else { selecionar({ k: "distrito", v: d }); }
 }
 function descartarMapas() { MAPAS_VIVOS.forEach(function (m) { try { m.remove(); } catch (e) { /* já removido */ } }); MAPAS_VIVOS = []; }
@@ -6622,7 +6780,7 @@ function mapa(pos, cfg) {
   idsD.forEach(function (e) { var x = medida(e); if (x) { val[e.distrito] = (val[e.distrito] || 0) + x; (lista[e.distrito] = lista[e.distrito] || []).push(e.nome_empreendimento); } });
   var max = 0; for (var k in val) { max = Math.max(max, val[k]); }
   var s = selecao[atual.id];
-  var selD = filtro.distrito.length === 1 ? filtro.distrito[0] : (s && s.k === "distrito" ? s.v : "");
+  var selD = filtro.distrito.length === 1 && !naAbaAtr() ? filtro.distrito[0] : (s && s.k === "distrito" ? s.v : "");
   var selE = s && s.k === "emp" ? s.v : "";
   /* lugares do mapa: os filtros valem; a seleção de um lugar só o destaca */
   var pertence = cfg.pertence || function (e) { return medida(e) > 0; };
@@ -6630,6 +6788,11 @@ function mapa(pos, cfg) {
   var comPonto = base.filter(function (e) { return PONTO[e.id_empreendimento]; });
   var semPonto = base.filter(function (e) { return !PONTO[e.id_empreendimento]; });
   var vis = comPonto.filter(function (e) { return !st.off[PONTO[e.id_empreendimento].cat]; });
+  /* inventário de atrativos: só nos mapas que pedem (cfg.inventario) */
+  var invT = cfg.inventario && st.modo !== "distritos" ? invVisiveis() : [];
+  var invCom = invT.filter(function (a) { return a.ll; }), invSem = invT.filter(function (a) { return !a.ll; });
+  var invVis = invCom.filter(function (a) { return !st.off[a.cat]; });
+  var selA = selAtr && INV_ID[selAtr] && INV_ID[selAtr].ll && invVis.indexOf(INV_ID[selAtr]) >= 0 ? INV_ID[selAtr] : null;
 
   var compacto = document.body.classList.contains("compacto");
   var LIMITES = limitesMunicipio();
@@ -6640,7 +6803,7 @@ function mapa(pos, cfg) {
   });
   MAPAS_VIVOS.push(m);
   /* enquadramento antes das camadas (o Leaflet só desenha depois de ter vista): volta ao último ponto de vista, salvo se a seleção mudou */
-  var foco = selE ? "e:" + selE : (selD ? "d:" + selD : "");
+  var foco = selE ? "e:" + selE : (selA ? "a:" + selA.id : (selD ? "d:" + selD : ""));
   function folga(animar) {
     return compacto ? { paddingTopLeft: [6, 44], paddingBottomRight: [44, 30], animate: animar } : { paddingTopLeft: [18, 52], paddingBottomRight: [50, 18], animate: animar };
   }
@@ -6651,13 +6814,18 @@ function mapa(pos, cfg) {
       else { m.setView(PONTO[selE].ll, Math.max(13, st.zoom || 0), { animate: animar }); }
       return;
     }
+    if (selA) {
+      if (st.vista && st.vista.pad(-0.06).contains(selA.ll)) { m.setView(st.centro, st.zoom, { animate: false }); }
+      else { m.setView(selA.ll, Math.max(13, st.zoom || 0), { animate: animar }); }
+      return;
+    }
     var alvo = selD ? DISTRITOS.filter(function (d) { return d.distrito === selD; })[0] : null;
     m.fitBounds(alvo ? L.latLngBounds(alvo.anel) : LIMITES, folga(animar));
   }
   if (st.foco === foco && st.centro) { m.setView(st.centro, st.zoom, { animate: false }); } else { enquadrar(false); }
   st.foco = foco;
   L.control.attribution({ prefix: false, position: "bottomright" })
-    .addAttribution("Pontos: folder turístico").addTo(m);
+    .addAttribution(cfg.inventario ? "Pontos: mapa turístico (QGIS) e inventário de atrativos" : "Pontos: mapa turístico (QGIS)").addTo(m);
   L.control.scale({ imperial: false, position: "bottomright", maxWidth: 110 }).addTo(m);
   var tl = camadaFundo(fundo);
   if (tl) {
@@ -6731,14 +6899,36 @@ function mapa(pos, cfg) {
         no.setAttribute("role", "button"); no.setAttribute("aria-label", e.nome_empreendimento + ", " + p.cat + ", " + e.distrito);
         no.removeAttribute("title");
         ligarDica(no, function () {
-          var out = [{ t: p.cat + " · nº " + p.n + " no folder" }, el("b", null, e.nome_empreendimento), ["Distrito", e.distrito + " · " + (zona(e) || "zona não informada").toLowerCase()]];
+          var out = [{ t: p.cat + " · nº " + p.n + " no mapa" }, el("b", null, e.nome_empreendimento), ["Distrito", e.distrito + " · " + (zona(e) || "zona não informada").toLowerCase()]];
           var cs = rotSeg(e); if (cs.length) { out.push(["Atua em", cs.join(", ")]); }
           if (pessoas && medida(e)) { out.push([cfg.rotValor || "Capacidade", fmt(medida(e)) + " pessoas"]); }
           if (e.telefones) { out.push(["Telefone", e.telefones]); }
-          if (p.aprox) { out.push("Posição aproximada: no folder o número fica escondido sob outros pontos do centro."); }
           out.push({ h: sel ? "Clique para tirar a seleção" : "Clique para filtrar a página por este lugar" });
           return out;
         });
+      }
+    });
+  }
+
+  /* atrativos do inventário: ao lado do pino do lugar de mesmo nome, quando ele aparece */
+  if (st.modo !== "distritos") {
+    var visIds = {}; vis.forEach(function (e) { visIds[e.id_empreendimento] = 1; });
+    var ocup = {};   /* atrativos no mesmo ponto (Ecopark e RPPN) ficam lado a lado */
+    invVis.forEach(function (a) {
+      var sel = selA === a, w = pequeno ? 20 : 26, h = pequeno ? 26 : 34, ch = a.ll[0].toFixed(4) + "," + a.ll[1].toFixed(4);
+      var junto = (a.emp && visIds[a.emp] && PONTO[a.emp] && Math.abs(PONTO[a.emp].ll[0] - a.ll[0]) < 1e-4 && Math.abs(PONTO[a.emp].ll[1] - a.ll[1]) < 1e-4 ? 1 : 0) + (ocup[ch] || 0);
+      ocup[ch] = (ocup[ch] || 0) + 1;
+      var ic = L.divIcon({
+        className: "pino inv" + (pequeno ? " pequeno" : "") + (sel ? " sel" : ((selE || selA) ? " apagado" : "")),
+        html: svgPino(a.cat), iconSize: [w, h], iconAnchor: [w / 2 - junto * w * 0.62, h - 1]
+      });
+      var mk = L.marker(a.ll, { icon: ic, keyboard: true, riseOnHover: true, zIndexOffset: sel ? 2100 : 100 }).addTo(m);
+      mk.on("click", function () { setTimeout(function () { selAtr = selAtr === a.id ? "" : a.id; esconderDica(); renderizar(); }, 0); });
+      var no = mk.getElement();
+      if (no) {
+        no.setAttribute("role", "button"); no.setAttribute("aria-label", a.nome + ", atrativo " + (a.tipo === "Cultural" ? "cultural" : "natural") + (a.distrito ? ", " + a.distrito : ""));
+        no.removeAttribute("title");
+        ligarDica(no, function () { return dicaInv(a, sel ? "Clique para tirar o destaque" : "Clique para destacar"); });
       }
     });
   }
@@ -6761,7 +6951,7 @@ function mapa(pos, cfg) {
     b.addEventListener("click", function () { if (st.modo !== o[0]) { st.modo = o[0]; renderizar(); } });
     md.appendChild(b);
   });
-  area.appendChild(md);
+  if (!cfg.semModos) { area.appendChild(md); }
 
   /* ferramentas */
   var zb = el("div", "mp-zoom");
@@ -6819,15 +7009,28 @@ function mapa(pos, cfg) {
   } else {
     lg.appendChild(el("div", "tit", "Atrativos"));
     var cont = {}; comPonto.forEach(function (e) { var ct = PONTO[e.id_empreendimento].cat; cont[ct] = (cont[ct] || 0) + 1; });
+    var contI = {}; invCom.forEach(function (a) { contI[a.cat] = (contI[a.cat] || 0) + 1; });
     CATS_F.forEach(function (ct) {
       if (!cont[ct.k]) { return; }
-      var b = botao("lc" + (st.off[ct.k] ? " off" : ""), [noPino(ct.k), el("span", null, ct.k), el("b", null, fmt(cont[ct.k]))]);
+      var b = botao("lc" + (st.off[ct.k] ? " off" : ""), [noPino(ct.k), el("span", null, rotCat(ct.k)), el("b", null, fmt(cont[ct.k]))]);
       b.setAttribute("aria-pressed", String(!st.off[ct.k]));
-      ligarDica(b, [{ t: "Categoria no folder" }, el("b", null, ct.k), plural(cont[ct.k], "lugar", "lugares"), { h: st.off[ct.k] ? "Clique para mostrar no mapa" : "Clique para esconder do mapa" }]);
+      ligarDica(b, [{ t: "Categoria no mapa turístico" }, el("b", null, ct.k), plural(cont[ct.k], "lugar", "lugares"), { h: st.off[ct.k] ? "Clique para mostrar no mapa" : "Clique para esconder do mapa" }]);
       b.addEventListener("click", function () { st.off[ct.k] = !st.off[ct.k]; renderizar(); });
       lg.appendChild(b);
     });
-    if (!comPonto.length) { lg.appendChild(el("div", "nota-l", "Nenhum lugar com os filtros atuais")); }
+    if (invCom.length) {
+      if (comPonto.length) { lg.appendChild(el("div", "sep")); }
+      lg.appendChild(el("div", "tit", "Inventário de atrativos"));
+      CATS_INV.forEach(function (k) {
+        if (!contI[k]) { return; }
+        var b = botao("lc" + (st.off[k] ? " off" : ""), [noPino(k), el("span", null, rotCat(k)), el("b", null, fmt(contI[k]))]);
+        b.setAttribute("aria-pressed", String(!st.off[k]));
+        ligarDica(b, [{ t: "Inventário de atrativos" }, el("b", null, k === "Cultural" ? "Atrativos culturais" : "Atrativos naturais"), plural(contI[k], "atrativo com ponto", "atrativos com ponto"), { h: st.off[k] ? "Clique para mostrar no mapa" : "Clique para esconder do mapa" }]);
+        b.addEventListener("click", function () { st.off[k] = !st.off[k]; renderizar(); });
+        lg.appendChild(b);
+      });
+    }
+    if (!comPonto.length && !invCom.length) { lg.appendChild(el("div", "nota-l", cfg.inventario ? "Nenhum atrativo com ponto" : "Nenhum lugar com os filtros atuais")); }
     if (st.modo === "calor") {
       lg.appendChild(el("div", "sep"));
       lg.appendChild(el("div", "tit", pessoas ? "Concentração da capacidade" : "Densidade dos lugares"));
@@ -6835,19 +7038,24 @@ function mapa(pos, cfg) {
       var lm2 = el("div", "lim"); lm2.appendChild(el("span", null, "Mínimo")); lm2.appendChild(el("span", null, "Máximo")); lg.appendChild(lm2);
     }
     if (semPonto.length) {
-      var sn = el("div", "nota-l", plural(semPonto.length, "lugar", "lugares") + " sem ponto no folder");
+      var sn = el("div", "nota-l", plural(semPonto.length, "lugar", "lugares") + " sem ponto no mapa");
       ligarDica(sn, [{ t: "Fora do mapa" }].concat(semPonto.map(function (e) { return e.nome_empreendimento; })));
       lg.appendChild(sn);
+    }
+    if (invSem.length) {
+      var si = el("div", "nota-l", plural(invSem.length, "atrativo", "atrativos") + " ainda sem localização");
+      ligarDica(si, [{ t: "Inventário · fora do mapa" }].concat(invSem.map(function (a) { return a.nome; })));
+      lg.appendChild(si);
     }
   }
   area.appendChild(lg);
   return c;
 }
 
-/* lista numerada como a página 2 do folder: região, categoria e número */
+/* lista numerada por região, categoria e número do mapa turístico */
 var buscaAtr = "";
 function listaAtrativos(pos) {
-  var c = cartao(pos, { titulo: "Atrativos por região", sub: "Número e categoria do folder · clique para localizar", icone: "list-numbers", altM: 520 });
+  var c = cartao(pos, { titulo: "Atrativos por região", sub: "Número e categoria do mapa turístico · clique para localizar", icone: "list-numbers", altM: 520 });
   var barraF = el("div", "tb-barra"), bm = el("div", "busca-mini"); bm.appendChild(icone("magnifying-glass"));
   var inp = el("input"); inp.type = "search"; inp.placeholder = "Buscar atrativo"; inp.value = buscaAtr; inp.setAttribute("aria-label", "Buscar atrativo");
   bm.appendChild(inp); barraF.appendChild(bm);
@@ -6861,23 +7069,25 @@ function listaAtrativos(pos) {
     var q = normalizar(buscaAtr);
     var ls = todos.filter(function (e) { return !q || normalizar(e.nome_empreendimento + " " + e.distrito).indexOf(q) >= 0; });
     var com = ls.filter(function (e) { return PONTO[e.id_empreendimento]; }), sem = ls.filter(function (e) { return !PONTO[e.id_empreendimento]; });
-    cont.textContent = plural(ls.length, "lugar", "lugares");
+    var inv = invVisiveis().filter(function (a) { return !q || normalizar(a.nome + " " + a.distrito + " " + a.grupo).indexOf(q) >= 0; });
+    cont.textContent = plural(ls.length, "lugar", "lugares") + " · " + plural(inv.length, "atrativo", "atrativos");
     var regs = {}; com.forEach(function (e) { (regs[e.distrito] = regs[e.distrito] || []).push(e); });
+    var invReg = {}; inv.forEach(function (a) { if (a.distrito) { (invReg[a.distrito] = invReg[a.distrito] || []).push(a); regs[a.distrito] = regs[a.distrito] || []; } });
     var ordem = Object.keys(regs).sort(function (a, b) {
-      var ma = Math.min.apply(null, regs[a].map(function (e) { return PONTO[e.id_empreendimento].n; }));
-      var mb = Math.min.apply(null, regs[b].map(function (e) { return PONTO[e.id_empreendimento].n; }));
+      var ma = Math.min.apply(null, regs[a].map(function (e) { return PONTO[e.id_empreendimento].n; }).concat([999]));
+      var mb = Math.min.apply(null, regs[b].map(function (e) { return PONTO[e.id_empreendimento].n; }).concat([999]));
       return ma - mb;
     });
     var alvo = null;
     function item(e, n) {
       var p = PONTO[e.id_empreendimento];
-      var b = botao("at-it" + (selE === e.id_empreendimento ? " sel" : "") + (p && p.aprox ? " aprox" : ""), [el("span", "n", n ? n + "." : "–"), el("span", "nm", e.nome_empreendimento)]);
+      var b = botao("at-it" + (selE === e.id_empreendimento ? " sel" : "") + "", [el("span", "n", n ? n + "." : "–"), el("span", "nm", e.nome_empreendimento)]);
       if (selE === e.id_empreendimento) { alvo = b; }
       b.addEventListener("click", function () { selecionar({ k: "emp", v: e.id_empreendimento }); });
       ligarDica(b, function () {
         var out = [{ t: p ? p.cat + " · " + e.distrito : e.distrito }, el("b", null, e.nome_empreendimento)];
         var cs = rotSeg(e); if (cs.length) { out.push(["Atua em", cs.join(", ")]); }
-        if (!p) { out.push("Sem ponto no folder turístico"); } else if (p.aprox) { out.push("Posição aproximada no centro da Sede"); }
+        if (!p) { out.push("Sem ponto no mapa turístico"); }
         out.push({ h: selE === e.id_empreendimento ? "Clique para tirar a seleção" : "Clique para localizar no mapa" });
         return out;
       });
@@ -6892,24 +7102,204 @@ function listaAtrativos(pos) {
         var h = el("div", "at-cat"); var bol = el("i"); bol.style.background = ct.cor; h.appendChild(bol); h.appendChild(document.createTextNode(ct.k)); w.appendChild(h);
         it.forEach(function (e) { w.appendChild(item(e, PONTO[e.id_empreendimento].n)); });
       });
+      CATS_INV.forEach(function (k) {
+        var ia = (invReg[d] || []).filter(function (a) { return a.cat === k; });
+        if (!ia.length) { return; }
+        w.appendChild(cabInv(k));
+        ia.forEach(function (a) { w.appendChild(itemInv(a)); });
+      });
     });
+    var semD = inv.filter(function (a) { return !a.distrito; });
+    if (semD.length) {
+      w.appendChild(el("div", "at-reg fora", "Atrativos sem localização no mapa"));
+      CATS_INV.forEach(function (k) {
+        var ia = semD.filter(function (a) { return a.cat === k; });
+        if (!ia.length) { return; }
+        w.appendChild(cabInv(k));
+        ia.forEach(function (a) { w.appendChild(itemInv(a)); });
+      });
+    }
     if (sem.length) {
-      w.appendChild(el("div", "at-reg fora", "Sem ponto no folder"));
+      w.appendChild(el("div", "at-reg fora", "Sem ponto no mapa"));
       sem.forEach(function (e) { w.appendChild(item(e, 0)); });
     }
-    if (!ls.length) { w.appendChild(el("div", "vazio", "Nenhum atrativo encontrado")); }
+    if (!ls.length && !inv.length) { w.appendChild(el("div", "vazio", "Nenhum atrativo encontrado")); }
+    var alvoI = w.querySelector(".at-it.inv.sel"); if (!alvo && alvoI) { alvo = alvoI; }
     if (alvo) { requestAnimationFrame(function () { alvo.scrollIntoView({ block: "nearest" }); }); }
   }
   inp.addEventListener("input", function () { buscaAtr = inp.value; desenhar(); });
   desenhar();
-  nota(c, "Fonte dos pontos: folder turístico de Alfredo Chaves (QGIS)", "info");
+  nota(c, "Pontos: mapa turístico do QGIS · verde e marrom: atrativos naturais e culturais", "info");
   return c;
 }
 
+/* inventário: cabeçalho da categoria e item da lista (destaca no mapa) */
+function cabInv(k) {
+  var h = el("div", "at-cat"), bol = el("i"); bol.style.background = CAT_F[k].cor; h.appendChild(bol);
+  h.appendChild(document.createTextNode(k === "Cultural" ? "Atrativos culturais · inventário" : "Atrativos naturais · inventário")); return h;
+}
+function itemInv(a, detalhe) {
+  var filhos = [el("span", "n", ""), el("span", "nm", a.nome)];
+  filhos[0].appendChild(noPino(a.cat));
+  var b = botao("at-it inv" + (selAtr === a.id ? " sel" : "") + (a.ll ? "" : " sem-ponto") + "", filhos);
+  if (detalhe) {
+    var x = el("span", "at-det");
+    if (a.desc) { x.appendChild(el("span", "ds", a.desc)); }
+    var tg = el("span", "tags");
+    if (a.distrito) { tg.appendChild(el("span", "tg", a.distrito)); }
+    if (!a.ll) { tg.appendChild(el("span", "tg conf", "Sem localização no mapa")); }
+    x.appendChild(tg); b.appendChild(x);
+  }
+  b.addEventListener("click", function () { selAtr = selAtr === a.id ? "" : a.id; esconderDica(); renderizar(); });
+  ligarDica(b, function () { return dicaInv(a, selAtr === a.id ? "Clique para tirar o destaque" : (a.ll ? "Clique para localizar no mapa" : "Clique para destacar")); });
+  return b;
+}
+
+/* página: inventário de atrativos naturais e culturais */
+var buscaInv = "";
+function listaInventario(pos) {
+  var c = cartao(pos, { titulo: "Inventário de atrativos", sub: "Atrativos naturais e culturais do município · clique para localizar", icone: "list", altM: 560 });
+  var barraF = el("div", "tb-barra"), bm = el("div", "busca-mini"); bm.appendChild(icone("magnifying-glass"));
+  var inp = el("input"); inp.type = "search"; inp.placeholder = "Buscar no inventário"; inp.value = buscaInv; inp.setAttribute("aria-label", "Buscar no inventário de atrativos");
+  bm.appendChild(inp); barraF.appendChild(bm);
+  var cont = el("span", "tb-cont"); barraF.appendChild(cont);
+  c.insertBefore(barraF, c._corpo);
+  var w = el("div", "at-w"); c._corpo.appendChild(w);
+  var todos = invVisiveis();
+  function desenhar(rolar) {
+    w.textContent = "";
+    var q = normalizar(buscaInv), alvo = null;
+    /* busca por nome, tipo, distrito, descrição ou número do mapa */
+    var inv = todos.filter(function (a) { return !q || normalizar(a.nome + " " + a.grupo + " " + a.distrito + " " + a.desc + " " + (a.n || "")).indexOf(q) >= 0; });
+    cont.textContent = q ? inv.length + " de " + plural(todos.length, "atrativo", "atrativos") : plural(todos.length, "atrativo", "atrativos");
+    [["Natural", "Atrativos naturais"], ["Cultural", "Atrativos culturais"]].forEach(function (tp) {
+      var it = inv.filter(function (a) { return a.tipo === tp[0]; });
+      if (!it.length) { return; }
+      w.appendChild(el("div", "at-reg", tp[1] + " · " + it.length));
+      INV_GRUPOS.forEach(function (g) {
+        var ig = it.filter(function (a) { return a.grupo === g; });
+        if (!ig.length) { return; }
+        var h = el("div", "at-cat"), bol = el("i"); bol.style.background = CAT_F[tp[0]].cor; h.appendChild(bol);
+        h.appendChild(document.createTextNode(g + " · " + ig.length)); w.appendChild(h);
+        ig.forEach(function (a) { var b = itemInv(a, true); if (selAtr === a.id) { alvo = b; } w.appendChild(b); });
+      });
+    });
+    if (!inv.length) { w.appendChild(el("div", "vazio", q ? "Nenhum atrativo encontrado" : "Nenhum atrativo com os filtros atuais")); }
+    if (rolar && alvo) { requestAnimationFrame(function () { alvo.scrollIntoView({ block: "nearest" }); }); }
+  }
+  desenhar(true);
+  inp.addEventListener("input", function () { buscaInv = inp.value; desenhar(false); });
+  nota(c, "Fonte: lista de atrativos do município (documento ALFREDO CHAVES). Use os filtros desta aba: categoria e tipo de atrativo.", "info");
+  return c;
+}
+/* barras simples para o inventário (contagem por tipo ou por distrito) */
+function barrasInv(pos, linhas, cfg) {
+  var c = cartao(pos, cfg);
+  if (!linhas.length) { vazio(c); return c; }
+  var base = linhas.reduce(function (a, l) { return a + l.n; }, 0), max = Math.max.apply(null, linhas.map(function (l) { return l.n; }));
+  var hb = el("div", "hb"); hb.style.setProperty("--rot", cfg.rot || "48%");
+  hb.style.setProperty("--alt", (linhas.length > 6 ? 15 : 18) + "px");
+  if (linhas.length <= 4) { hb.style.justifyContent = "center"; hb.style.gap = "16px"; }
+  var s = selAtual("distrito");
+  linhas.forEach(function (l) {
+    /* cfg.filtroGrupo: o clique marca o tipo no filtro da aba */
+    var clica = (cfg.distrito && l.cat !== "A confirmar") || cfg.filtroGrupo, marcado = cfg.filtroGrupo ? filtroAtr.grupo.indexOf(l.cat) >= 0 : clica && s && s.v === l.cat;
+    if (cfg.filtroGrupo) { s = filtroAtr.grupo.length ? { v: filtroAtr.grupo[0] } : null; }
+    var b = botao("hb-l" + (clica ? "" : " fixo") + (s && clica && !marcado ? " apagado" : ""), [], l.cat + ": " + l.n);
+    b.appendChild(el("span", "hb-r", l.rot || l.cat));
+    var t = el("span", "hb-t"), wd = Math.max(1.5, 100 * l.n / max * 0.8);
+    var bb = el("span", "hb-b"); bb.style.width = wd + "%"; bb.style.background = l.cor || (l.cat === "A confirmar" ? "#A9B4B1" : "var(--verde)");
+    var vl = el("span", "hb-v" + (wd > 64 ? " dentro" : "")); vl.style.setProperty("--w", wd + "%");
+    vl.appendChild(document.createTextNode(fmt(l.n))); vl.appendChild(el("small", null, pct(l.n, base) + "%"));
+    t.appendChild(bb); t.appendChild(vl); b.appendChild(t);
+    if (clica) { b.addEventListener("click", function () {
+      if (cfg.filtroGrupo) { var i = filtroAtr.grupo.indexOf(l.cat); if (i >= 0) { filtroAtr.grupo.splice(i, 1); } else { filtroAtr.grupo.push(l.cat); } aposFiltro(); }
+      else { selecionar({ k: "distrito", v: l.cat }); }
+    }); }
+    ligarDica(b, [{ t: cfg.titulo }, el("b", null, l.cat), [plural(l.n, "atrativo", "atrativos"), pct(l.n, base) + "% de " + base]].concat(l.nomes ? [l.nomes.join(", ")] : []).concat(clica ? [{ h: marcado ? "Clique para tirar a seleção" : "Clique para filtrar a página" }] : []));
+    hb.appendChild(b);
+  });
+  c._corpo.appendChild(hb);
+  if (cfg.nota) { nota(c, cfg.nota, "info"); }
+  return c;
+}
+function pgAtrativos() {
+  var inv = invVisiveis(), nat = inv.filter(function (a) { return a.tipo === "Natural"; }), cul = inv.filter(function (a) { return a.tipo === "Cultural"; });
+  var cach = nat.filter(function (a) { return a.grupo === "Cachoeira"; }), comP = inv.filter(function (a) { return a.ll; });
+  var porG = function (ls, g) { return ls.filter(function (a) { return a.grupo === g; }).length; };
+  kpi([1, 3, 1], { rotulo: "Atrativos no inventário", icone: "binoculars", valor: fmt(inv.length), sub: plural(nat.length, "natural", "naturais") + " · " + plural(cul.length, "cultural", "culturais") });
+  kpi([4, 3, 1], { rotulo: "Cachoeiras", icone: "waves", valor: fmt(cach.length), sub: "de " + plural(nat.length, "atrativo natural", "atrativos naturais") });
+  kpi([7, 3, 1], { rotulo: "Atrativos culturais", icone: "church", valor: fmt(cul.length),
+    sub: cul.length ? porG(cul, "Patrimônio histórico e arquitetônico") + " históricos · " + porG(cul, "Patrimônio religioso") + " religiosos · " + porG(cul, "Eventos e manifestações culturais") + " eventos e manifestações" : "nenhum com os filtros" });
+  kpi([10, 3, 1], { rotulo: "Com ponto no mapa", icone: "map-pin", laranja: true, valor: fmt(comP.length), unidade: "de " + inv.length, prog: pct(comP.length, inv.length), sub: inv.length - comP.length ? plural(inv.length - comP.length, "atrativo ainda sem localização no mapa", "atrativos ainda sem localização no mapa") : "todos com localização no mapa" });
+  listaInventario([1, 5, 2, 2]);
+  mapa([6, 4, 2, 2], { titulo: "Onde ficam os atrativos", sub: "Só os que já têm ponto · clique num ponto para destacar", icone: "map-trifold", unidade: "atrativos", legenda: "Atrativos",
+    inventario: true, semModos: true, pertence: function () { return false; }, altM: 420 });
+  var invG = invVisiveis(false, "grupo");   /* o gráfico de tipo mostra todos os tipos e destaca os marcados no filtro */
+  var gl = []; INV_GRUPOS.forEach(function (g) { var ig = invG.filter(function (a) { return a.grupo === g; }); if (ig.length) { gl.push({ cat: g, rot: { "Patrimônio histórico e arquitetônico": "Patrimônio histórico", "Eventos e manifestações culturais": "Eventos e manifestações" }[g], n: ig.length, cor: CAT_F[ig[0].cat].cor, nomes: ig.map(function (a) { return a.nome; }) }); } });
+  barrasInv([10, 3, 2], gl, { titulo: "Tipo de atrativo", icone: "squares-four", rot: "52%", filtroGrupo: true });
+  var dl = []; REGS.forEach(function (d) { var ig = invVisiveis(true).filter(function (a) { return a.distrito === d; }); if (ig.length) { dl.push({ cat: d, n: ig.length, nomes: ig.map(function (a) { return a.nome; }) }); } });
+  var sd = invVisiveis(true).filter(function (a) { return !a.distrito; });
+  barrasInv([10, 3, 3], dl, { titulo: "Por distrito", icone: "map-pin", distrito: true, rot: "52%", nota: sd.length ? plural(sd.length, "atrativo sem localização no mapa", "atrativos sem localização no mapa") + " (fora das barras)" : "" });
+}
+
 function pgMapa() {
-  mapa([1, 9, 1, 2], { titulo: "Mapa turístico de Alfredo Chaves", sub: "Cada lugar no ponto do folder turístico · clique num ponto ou distrito para filtrar",
-    icone: "map-trifold", unidade: "lugares", legenda: "Lugares", fundo: "satelite", camadas: { limites: true, rios: true, rodovias: true, nomes: true }, altM: 470 });
+  mapa([1, 9, 1, 2], { titulo: "Mapa turístico de Alfredo Chaves", sub: "Cada lugar no ponto do mapa turístico · clique num ponto ou distrito para filtrar",
+    icone: "map-trifold", unidade: "lugares", legenda: "Lugares", inventario: true, fundo: "satelite", camadas: { limites: true, rios: true, rodovias: true, nomes: true }, altM: 470 });
   listaAtrativos([10, 3, 1, 2]);
+}
+
+/* gaveta própria da aba Atrativos naturais e culturais: categoria do mapa turístico e tipo de atrativo */
+function gruposAtr() {
+  return [{ k: "tipo", tit: "Categoria", dica: "Categorias do mapa turístico do QGIS. Os outros filtros do painel não valem nesta aba.", vals: TIPOS_ATR, de: function (a) { return a.tipo; } },
+    { k: "grupo", tit: "Tipo de atrativo", vals: INV_GRUPOS, de: function (a) { return a.grupo; } }];
+}
+function catDoGrupo(g) { var a = INV.filter(function (x) { return x.grupo === g; })[0]; return a ? a.cat : "Natural"; }
+function montarGavetaAtr() {
+  gaveta.textContent = ""; gaveta.dataset.modo = "atr";
+  var cab = el("div", "g-cab"); cab.appendChild(icone("funnel", true)); cab.appendChild(el("h2", null, "Filtros"));
+  var bl = botao(null, [icone("funnel-x")], "Limpar os filtros"); bl.title = "Limpar filtros"; bl.addEventListener("click", limparFiltros);
+  var bx = botao(null, [icone("x")], "Fechar filtros"); bx.title = "Fechar"; bx.addEventListener("click", fecharGaveta);
+  cab.appendChild(bl); cab.appendChild(bx); gaveta.appendChild(cab);
+  var res = el("div", "g-res"); res.id = "g-res"; gaveta.appendChild(res);
+  var corpo = el("div", "g-corpo"); corpo.id = "g-corpo"; gaveta.appendChild(corpo);
+  gruposAtr().forEach(function (g) {
+    var sec = el("section", "g-sec"), sc = el("div", "g-sec-cab");
+    sc.appendChild(el("h3", null, g.tit));
+    var lim = botao(null, ["Limpar"], "Limpar " + g.tit); lim.dataset.grupo = "atr-" + g.k;
+    lim.addEventListener("click", function () { filtroAtr[g.k] = []; aposFiltro(); });
+    sc.appendChild(lim);
+    sec.appendChild(sc);
+    if (g.dica) { sec.appendChild(el("p", "g-dica", g.dica)); }
+    var box = el("div", "opcoes"); box.setAttribute("role", "group"); box.setAttribute("aria-label", g.tit); box.dataset.grupo = "atr-" + g.k;
+    g.vals.forEach(function (v) {
+      var b = botao("op"); b.setAttribute("role", "checkbox"); b.dataset.v = v;
+      var cx = el("span", "cx"); cx.appendChild(icone("check")); b.appendChild(cx);
+      var nm = el("span", "op-nome"); nm.appendChild(noPino(g.k === "tipo" ? v : catDoGrupo(v))); nm.appendChild(document.createTextNode(" " + v)); b.appendChild(nm);
+      b.appendChild(el("span", "n", ""));
+      b.addEventListener("click", function () { var l = filtroAtr[g.k], i = l.indexOf(v); if (i >= 0) { l.splice(i, 1); } else { l.push(v); } aposFiltro(); });
+      box.appendChild(b);
+    });
+    sec.appendChild(box); corpo.appendChild(sec);
+  });
+  var pe = el("div", "g-pe");
+  var b1 = botao("sec", ["Limpar tudo"]); b1.addEventListener("click", limparFiltros);
+  var b2 = botao("pri", ["Ver resultado"]); b2.id = "g-ver"; b2.addEventListener("click", fecharGaveta);
+  pe.appendChild(b1); pe.appendChild(b2); gaveta.appendChild(pe);
+  atualizarGavetaAtr();
+}
+function atualizarGavetaAtr() {
+  var total = invVisiveis(true).length, res = document.getElementById("g-res"); if (!res) { return; }
+  res.textContent = ""; res.appendChild(el("b", null, fmt(total))); res.appendChild(document.createTextNode(" de " + plural(INV.length, "atrativo", "atrativos") + " atendem aos filtros"));
+  document.getElementById("g-ver").textContent = "Ver " + plural(total, "atrativo", "atrativos");
+  gruposAtr().forEach(function (g) {
+    var base = invVisiveis(true, g.k);
+    gaveta.querySelectorAll('[data-grupo="atr-' + g.k + '"][role="group"] button').forEach(function (b) {
+      var v = b.dataset.v, marcado = filtroAtr[g.k].indexOf(v) >= 0, n = base.filter(function (a) { return g.de(a) === v; }).length;
+      b.setAttribute("aria-checked", marcado ? "true" : "false"); b.querySelector(".n").textContent = fmt(n); b.classList.toggle("zero", !n && !marcado);
+    });
+    var lim = gaveta.querySelector('.g-sec-cab button[data-grupo="atr-' + g.k + '"]'); if (lim) { lim.style.visibility = filtroAtr[g.k].length ? "visible" : "hidden"; }
+  });
 }
 
 /* tabela: cabeçalho areia, ordenação, busca, total fixo e exportação CSV */
@@ -7016,8 +7406,9 @@ var PAGINAS = [
   { id: "lugares", nome: "Estabelecimentos", icone: "storefront", fn: pgLugares },
   { id: "hospedagem", nome: "Hospedagem", icone: "bed", fn: pgHospedagem },
   { id: "alimentacao", nome: "Alimentação", icone: "fork-knife", fn: pgAlimentacao },
-  { id: "natureza", nome: "Natureza, aventura e cultura", icone: "mountains", fn: pgNatureza },
   { id: "produtos", nome: "Produtos locais e compras", icone: "basket", fn: pgProdutos },
+  { id: "natureza", nome: "Natureza, aventura e cultura", icone: "mountains", fn: pgNatureza },
+  { id: "atrativos", nome: "Atrativos naturais e culturais", icone: "binoculars", fn: pgAtrativos },
   { id: "atendimento", nome: "Atendimento e estrutura", icone: "credit-card", fn: pgAtendimento },
   { id: "acessibilidade", nome: "Acessibilidade", icone: "wheelchair", fn: pgAcessibilidade },
   { id: "funcionamento", nome: "Dias e horários", icone: "clock", fn: pgFuncionamento },
@@ -7036,20 +7427,20 @@ function pgConceito() {
   [["funnel", "Filtre", "O botão laranja abre os filtros. Eles valem para todas as páginas e mostram quantos lugares sobram."],
    ["cursor-click", "Clique para cruzar", "Clique numa barra, fatia, célula, linha ou distrito para filtrar a página. Clique de novo para tirar."],
    ["sort-ascending", "Ordene e exporte", "Clique no cabeçalho de uma tabela para ordenar. O botão CSV baixa o que está na tela."],
-   ["list", "Navegue", "A faixa verde leva às 13 páginas. O botão de baixo mostra o nome de cada uma."]].forEach(function (p) {
+   ["list", "Navegue", "A faixa verde leva às 14 páginas. O botão de baixo mostra o nome de cada uma."]].forEach(function (p) {
     var d = el("div", "passo"), n = el("div", "n"); n.appendChild(icone(p[0], true)); d.appendChild(n);
     var t = el("div"); t.appendChild(el("b", null, p[1])); t.appendChild(el("span", null, p[2])); d.appendChild(t); guia.appendChild(d);
   });
   var defs = [
     ["house", "Lugares", "Empreendimentos turísticos da base do diagnóstico: <b>" + EMPS.length + " lugares</b>, a mesma base do relatório de estatística descritiva. Um lugar pode atuar em mais de uma categoria."],
     ["storefront", "Categoria", "Segmento em que o lugar atua: " + SEGS.map(function (s) { return s.rotulo_visitante.toLowerCase(); }).join(", ") + ". Por isso a soma das categorias passa do total."],
-    ["map-pin", "Distrito e zona", "Um dos <b>" + REGS.length + " distritos</b> do IBGE para Alfredo Chaves e a zona declarada (urbana ou rural). Nos mapas, cada lugar aparece no ponto do folder turístico; os modos calor e distritos mostram a concentração."],
+    ["map-pin", "Distrito e zona", "Um dos <b>" + REGS.length + " distritos</b> do IBGE para Alfredo Chaves e a zona declarada (urbana ou rural). Nos mapas, cada lugar aparece no seu ponto do mapa turístico do QGIS; os modos calor e distritos mostram a concentração."],
     ["bed", "Capacidade", "Soma das pessoas que cada hospedagem declarou acomodar e que cada lugar de alimentação declarou atender sentadas ao mesmo tempo."],
     ["credit-card", "Conveniências", "Aceita cartão, estacionamento próprio, pet, espaço infantil, acessível (sanitário adaptado ou rampa), atende em outro idioma e abre em feriados."],
     ["wheelchair", "Acessibilidade", "Facilidade declarada para pessoas com deficiência ou mobilidade reduzida, tipos de deficiência atendidos, recursos e itens do sanitário adaptado."],
     ["clock", "Dias e horários", "Dias da semana em que o lugar abre, se abre em feriados, se atende 24 horas e o horário que informou."],
     ["signpost", "Acesso e sinalização", "Tipo de via até o local, placa (municipal, EMBRATUR, própria ou nenhuma), faixas no chão e se a sinalização ajuda."],
-    ["lightbulb", "Fonte", "Formulário do diagnóstico, aplicado de outubro de 2025 a agosto de 2026 e respondido pelos próprios estabelecimentos. Os números são <b>declarados</b>, não auditados."]
+    ["lightbulb", "Fonte", "Formulário do diagnóstico, aplicado de outubro de 2025 a agosto de 2026 e respondido pelos próprios estabelecimentos. Os números são <b>declarados</b>, não auditados. Os <b>atrativos do inventário</b> (cachoeiras, patrimônio, eventos) vêm da lista do município e ficam fora dessas contagens."]
   ];
   defs.forEach(function (d, i) {
     var c = cartao([1 + (i % 3) * 4, 4, 2 + Math.floor(i / 3), 1], { cls: "def", titulo: d[1], icone: d[0], altM: 140 });
@@ -7060,7 +7451,7 @@ function pgConceito() {
 function pgVisao() {
   var ids = lugares({ ignorar: "zona" }), todos = lugares();
   kpi([1, 3, 1], { rotulo: "Lugares no diagnóstico", icone: "storefront", valor: fmt(todos.length), zonas: porZona(ids) });
-  kpi([4, 3, 1], { rotulo: "Distritos com oferta", icone: "map-pin", valor: fmt(REGS.filter(function (d) { return todos.some(function (e) { return e.distrito === d; }); }).length), unidade: "de " + REGS.length, sub: "Matilde e Sede concentram " + pct(todos.filter(function (e) { return e.distrito === "Matilde" || e.distrito === "Sede"; }).length, todos.length) + "% dos lugares" });
+  kpi([4, 3, 1], { rotulo: "Distritos com oferta", icone: "map-pin", valor: fmt(REGS.filter(function (d) { return todos.some(function (e) { return e.distrito === d; }); }).length), unidade: "de " + REGS.length, sub: (function () { var c = {}; todos.forEach(function (e) { c[e.distrito] = (c[e.distrito] || 0) + 1; }); var t = Object.keys(c).sort(function (a, b) { return c[b] - c[a]; }).slice(0, 2); return t.length < 2 ? "" : t.join(" e ") + " concentram " + pct(c[t[0]] + c[t[1]], todos.length) + "% dos lugares"; })() });
   kpi([7, 3, 1], { rotulo: "Capacidade de hospedagem", icone: "bed", valor: fmt(soma(todos, "capacidade_hospedagem_pessoas")), unidade: "pessoas", zonas: porZona(ids, function (e) { return num(e.capacidade_hospedagem_pessoas); }) });
   kpi([10, 3, 1], { rotulo: "Capacidade de alimentação", icone: "fork-knife", valor: fmt(soma(todos, "capacidade_alimentacao_pessoas")), unidade: "pessoas", zonas: porZona(ids, function (e) { return num(e.capacidade_alimentacao_pessoas); }) });
   mapa([1, 5, 2, 2], { titulo: "Onde ficam os lugares", sub: "Clique num ponto ou distrito para filtrar", icone: "map-trifold", unidade: "lugares", legenda: "Lugares", altM: 400 });
@@ -7117,16 +7508,18 @@ function pgAlimentacao() {
 function pgNatureza() {
   var t = lugares();
   var rn = doSeg(t, "Recursos Naturais"), av = doSeg(t, "Entretenimento/Aventura"), cu = doSeg(t, "Cultural");
-  kpi([1, 3, 1], { rotulo: "Cachoeiras e natureza", icone: "tree-evergreen", valor: fmt(rn.length), sub: "atrativos naturais" });
+  var invN = invVisiveis().filter(function (a) { return a.tipo === "Natural" && !(a.emp && rn.some(function (e) { return e.id_empreendimento === a.emp; })); });
+  var invC = invVisiveis().filter(function (a) { return a.tipo === "Cultural" && !(a.emp && cu.some(function (e) { return e.id_empreendimento === a.emp; })); });
+  kpi([1, 3, 1], { rotulo: "Cachoeiras e natureza", icone: "tree-evergreen", valor: fmt(rn.length + invN.length), sub: rn.length + " do levantamento · " + invN.length + " do inventário de atrativos" });
   kpi([4, 3, 1], { rotulo: "Aventura", icone: "person-simple-hike", valor: fmt(av.length), sub: "lugares de entretenimento e aventura" });
-  kpi([7, 3, 1], { rotulo: "Cultura", icone: "ticket", valor: fmt(cu.length), sub: cu.length ? cu.map(function (e) { return e.nome_empreendimento; }).join(", ") : "nenhum com os filtros" });
+  kpi([7, 3, 1], { rotulo: "Cultura", icone: "church", valor: fmt(cu.length + invC.length), sub: (cu.length ? cu.map(function (e) { return e.nome_empreendimento; }).join(", ") + " e " : "") + plural(invC.length, "atrativo cultural", "atrativos culturais") + " do inventário" });
   var ep = contar("ind:rn_epoca", lugares({ ignorar: "ind:rn_epoca" }));
   var top = ep.linhas.slice().sort(function (a, b) { return b.n - a.n; })[0];
   kpi([10, 3, 1], { rotulo: "Época de mais movimento", icone: "sun", laranja: true, valor: top ? top.cat : "–", sub: top ? "citada por " + top.n + " de " + ep.base + " atrativos" : "" });
   barras([1, 4, 2], "ind:rn_tipo", { titulo: "Tipo de atrativo natural", icone: "mountains", rot: "40%" });
   barras([5, 4, 2], "ind:rn_estrutura", { titulo: "O que há nos atrativos", icone: "toilet", rot: "40%", ordenar: true });
   mapa([9, 4, 2, 2], { titulo: "Natureza, aventura e cultura", sub: "Onde ficam · clique para filtrar", icone: "map-trifold", unidade: "lugares", legenda: "Lugares",
-    medida: function (e) { return temSeg(e, "Recursos Naturais") || temSeg(e, "Entretenimento/Aventura") || temSeg(e, "Cultural") ? 1 : 0; }, altM: 380 });
+    medida: function (e) { return temSeg(e, "Recursos Naturais") || temSeg(e, "Entretenimento/Aventura") || temSeg(e, "Cultural") ? 1 : 0; }, inventario: true, altM: 380 });
   proporcoes([1, 4, 3], [{ ind: "rn_trilhas", rot: "Trilhas sinalizadas" }, { ind: "rn_normas", rot: "Normas de conduta" }, { ind: "rn_acessivel", rot: "Acessível" },
     { ind: "rn_area_publica", rot: "Em área pública" }, { ind: "rn_via_publica", rot: "Acesso por via pública" }], { titulo: "Atrativos naturais", icone: "tree-evergreen", rot: "40%" });
   proporcoes([5, 4, 3], [{ ind: "ent_reserva", rot: "É preciso reservar" }, { ind: "ent_guia", rot: "Guia ou instrutor" }, { ind: "ent_epi", rot: "Equipamento de proteção" },
@@ -7277,10 +7670,15 @@ function montarCabecalho() {
     var c = el("span", "chip " + (cls || "")), sp = el("span"); sp.appendChild(document.createTextNode(rot + ": ")); sp.appendChild(el("b", null, val));
     c.appendChild(sp); var b = botao(null, [icone("x")], "Tirar " + rot + " " + val); b.addEventListener("click", tirar); c.appendChild(b); chips.appendChild(c);
   }
+  if (naAbaAtr()) {
+    filtroAtr.tipo.forEach(function (v) { chip("Categoria", v, function () { filtroAtr.tipo = filtroAtr.tipo.filter(function (x) { return x !== v; }); aposFiltro(); }); });
+    filtroAtr.grupo.forEach(function (v) { chip("Tipo", v, function () { filtroAtr.grupo = filtroAtr.grupo.filter(function (x) { return x !== v; }); aposFiltro(); }); });
+  } else {
   if (filtro.busca) { chip("Busca", filtro.busca, function () { filtro.busca = ""; var i = document.getElementById("g-busca"); if (i) { i.value = ""; } aposFiltro(); }); }
   GRUPOS.forEach(function (g) {
     filtro[g.k].forEach(function (v) { chip(g.tit.replace(" até o local", ""), rotulo(g.k, v), function () { filtro[g.k] = filtro[g.k].filter(function (x) { return x !== v; }); aposFiltro(); }); });
   });
+  }
   var s = selecao[atual.id];
   if (s) {
     var txt = s.par ? rotulo(s.par[0].k, s.par[0].v) + " × " + rotulo(s.par[1].k, s.par[1].v) : (s.k === "emp" ? (EMP[s.v] || {}).nome_empreendimento : rotulo(s.k, s.v));
@@ -7289,7 +7687,7 @@ function montarCabecalho() {
   dir.appendChild(chips);
   if (ATUALIZADO) { var at = el("div", "atualizado"); at.appendChild(el("b", null, "Montanhas Capixabas")); at.appendChild(document.createTextNode("Atualizado em " + ATUALIZADO)); dir.appendChild(at); }
   if (atual.id !== "conceito") {
-    var n = qtdFiltros(), bf = botao("btn-filtros", [icone("funnel", true), "Filtros"], "Abrir filtros" + (n ? " (" + n + " ativos)" : ""));
+    var n = naAbaAtr() ? filtroAtr.tipo.length + filtroAtr.grupo.length : qtdFiltros(), bf = botao("btn-filtros", [icone("funnel", true), "Filtros"], "Abrir filtros" + (n ? " (" + n + " ativos)" : ""));
     if (n) { bf.appendChild(el("span", "qtd", String(n))); }
     bf.addEventListener("click", abrirGaveta);
     dir.appendChild(bf);
@@ -7300,7 +7698,8 @@ function montarCabecalho() {
 /* A gaveta é montada uma vez; ao filtrar, só as contagens e as marcas são atualizadas,
    então ela não pisca, não perde a rolagem e não fecha. */
 function montarGaveta() {
-  gaveta.textContent = "";
+  if (naAbaAtr()) { montarGavetaAtr(); return; }
+  gaveta.textContent = ""; gaveta.dataset.modo = "geral";
   var cab = el("div", "g-cab"); cab.appendChild(icone("funnel", true)); cab.appendChild(el("h2", null, "Filtros"));
   var bl = botao(null, [icone("funnel-x")], "Limpar todos os filtros"); bl.title = "Limpar filtros";
   bl.addEventListener("click", limparFiltros);
@@ -7357,6 +7756,8 @@ function montarGaveta() {
   atualizarGaveta();
 }
 function atualizarGaveta() {
+  if ((gaveta.dataset.modo === "atr") !== naAbaAtr()) { montarGaveta(); return; }
+  if (naAbaAtr()) { atualizarGavetaAtr(); return; }
   var total = lugares({ semSel: true }).length;
   var res = document.getElementById("g-res"); if (!res) { return; }
   res.textContent = ""; res.appendChild(el("b", null, fmt(total))); res.appendChild(document.createTextNode(" de " + EMPS.length + " lugares atendem aos filtros"));
@@ -7382,6 +7783,7 @@ function abrirGaveta() {
 }
 function fecharGaveta() { gaveta.classList.remove("aberta"); gaveta.setAttribute("aria-hidden", "true"); veu.classList.remove("on"); faixa.classList.remove("larga"); }
 function limparFiltros() {
+  if (naAbaAtr()) { filtroAtr.tipo = []; filtroAtr.grupo = []; selecao[atual.id] = null; aposFiltro(); return; }
   filtro = { busca: "", seg: [], distrito: [], zona: [], conv: [], "ind:via": [], "ind:recursos_acess": [] }; selecao = {};
   var i = document.getElementById("g-busca"); if (i) { i.value = ""; }
   aposFiltro();
