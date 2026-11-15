@@ -5984,6 +5984,13 @@ C09;Monte das Três Cruzes;Cultural;Patrimônio religioso;;Matilde;mapa;;105;-20
 C10;Ruínas da Figueira;Cultural;Patrimônio religioso;Patrimônio histórico, arquitetônico e religioso;;;;;;;
 C11;Festa da Banana e do Leite;Cultural;Eventos e manifestações culturais;Evento tradicional associado à produção agrícola e à identidade local;;;;;;;
 </script>
+<!-- Pontos que só a aba Mapa turístico mostra, para ela ter os 113 da lista do mapa turístico do QGIS. -->
+<script type="text/plain" id="pontos-so-mapa">
+numero_mapa;nome;categoria;tipo;grupo;distrito;lat;lon
+86;Chalé das Pedras;Hospedagem;;;Ribeirão do Cristo;-20.507911;-40.706908
+101;Cachoeira Pinon;Natural;Natural;Cachoeira;Matilde;-20.548885;-40.855393
+108;Cachoeira do Quintino;Natural;Natural;Cachoeira;Crubixá;-20.664009;-40.901384
+</script>
 
 <script>
 window.L_DISABLE_3D = true;
@@ -6644,6 +6651,26 @@ var INV = parseCSV(bloco("atrativos-inventario")).map(function (l) {
 var INV_ID = {}; INV.forEach(function (a) { INV_ID[a.id] = a; });
 var INV_GRUPOS = [];
 INV.forEach(function (a) { if (INV_GRUPOS.indexOf(a.grupo) < 0) { INV_GRUPOS.push(a.grupo); } });
+/* pontos que só a aba Mapa turístico mostra, para ela ter os 113 da lista do mapa turístico do QGIS:
+   Chalé das Pedras (fora do formulário), Cachoeira Pinon e Cachoeira do Quintino (fora do inventário) */
+var SO_MAPA = parseCSV(bloco("pontos-so-mapa")).map(function (l) {
+  var natCul = l.categoria === "Natural" || l.categoria === "Cultural";
+  return { id: "M" + l.numero_mapa, nome: l.nome, tipo: natCul ? l.categoria : "", cat: l.categoria, grupo: l.grupo || l.categoria, desc: "",
+    distrito: nomeDistrito(l.distrito || ""), fonteD: "mapa", emp: "", ll: [num(l.lat), num(l.lon)], fonteL: "mapa", n: num(l.numero_mapa), soMapa: true };
+});
+SO_MAPA.forEach(function (a) { INV_ID[a.id] = a; });
+function naAbaMapa() { return atual && atual.id === "mapa"; }
+function ehInv(a) { return CATS_INV.indexOf(a.cat) >= 0; }
+/* aba Mapa turístico: só o que tem ponto, um item por número do mapa (Ecopark e RPPN = nº 95) */
+var INV_MAPA = (function () {
+  var porN = {}, out = [];
+  INV.concat(SO_MAPA).forEach(function (a) {
+    if (!a.ll) { return; }
+    if (a.n && porN[a.n]) { var b = porN[a.n]; b.nome += " / " + a.nome; if (a.desc) { b.desc = (b.desc ? b.desc + " · " : "") + a.desc; } return; }
+    var c = Object.assign({}, a); if (a.n) { porN[a.n] = c; } out.push(c);
+  });
+  return out;
+})();
 var selAtr = "";
 var filtroAtr = { tipo: [], grupo: [] };
 var TIPOS_ATR = ["Natural", "Cultural"];
@@ -6661,7 +6688,7 @@ function invVisiveis(semSel, semTipo) {
   }
   var q = normalizar(filtro.busca);
   var ds = filtro.distrito.length ? filtro.distrito : (!semSel && s && s.k === "distrito" ? [s.v] : []);
-  return INV.filter(function (a) {
+  return (naAbaMapa() ? INV_MAPA : INV).filter(function (a) {
     if (ds.length && ds.indexOf(a.distrito) < 0) { return false; }
     if (q && normalizar(a.nome + " " + a.grupo + " " + a.distrito + " " + a.desc).indexOf(q) < 0) { return false; }
     return true;
@@ -6679,7 +6706,10 @@ function origemPonto(a) {
   return "";
 }
 function dicaInv(a, acao) {
-  var out = [{ t: (a.tipo === "Cultural" ? "Atrativo cultural" : "Atrativo natural") + " · inventário" }, el("b", null, a.nome), ["Tipo", a.grupo]];
+  if (!ehInv(a)) {
+    return [{ t: a.cat + " · nº " + a.n + " no mapa" }, el("b", null, a.nome), ["Distrito", a.distrito], "Ponto do mapa turístico (QGIS). Não respondeu ao formulário do diagnóstico."].concat(acao ? [{ h: acao }] : []);
+  }
+  var out = [{ t: (a.tipo === "Cultural" ? "Atrativo cultural" : "Atrativo natural") + (a.soMapa ? " · mapa turístico" : " · inventário") }, el("b", null, a.nome), ["Tipo", a.grupo]];
   if (a.desc) { out.push(a.desc); }
   if (a.distrito) { out.push(["Distrito", a.distrito + (origemDistrito(a) ? " · " + origemDistrito(a) : "")]); }
   out.push(origemPonto(a));
@@ -6796,7 +6826,7 @@ function mapa(pos, cfg) {
   var invT = cfg.inventario && st.modo !== "distritos" ? invVisiveis() : [];
   var invCom = invT.filter(function (a) { return a.ll; }), invSem = invT.filter(function (a) { return !a.ll; });
   var invVis = invCom.filter(function (a) { return !st.off[a.cat]; });
-  var selA = selAtr && INV_ID[selAtr] && INV_ID[selAtr].ll && invVis.indexOf(INV_ID[selAtr]) >= 0 ? INV_ID[selAtr] : null;
+  var selA = selAtr ? invVis.filter(function (a) { return a.id === selAtr && a.ll; })[0] || null : null;
 
   var compacto = document.body.classList.contains("compacto");
   var LIMITES = limitesMunicipio();
@@ -7013,7 +7043,7 @@ function mapa(pos, cfg) {
   } else {
     lg.appendChild(el("div", "tit", "Atrativos"));
     var cont = {}; comPonto.forEach(function (e) { var ct = PONTO[e.id_empreendimento].cat; cont[ct] = (cont[ct] || 0) + 1; });
-    var contI = {}; invCom.forEach(function (a) { contI[a.cat] = (contI[a.cat] || 0) + 1; });
+    var contI = {}; invCom.forEach(function (a) { if (ehInv(a)) { contI[a.cat] = (contI[a.cat] || 0) + 1; } else { cont[a.cat] = (cont[a.cat] || 0) + 1; } });
     CATS_F.forEach(function (ct) {
       if (!cont[ct.k]) { return; }
       var b = botao("lc" + (st.off[ct.k] ? " off" : ""), [noPino(ct.k), el("span", null, rotCat(ct.k)), el("b", null, fmt(cont[ct.k]))]);
@@ -7024,7 +7054,7 @@ function mapa(pos, cfg) {
     });
     if (invCom.length) {
       if (comPonto.length) { lg.appendChild(el("div", "sep")); }
-      lg.appendChild(el("div", "tit", "Inventário de atrativos"));
+      lg.appendChild(el("div", "tit", naAbaMapa() ? "Atrativos naturais e culturais" : "Inventário de atrativos"));
       CATS_INV.forEach(function (k) {
         if (!contI[k]) { return; }
         var b = botao("lc" + (st.off[k] ? " off" : ""), [noPino(k), el("span", null, rotCat(k)), el("b", null, fmt(contI[k]))]);
@@ -7041,7 +7071,7 @@ function mapa(pos, cfg) {
       lg.appendChild(el("div", "grad"));
       var lm2 = el("div", "lim"); lm2.appendChild(el("span", null, "Mínimo")); lm2.appendChild(el("span", null, "Máximo")); lg.appendChild(lm2);
     }
-    if (semPonto.length) {
+    if (semPonto.length && !naAbaMapa()) {
       var sn = el("div", "nota-l", plural(semPonto.length, "lugar", "lugares") + " sem ponto no mapa");
       ligarDica(sn, [{ t: "Fora do mapa" }].concat(semPonto.map(function (e) { return e.nome_empreendimento; })));
       lg.appendChild(sn);
@@ -7074,7 +7104,8 @@ function listaAtrativos(pos) {
     var ls = todos.filter(function (e) { return !q || normalizar(e.nome_empreendimento + " " + e.distrito).indexOf(q) >= 0; });
     var com = ls.filter(function (e) { return PONTO[e.id_empreendimento]; }), sem = ls.filter(function (e) { return !PONTO[e.id_empreendimento]; });
     var inv = invVisiveis().filter(function (a) { return !q || normalizar(a.nome + " " + a.distrito + " " + a.grupo).indexOf(q) >= 0; });
-    cont.textContent = plural(ls.length, "lugar", "lugares") + " · " + plural(inv.length, "atrativo", "atrativos");
+    var nLug = com.length + inv.filter(function (a) { return !ehInv(a); }).length, nAtr = inv.filter(ehInv).length;
+    cont.textContent = plural(nLug, "empreendimento", "empreendimentos") + " · " + plural(nAtr, "atrativo", "atrativos");
     var regs = {}; com.forEach(function (e) { (regs[e.distrito] = regs[e.distrito] || []).push(e); });
     var invReg = {}; inv.forEach(function (a) { if (a.distrito) { (invReg[a.distrito] = invReg[a.distrito] || []).push(a); regs[a.distrito] = regs[a.distrito] || []; } });
     var ordem = Object.keys(regs).sort(function (a, b) {
@@ -7100,17 +7131,18 @@ function listaAtrativos(pos) {
     ordem.forEach(function (d) {
       w.appendChild(el("div", "at-reg", d));
       CATS_F.forEach(function (ct) {
-        var it = regs[d].filter(function (e) { return PONTO[e.id_empreendimento].cat === ct.k; })
-          .sort(function (a, b) { return PONTO[a.id_empreendimento].n - PONTO[b.id_empreendimento].n; });
+        var it = regs[d].filter(function (e) { return PONTO[e.id_empreendimento].cat === ct.k; }).map(function (e) { return { n: PONTO[e.id_empreendimento].n, e: e }; })
+          .concat((invReg[d] || []).filter(function (a) { return !ehInv(a) && a.cat === ct.k; }).map(function (a) { return { n: a.n, a: a }; }))
+          .sort(function (a, b) { return a.n - b.n; });
         if (!it.length) { return; }
         var h = el("div", "at-cat"); var bol = el("i"); bol.style.background = ct.cor; h.appendChild(bol); h.appendChild(document.createTextNode(ct.k)); w.appendChild(h);
-        it.forEach(function (e) { w.appendChild(item(e, PONTO[e.id_empreendimento].n)); });
+        it.forEach(function (x) { w.appendChild(x.e ? item(x.e, x.n) : itemInv(x.a)); });
       });
       CATS_INV.forEach(function (k) {
-        var ia = (invReg[d] || []).filter(function (a) { return a.cat === k; });
+        var ia = (invReg[d] || []).filter(function (a) { return a.cat === k; }).sort(function (a, b) { return (a.n || 999) - (b.n || 999); });
         if (!ia.length) { return; }
         w.appendChild(cabInv(k));
-        ia.forEach(function (a) { w.appendChild(itemInv(a)); });
+        ia.forEach(function (a) { w.appendChild(itemInv(a, false, true)); });
       });
     });
     var semD = inv.filter(function (a) { return !a.distrito; });
@@ -7123,11 +7155,7 @@ function listaAtrativos(pos) {
         ia.forEach(function (a) { w.appendChild(itemInv(a)); });
       });
     }
-    if (sem.length) {
-      w.appendChild(el("div", "at-reg fora", "Sem ponto no mapa"));
-      sem.forEach(function (e) { w.appendChild(item(e, 0)); });
-    }
-    if (!ls.length && !inv.length) { w.appendChild(el("div", "vazio", "Nenhum atrativo encontrado")); }
+    if (!com.length && !inv.length) { w.appendChild(el("div", "vazio", "Nenhum atrativo encontrado")); }
     var alvoI = w.querySelector(".at-it.inv.sel"); if (!alvo && alvoI) { alvo = alvoI; }
     if (alvo) { requestAnimationFrame(function () { alvo.scrollIntoView({ block: "nearest" }); }); }
   }
@@ -7140,11 +7168,13 @@ function listaAtrativos(pos) {
 /* inventário: cabeçalho da categoria e item da lista (destaca no mapa) */
 function cabInv(k) {
   var h = el("div", "at-cat"), bol = el("i"); bol.style.background = CAT_F[k].cor; h.appendChild(bol);
-  h.appendChild(document.createTextNode(k === "Cultural" ? "Atrativos culturais · inventário" : "Atrativos naturais · inventário")); return h;
+  h.appendChild(document.createTextNode(k === "Cultural" ? "Atrativos culturais" : "Atrativos naturais")); return h;
 }
-function itemInv(a, detalhe) {
-  var filhos = [el("span", "n", ""), el("span", "nm", a.nome)];
-  filhos[0].appendChild(noPino(a.cat));
+/* numerar: mostra o número do mapa turístico (lista do Mapa turístico) */
+function itemInv(a, detalhe, numerar) {
+  var comN = a.n && (numerar || !ehInv(a));
+  var filhos = [el("span", "n", comN ? a.n + "." : ""), el("span", "nm", a.nome)];
+  if (!comN) { filhos[0].appendChild(noPino(a.cat)); }
   var b = botao("at-it inv" + (selAtr === a.id ? " sel" : "") + (a.ll ? "" : " sem-ponto") + "", filhos);
   if (detalhe) {
     var x = el("span", "at-det");
